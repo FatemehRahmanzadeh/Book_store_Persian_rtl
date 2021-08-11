@@ -9,6 +9,10 @@ class Category(models.Model):
     created_at = models.DateTimeField(verbose_name='زمان ایجاد',auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='زمان بروزرسانی',auto_now=True)
 
+    class Meta:
+        verbose_name = 'دسته بندی'
+        verbose_name_plural = 'دسته بندی ها'
+
     def __str__(self):
         return f'{self.name}'
 

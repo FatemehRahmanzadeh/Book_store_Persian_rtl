@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'pages'
 
 ]
+# AUTH_USER_MODEL = 'accounts.CustomUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 # DJANGO ALLAUTH SETTINGS
