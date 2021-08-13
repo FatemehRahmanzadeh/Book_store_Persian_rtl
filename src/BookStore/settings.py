@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8v-z*9t0_@4tn09#*i_vs5wnp#hsvchkpw)fcxpud+)kel138^'
+SECRET_KEY = 'django-insecure-3c^+7zut^t#7j19#pxzmu7s5yk!n!&!5a6oxj*771=koa5j(1k'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'pages'
 
 ]
-# AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTH_USER_MODEL = 'accounts.CustomUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 # DJANGO ALLAUTH SETTINGS
@@ -117,7 +117,7 @@ WSGI_APPLICATION = 'BookStore.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'BookStore',
+        'NAME': 'Book_Store',
         'USER': 'postgres',
         'PASSWORD': 'F@temeh70',
         'HOST': '127.0.0.1',
@@ -148,8 +148,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-ir'
 TIME_ZONE = 'Asia/Tehran'
 
 USE_I18N = True
