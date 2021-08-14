@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
-from accounts.models import Address, CustomerProxy, StaffProxy, AdminProxy, CustomGroup
+from accounts.models import Address, CustomerProxy, StaffProxy, AdminProxy
 
 
 @admin.register(CustomerProxy)
@@ -56,10 +55,3 @@ class AdminAdmin(admin.ModelAdmin):
 class AddressAdmin(admin.ModelAdmin):
     fields = ('post_code', 'is_default', 'customer')
 
-
-admin.site.unregister(Group)
-
-
-@admin.register(CustomGroup)
-class GroupAdmin(admin.ModelAdmin):
-    pass
