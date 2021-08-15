@@ -4,15 +4,20 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(verbose_name='نام دسته', max_length=100)
-    creator = models.ForeignKey(get_user_model(), verbose_name='ایجادکننده', on_delete=models.DO_NOTHING,
+    creator = models.ForeignKey(get_user_model(),
+                                verbose_name='ایجادکننده',
+                                on_delete=models.DO_NOTHING,
                                 related_name='catObj_registrar')
+
     last_edit_by = models.ForeignKey(get_user_model(),
                                      verbose_name='آخرین ویرایش توسط',
                                      on_delete=models.DO_NOTHING,
-                                     related_name='catObj_editor', blank=True, null=True)
+                                     related_name='catObj_editor',
+                                     blank=True, null=True)
 
     created_at = models.DateTimeField(verbose_name='زمان ایجاد', auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name='زمان بروزرسانی', auto_now=True)
+    slug = models.SlugField(max_length=60)
 
     class Meta:
         verbose_name = 'دسته بندی'
@@ -20,6 +25,14 @@ class Category(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+
+    def save(self, *args, **kwargs):
+        book_slug = f'{self.name}'
+        self.slug = book_slug
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return "/categories/%s/" % self.slug
 
 
 class Book(models.Model):
@@ -53,6 +66,7 @@ class Book(models.Model):
                                      on_delete=models.DO_NOTHING,
                                      related_name='cash_disc',
                                      blank=True, null=True)
+    slug = models.SlugField(max_length=100)
 
     class Meta:
         ordering = ['title']
@@ -64,3 +78,20 @@ class Book(models.Model):
 
     def __str__(self):
         return f'{self.title} - {self.id}'
+
+    def save(self, *args, **kwargs):
+        book_slug = f'{self.title} by {self.id}'
+        self.slug = book_slug
+        return super().save(*args, **kwargs)
+
+    def get_final_price(self):
+        if self.percent_off:
+            final_price = int(self.price * (100 - self.percent_off.percent_off) / 100)
+        elif self.max_cash_off and self.price >= self.max_cash_off.min_price_off:
+            final_price = self.quantity * (self.price - self.max_cash_off.cash_off)
+        else:
+            final_price = self.price
+        return final_price
+
+    def get_absolute_url(self):
+        return "/books/%s/" % self.slug

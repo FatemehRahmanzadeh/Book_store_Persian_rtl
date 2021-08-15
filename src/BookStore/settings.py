@@ -175,7 +175,8 @@ STATICFILES_FINDERS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-DEFAULT_FROM_EMAIL = 'admin@djangobookstore.com'
+DEFAULT_FROM_EMAIL = 'bookstoredjango420@gmail.com'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

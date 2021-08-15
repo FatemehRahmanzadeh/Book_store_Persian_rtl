@@ -31,7 +31,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name in ['creator', 'last_edit_by']:
-            # انتخاب کاربر درخواست دهنده به عنوان ایجادککنده یا ویرایشگر دسته
+            # انتخاب کاربر درخواست دهنده به عنوان ایجادکننده یا ویرایشگر دسته
             kwargs['initial'] = request.user.id
             # تغییر فیلد به فقط خواندنی
             kwargs['disabled'] = True

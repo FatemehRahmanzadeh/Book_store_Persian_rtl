@@ -53,5 +53,5 @@ class AdminAdmin(admin.ModelAdmin):
 
 @admin.register(Address)
 class AddressAdmin(admin.ModelAdmin):
-    fields = ('post_code', 'is_default', 'customer')
+    fields = ('postcode', 'is_default', 'customer', 'province', 'city', 'street', 'details')
 

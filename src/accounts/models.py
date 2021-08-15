@@ -1,9 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.utils import timezone
-from django.contrib.auth.models import Group
-from django.utils.translation import gettext_lazy as _
+
+from accounts.utils import get_random_code
 
 
 class UserManager(BaseUserManager):
@@ -31,15 +32,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def set_default_group(self):
-        return self.groups.set(['مشتری'])
-
-
-class CustomGroup(Group):
-    class Meta:
-        verbose_name = 'گروه کاربری'
-        verbose_name_plural = 'گروه های کاربری'
-
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(verbose_name='نام کاربری', max_length=254, unique=True, null=True, blank=True)
@@ -51,15 +43,34 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(verbose_name='فعال', default=True)
     last_login = models.DateTimeField(verbose_name='آخرین ورود', null=True, blank=True)
     date_joined = models.DateTimeField(verbose_name='تاریخ ثبت نام', auto_now_add=True)
-
+    slug = models.SlugField(max_length=100)
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     objects = UserManager()
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__initial_first_name = self.first_name
+        self.__initial_last_name = self.last_name
+
+    def save(self, *args, **kwargs):
+        to_slug = self.slug
+        if self.first_name != self.__initial_first_name or self.last_name != self.__initial_last_name or self.slug == "":
+            if self.first_name and self.last_name:
+                to_slug = slugify(str(self.first_name) + " " + str(self.last_name))
+                ex = CustomUser.objects.filter(slug=to_slug).exists()
+                while ex:
+                    to_slug = slugify(to_slug + " " + str(get_random_code()))
+                    ex = CustomUser.objects.filter(slug=to_slug).exists()
+            else:
+                to_slug = str(self.email)
+        self.slug = to_slug
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
-        return "/users/%i/" % self.pk
+        return "/accounts/%s/" % self.slug
 
 
 class CustomerProxy(CustomUser):
