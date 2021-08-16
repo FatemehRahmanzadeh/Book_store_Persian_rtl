@@ -66,7 +66,7 @@ class Book(models.Model):
                                      on_delete=models.DO_NOTHING,
                                      related_name='cash_disc',
                                      blank=True, null=True)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100, null=True, blank=True)
 
     class Meta:
         ordering = ['title']
@@ -80,7 +80,7 @@ class Book(models.Model):
         return f'{self.title} - {self.id}'
 
     def save(self, *args, **kwargs):
-        book_slug = f'{self.title} by {self.id}'
+        book_slug = f'{self.title}by {self.authors}'
         self.slug = book_slug
         return super().save(*args, **kwargs)
 
