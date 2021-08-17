@@ -1,0 +1,24 @@
+body{
+    background-color: bisque;
+}
+.table {
+    border-radius: 10px;
+    border-collapse: separate;
+    border-spacing:0 20px;
+}
+.table tr{
+    background-color: #ddffdd;!important;
+}
+
+.table .card img {
+    height: 100%;
+    width: 70%;
+}
+.table .card a{
+    color: #264b5d;
+    text-decoration: none;
+}
+.table .card #title-a:hover{
+    color: #ffffcc;
+    background-color: #00363a;
+}

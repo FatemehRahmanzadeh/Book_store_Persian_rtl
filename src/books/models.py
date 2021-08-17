@@ -53,7 +53,7 @@ class Book(models.Model):
     authors = models.CharField(verbose_name='نویسنده', max_length=200)
     description = models.TextField(verbose_name='درباره کتاب', max_length=700, blank=True, null=True)
     quantity = models.IntegerField(verbose_name='تعداد')
-    price = models.FloatField(verbose_name='قیمت')
+    price = models.BigIntegerField(verbose_name='قیمت')
     image = models.ImageField(verbose_name='عکس', upload_to='./images/books', blank=True, null=True)
     percent_off = models.ForeignKey('payments.PercentOff',
                                     verbose_name='درصد تخفیف',

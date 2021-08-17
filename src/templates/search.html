@@ -1,0 +1,54 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}
+{% block title %}نتایج جستجو {% endblock %}
+
+{% block content %}
+    <div class="container">
+            <table class="table table-hover m-auto mt-5 text-center">
+                  <tbody>
+                    {% for book in object_list %}
+
+                            <tr>
+                            <td>
+                                <div class="card mb-3">
+                                      <div class="row g-0">
+                                        <div class="col-md-4">
+                                            {% if book.image %}
+                                                <a href="{% url 'detail' book.slug %}"><img src="{{ book.image.url }}" class="img-fluid rounded-start" alt="..."></a>
+                                            {% else %}
+                                                <img src="{% static 'images/images.png' %}" class="img-fluid rounded-start" alt="...">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-8">
+                                          <div class="card-body">
+                                            <h5 class="card-title"><a href="{% url 'detail' book.slug %}"><span id="title-a">{{ book.title }}</span></a></h5>
+                                            <p class="card-text">اثر:
+                                                <br>{{ book.authors }}</p>
+                                              <br>
+                                              <p>قیمت: <del class="text-muted" >{{ book.price }}</del> <b>{{ book.get_final_price }}</b></p>
+                                              <p class="card-text"><small class="text-muted">آخرین بروز رسانی: {{ book.updated_at }}</small></p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </div>
+                                </td>
+                                <td>
+                                    <div class="card mb-3 row">
+                                            <div class=" col-12 row align-items-center my-3">
+                                                <label class=" col-6 text-end me-3" for="num">تعداد: </label>
+                                            <input class="col-4" id="num" type="number" min="1" step="1" max="{{ book.quantity }}">
+                                            </div>
+                                            <div class="col-12 my-5">
+                                                <a href="" class="btn btn-success text-white" data-abc="true"> اضافه به سبد</a>
+                                            </div>
+                                    </div>
+                                </td>
+                            </tr>
+                    {% endfor %}
+                  </tbody>
+    </table>
+    </div>
+{% endblock %}
