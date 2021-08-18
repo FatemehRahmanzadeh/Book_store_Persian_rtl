@@ -24,7 +24,7 @@ class DiscountCode(models.Model):
         verbose_name_plural = 'تخفیف های کددار'
 
     def __str__(self):
-        return f'{self.title} discount is valid until {self.deadline}'
+        return f'{self.title} discount is valid until {self.end}'
 
 
 class PercentOff(models.Model):
@@ -73,8 +73,11 @@ class Basket(models.Model):
 
 class Order(models.Model):
     STATUS = [('R', 'ثبت شده'), ('O', 'سفارش'), ('D', 'تحویل')]
-    customer = models.ForeignKey(get_user_model(), verbose_name='مشتری', on_delete=models.DO_NOTHING,
+    customer = models.ForeignKey(get_user_model(),
+                                 verbose_name='مشتری',
+                                 on_delete=models.DO_NOTHING,
                                  related_name='customer_orders')
+
     created_at = models.DateTimeField(verbose_name='زمان ایجاد', auto_now_add=True)
     discount = models.ForeignKey(DiscountCode, verbose_name='تخفیف',
                                  on_delete=models.DO_NOTHING,
@@ -125,4 +128,4 @@ class OrderItem(models.Model):
         return item_price
 
     def __str__(self):
-        return f'مورد مربوط به{self.order.customer.email}'
+        return f'مورد مربوط به{self.order.customer.username}'

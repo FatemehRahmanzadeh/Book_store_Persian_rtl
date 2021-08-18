@@ -1,0 +1,57 @@
+{% extends '_base.html' %}
+{% block title %}جزییات {{ object.title }} {% endblock %}
+
+{% block content %}
+    <div class="container m-auto mt-5">
+        <div class="card mb-3">
+          <div class="row g-0">
+            <div class="col-md-4">
+                <figure class="figure">
+                    <img src="{{ object.image.url }}" class="img-fluid rounded-start" alt="{{ object.title }}">
+                    <figcaption class="figure-caption me-3">
+                        دسته ها:
+                        {% for cat in object.categories.all %}
+                            <a class="text-decoration-none text-Primary" href="{% url 'category_detail' cat.slug %}">{{ cat }}</a> |
+                        {% endfor %}
+                    </figcaption>
+                </figure>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{ object.title }}</h5>
+                  <div class="container">
+                      <div class="row">
+                          <div class="col">
+                              <p>نویسنده: {{ object.authors }}</p>
+                              <p>وضعیت موجودی: {% if object.quantity >= 1 %}
+                                  <span class="text-success"><b>موجود</b></span>
+                                  {% else %}
+                                    <span class="text-muted">نا موجود</span>
+                              {% endif %}</p>
+                          </div>
+
+                      </div>
+
+                  </div>
+                    <div class="border rounded p-3 border-success">
+                        <h5>توضیحات: </h5>
+                        <p class="card-text">{{ object.description }}</p>
+                    </div>
+                    <div class="container mt-3">
+                        <div class="row">
+                            <form class="form-group col-6" method="post">
+                                {% csrf_token %}
+                                <label class="" for="num">تعداد: </label>
+                                <input class="form-control w-25" id="num" type="number" min="1" step="1" max="{{ book.quantity }}">
+                                <a href="" role="button" class="btn btn-success text-white my-2" data-abc="true"><i class="fas fa-plus"></i> افزودن به سبد خرید</a>
+                            </form>
+                        </div>
+                    </div>
+              </div>
+                <p class="card-text"><small class="text-muted">آخرین بروزرسانی: {{ object.updated_at }}</small></p>
+            </div>
+          </div>
+        </div>
+
+    </div>
+{% endblock %}

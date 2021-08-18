@@ -1,12 +1,11 @@
 from django.db.models import Q
 from django.views.generic import ListView, DetailView
-
-from books.models import Book
+from books.models import Book, Category
 
 
 class Search(ListView):
     model = Book
-    template_name = 'search.html'
+    template_name = 'books/search.html'
     paginate_by = 10
 
     def get_queryset(self):
@@ -16,4 +15,26 @@ class Search(ListView):
 
 class BookDetail(DetailView):
     model = Book
-    template_name = 'book-detail.html'
+    template_name = 'books/book-detail.html'
+
+
+class CategoryView(ListView):
+    model = Category
+    template_name = 'books/category-list.html'
+    paginate_by = 10
+    def get_queryset(self):
+        return super(CategoryView, self).get_queryset().exclude(book_categories__isnull=True)
+
+
+class CategoryDetail(DetailView):
+    model = Category
+    template_name = 'books/search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        slug = self.kwargs.get('slug')
+        try:
+            context['object_list'] = Book.objects.filter(categories__slug=slug)
+        except Book.DoesNotExist:
+            context['object_list'] = None
+        return context

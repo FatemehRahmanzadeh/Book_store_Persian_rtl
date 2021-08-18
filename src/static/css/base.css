@@ -15,11 +15,8 @@
 }
 
 /* Main Styling */
-html,body {
-  font-family: 'Vazir', Arial, Helvetica, sans-serif;
-  line-height: 1.7em;
-}
+
 
 .navbar {
-    background-color:lavender !important;
+    background-color:lightsteelblue !important;
 }

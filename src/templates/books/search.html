@@ -1,0 +1,63 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}
+{% block title %}نتایج جستجو {% endblock %}
+
+{% block content %}
+    <div class="container">
+            <table class="table table-hover m-auto mt-5 text-center">
+                  <tbody>
+                  {% if object_list %}
+                    {% for book in object_list %}
+                        <tr>
+                            <td class="rounded-2">
+                                <div class="card m-3 text-end">
+                                      <div class="row g-0">
+                                        <div class="col-md-4">
+                                            {% if book.image %}
+                                                <a href="{% url 'detail' book.slug %}"><img src="{{ book.image.url }}" class="img-fluid rounded-start" alt="..."></a>
+                                            {% else %}
+                                                <img src="{% static 'images/images.png' %}" class="img-fluid rounded-start" alt="...">
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-md-8">
+                                          <div class="card-body">
+                                            <h5 class="card-title"><a href="{% url 'detail' book.slug %}"><span id="title-a">{{ book.title }}</span></a></h5>
+                                            <div class="container card-text">
+                                                <div class="row">
+                                                    <div class="col-8">
+                                                        <p class="card-text">اثر:
+                                                        <br>{{ book.authors }}</p>
+                                                        <br>
+                                                        <p>قیمت: <del class="text-muted" >{{ book.price }}</del> <b>{{ book.get_final_price }}</b></p>
+                                                        <p class="card-text"><small class="text-muted">آخرین بروز رسانی: {{ book.updated_at }}</small></p>
+                                                    </div>
+                                                            <div class="col-md-4">
+                                                                <form class="form-group col-12" method="post">
+                                                                    {% csrf_token %}
+                                                                    <label class="" for="num">تعداد: </label>
+                                                                    <input class="form-control w-25" id="num" type="number" min="1" step="1" max="{{ book.quantity }}">
+                                                                    <a href="" role="button" class="btn btn-success text-white my-2" data-abc="true"><i class="fas fa-plus"></i> افزودن به سبد خرید</a>
+                                                                </form>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  {% else %}
+                  <tr><td class="text-center text-danger" style="border-radius: 10px"><h2> متاسفانه موردی یافت نشد!</h2>
+                      <br>
+                      <a href="{% url 'home' %}" class="btn btn-success">بازگشت به صفحه اصلی</a>
+                  </td></tr>
+                  {% endif %}
+                  </tbody>
+    </table>
+    </div>
+{% endblock %}

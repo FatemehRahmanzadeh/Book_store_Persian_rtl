@@ -110,4 +110,7 @@ class Address(models.Model):
         verbose_name_plural = 'آدرس ها'
 
     def __str__(self):
-        return self.postcode
+        return self.customer.username
+
+    def get_absolute_url(self):
+        return "/accounts/%i/" % self.pk
