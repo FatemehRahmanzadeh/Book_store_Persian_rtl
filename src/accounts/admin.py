@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from accounts.models import Address, CustomerProxy, StaffProxy, AdminProxy
+
+from accounts.models import Address, AdminProxy, CustomerProxy, StaffProxy
 
 
 @admin.register(CustomerProxy)

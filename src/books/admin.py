@@ -1,11 +1,13 @@
 from django.contrib import admin
+
 from books.models import Book, Category
 
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     fields = ['title', 'categories', 'authors', 'description', 'quantity',
-              'price', 'image', 'percent_off', 'max_cash_off', 'creator', 'last_edit_by', 'created_at', 'updated_at']
+              'price', 'image', 'percent_off', 'max_cash_off', 'creator',
+              'last_edit_by', 'created_at', 'updated_at', 'is_active']
 
     readonly_fields = ('created_at', 'updated_at',)
 

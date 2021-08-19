@@ -1,5 +1,6 @@
 from django.db.models import Q
-from django.views.generic import ListView, DetailView
+from django.views.generic import DetailView, ListView
+
 from books.models import Book, Category
 
 
@@ -10,7 +11,7 @@ class Search(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('query')
-        return Book.objects.filter(Q(title__icontains=query) | Q(authors__icontains=query))
+        return Book.actives.filter(Q(title__icontains=query) | Q(authors__icontains=query))
 
 
 class BookDetail(DetailView):

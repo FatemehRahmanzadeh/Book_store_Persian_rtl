@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-3c^+7zut^t#7j19#pxzmu7s5yk!n!&!5a6oxj*771=koa5j(1k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bookstoredjango.com', '127.0.0.1']
 
 
 # Application definition
@@ -106,6 +106,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'books.context_processors.categories',
+                'books.context_processors.books',
+                'payments.context_processors.basket',
             ],
         },
     },

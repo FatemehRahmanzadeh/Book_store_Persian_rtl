@@ -15,7 +15,7 @@
                             <td class="rounded-2">
                                 <div class="card m-3 text-end">
                                       <div class="row g-0">
-                                        <div class="col-md-4">
+                                        <div class="col-12 col-md-4 text-center text-md-end">
                                             {% if book.image %}
                                                 <a href="{% url 'detail' book.slug %}"><img src="{{ book.image.url }}" class="img-fluid rounded-start" alt="..."></a>
                                             {% else %}
@@ -31,17 +31,21 @@
                                                         <p class="card-text">اثر:
                                                         <br>{{ book.authors }}</p>
                                                         <br>
-                                                        <p>قیمت: <del class="text-muted" >{{ book.price }}</del> <b>{{ book.get_final_price }}</b></p>
+                                                          <h5>قیمت:</h5>
+                                                            {% if object.max_cash_off or book.percent_off %}
+                                                                <del class="text-danger">{{ book.price }}</del>
+                                                                <span class="text-primary"><b>{{ book.get_final_price }}</b></span>
+                                                            {% else %}
+                                                                <p>{{ book.price }}</p>
+                                                            {% endif %}
                                                         <p class="card-text"><small class="text-muted">آخرین بروز رسانی: {{ book.updated_at }}</small></p>
                                                     </div>
-                                                            <div class="col-md-4">
-                                                                <form class="form-group col-12" method="post">
-                                                                    {% csrf_token %}
-                                                                    <label class="" for="num">تعداد: </label>
-                                                                    <input class="form-control w-25" id="num" type="number" min="1" step="1" max="{{ book.quantity }}">
-                                                                    <a href="" role="button" class="btn btn-success text-white my-2" data-abc="true"><i class="fas fa-plus"></i> افزودن به سبد خرید</a>
-                                                                </form>
-                                                            </div>
+                                                    <div class="col col-md-4">
+                                                        <form class="form-group col-12" method="post">
+                                                            {% csrf_token %}
+                                                            <input class="form-control" id="num" type="number" min="1" step="1" max="{{ book.quantity }}" value="1" placeholder="تعداد">
+                                                            <button id="add-button" value="{{ book.id }}" type="button" class="form-control btn btn-success text-white my-2" data-abc="true"><i class="fas fa-plus"></i> سبد خرید </button>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

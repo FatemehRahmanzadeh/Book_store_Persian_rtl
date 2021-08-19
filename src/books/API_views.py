@@ -10,7 +10,7 @@ from books.serialiers import BookSerializer
 
 
 class BookListAPIView(generics.ListAPIView):
-    queryset = Book.objects.all()
+    queryset = Book.actives.all()
     permission_classes = (AllowAny,)
     serializer_class = BookSerializer
     filter_backends = (DynamicSearchFilter,)

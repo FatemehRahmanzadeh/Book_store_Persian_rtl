@@ -73,10 +73,6 @@ class Basket(models.Model):
 
 class Order(models.Model):
     STATUS = [('R', 'ثبت شده'), ('O', 'سفارش'), ('D', 'تحویل')]
-    customer = models.ForeignKey(get_user_model(),
-                                 verbose_name='مشتری',
-                                 on_delete=models.DO_NOTHING,
-                                 related_name='customer_orders')
 
     created_at = models.DateTimeField(verbose_name='زمان ایجاد', auto_now_add=True)
     discount = models.ForeignKey(DiscountCode, verbose_name='تخفیف',

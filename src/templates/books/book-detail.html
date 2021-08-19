@@ -37,13 +37,20 @@
                         <h5>توضیحات: </h5>
                         <p class="card-text">{{ object.description }}</p>
                     </div>
-                    <div class="container mt-3">
+                    <div class="container mt-3 p-3" style="border-radius: 10px; background-color: #ddffdd;">
                         <div class="row">
-                            <form class="form-group col-6" method="post">
+                            <div class="col">
+                                <h5>قیمت:</h5> {% if object.max_cash_off or object.percent_off %}
+                                    <del class="text-danger">{{ object.price }}</del>
+                                    <span class="text-primary"><b>{{ object.get_final_price }}</b></span>
+                                {% else %}
+                                    <p>{{ object.price }}</p>
+                                {% endif %}
+                            </div>
+                            <form class="form-group col" method="post">
                                 {% csrf_token %}
-                                <label class="" for="num">تعداد: </label>
-                                <input class="form-control w-25" id="num" type="number" min="1" step="1" max="{{ book.quantity }}">
-                                <a href="" role="button" class="btn btn-success text-white my-2" data-abc="true"><i class="fas fa-plus"></i> افزودن به سبد خرید</a>
+                                <input class="form-control w-50" id="num" type="number" min="1" step="1" max="{{ book.quantity }}" value="1" placeholder="تعداد">
+                                <button id="add-button" value="{{ book.id }}" type="button" class="btn btn-success text-white my-2 w-50" data-abc="true"><i class="fas fa-plus"></i> سبد خرید</button>
                             </form>
                         </div>
                     </div>

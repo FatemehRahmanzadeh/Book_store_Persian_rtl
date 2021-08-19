@@ -1,7 +1,9 @@
 from django.urls import path
+
 from books import views
 from books.API_views import BookListAPIView, search
 from books.views import CategoryDetail, CategoryView
+
 
 urlpatterns = [
     path('API/book-list/', BookListAPIView.as_view(), name='API-books'),

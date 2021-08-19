@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from books.managers import BookManager
+
 
 class Category(models.Model):
     name = models.CharField(verbose_name='نام دسته', max_length=100)
@@ -36,6 +38,7 @@ class Category(models.Model):
 
 
 class Book(models.Model):
+    ACTIVE = [('A', 'فعال'), ('D', 'غیرفعال')]
     title = models.CharField(verbose_name='عنوان', max_length=150)
     categories = models.ManyToManyField(Category, verbose_name='دسته ها', related_name='book_categories')
     created_at = models.DateTimeField(verbose_name='زمان ایجاد', auto_now_add=True)
@@ -66,7 +69,11 @@ class Book(models.Model):
                                      on_delete=models.DO_NOTHING,
                                      related_name='cash_disc',
                                      blank=True, null=True)
+    is_active = models.CharField(verbose_name='در دسترس', max_length=1, choices=ACTIVE, default='A')
     slug = models.SlugField(max_length=100, null=True, blank=True)
+
+    objects = models.Manager()
+    actives = BookManager()
 
     class Meta:
         ordering = ['title']

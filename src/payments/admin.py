@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import PercentOff, CashOff, DiscountCode, Order, Basket, OrderItem
+
+from .models import Basket, CashOff, DiscountCode, Order, OrderItem, PercentOff
 
 admin.site.register(DiscountCode)
 admin.site.register(PercentOff)
