@@ -1,6 +1,6 @@
 {% extends '_base.html' %}
-{% load static %}
 {% block styles %}
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
 {% endblock %}
 {% block title %}نتایج جستجو {% endblock %}
@@ -41,10 +41,10 @@
                                                         <p class="card-text"><small class="text-muted">آخرین بروز رسانی: {{ book.updated_at }}</small></p>
                                                     </div>
                                                     <div class="col col-md-4">
-                                                        <form class="form-group col-12" method="post">
+                                                        <form class="form-group col" method="post">
                                                             {% csrf_token %}
-                                                            <input class="form-control" id="num" type="number" min="1" step="1" max="{{ book.quantity }}" value="1" placeholder="تعداد">
-                                                            <button id="add-button" value="{{ book.id }}" type="button" class="form-control btn btn-success text-white my-2" data-abc="true"><i class="fas fa-plus"></i> سبد خرید </button>
+                                                            <input class="num form-control w-50" id="num" type="number" min="1" step="1" max="{{ book.quantity }}" value="1" placeholder="تعداد">
+                                                            <button id="add-button" value="{{ book.id }}" type="button" class="add-button btn btn-success text-white my-2 w-50" data-abc="true"><i class="fas fa-plus"></i> سبد خرید</button>
                                                         </form>
                                                     </div>
                                                 </div>

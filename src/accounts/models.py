@@ -82,6 +82,7 @@ class CustomerProxy(CustomUser):
 
 
 class StaffProxy(CustomUser):
+    is_staff = True
     class Meta:
         proxy = True
         verbose_name = 'کارمند'
@@ -89,6 +90,8 @@ class StaffProxy(CustomUser):
 
 
 class AdminProxy(CustomUser):
+    is_staff = True
+    is_superuser = True
     class Meta:
         proxy = True
         verbose_name = 'مدیر'

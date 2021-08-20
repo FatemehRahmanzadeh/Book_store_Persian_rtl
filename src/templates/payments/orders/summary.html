@@ -1,6 +1,70 @@
-{% extends '_base.html' %}
+{% extends "_base.html" %}
 {% load static %}
 {% block title %}خلاصه سفارشات{% endblock %}
 {% block content %}
-    <h1 class="text-white text-center">اینجا خلاصه سفارشات است</h1>
+
+<main class="pt-5">
+    <h1 class="text-center text-white">خلاصه سفارشات</h1>
+  <div class="container p-3" style="background-color: aquamarine; border-radius: 20px;">
+    {% for item in basket %}
+    {% with book=item.book %}
+    <div data-index="{{book.id}}" class="row mb-4 border product-item m-3 bg-light" style="border-radius: 10px;">
+      <div class="col-md-3 col-lg-2 order-md-first bg-light">
+          <a href="{% url 'detail' book.slug %}">
+              <img class="img-fluid mx-auto d-block" width="120px" alt="Responsive image" src="{{ book.image.url }}">
+          </a>
+      </div>
+      <div class="col-md-9 col-lg-10 ps-md-3 ps-lg-10">
+        <a href="{{ book.get_absolute_url }}" class="text-decoration-none text-reset">
+          <a id="title" class="text-decoration-none" href="{% url 'detail' book.slug %}"><h1 class="h5 pt-2">{{ book.title }}</h1></a>
+        </a>
+        <div class="border">
+          <div class="col border-bottom">
+            <div class="row p-3">
+              <div class="col-6 h5">قیمت: </div>
+              <div class="col-6 text-end">
+                  <span class="h6 fw-bold">
+                      {% if object.max_cash_off or book.percent_off %}
+                      <del class="text-danger">{{ book.price }}</del>  {{ book.get_final_price }}
+                      {% else %}
+                        {{ book.get_final_price }}
+                      {% endif %}
+                  </span>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="row p-3">
+              <div class="col-12">
+                <label for="select">تعداد</label>
+                <input type="number" value="{{item.quantity}}" min="1" step="1" max="{{ book.quantity }}">
+                <button type="button" id="update-button" data-index="{{book.id}}"
+                  class="btn btn-primary btn-outline-secondary btn-sm update-button text-light">
+                  بروزرسانی
+                </button>
+                <button type="button" id="delete-button" data-index="{{book.id}}"
+                  class="btn btn-danger btn-outline-secondary btn-sm delete-button text-light">
+                  <i class="fa fa-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+    <div class="col-12 text-end">
+      <div class="h4 fw-bold text-primary border rounded p-2 bg-light">
+        <div class="row">
+          <div id="total" class="col d-inline-flex mx-3">جمع خرید: {{basket.get_total_price}}</div>
+          <button  type="button" id="basket-login" data-index="{{basket.session.pk}}"
+              class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+              ورود و ادامه خرید
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}
