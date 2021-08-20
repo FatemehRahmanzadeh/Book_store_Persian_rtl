@@ -62,19 +62,20 @@ $(document).on('click', '.add-button', function (e) {
 // Delete basket Item
 $(document).on('click', '.delete-button', function (e) {
 e.preventDefault();
-var prodid = $(this).data('index');
+var book_id = $(this).data('index');
 $.ajax({
   type: 'POST',
-  url: '{% url "basket:basket_delete" %}',
+  url: 'http://127.0.0.1:8001/payments/delete-from-basket/',
   data: {
-    productid: $(this).data('index'),
-    csrfmiddlewaretoken: "{{csrf_token}}",
-    action: 'post'
+    book_id: $(this).data('index'),
+    action: 'post',
+
   },
+  headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
   success: function (json) {
-    $('.product-item[data-index="' + prodid + '"]').remove();
+    $('.book-item[data-index="' + book_id + '"]').remove();
     document.getElementById("total").innerHTML = json.total;
-    document.getElementById("basket-qty").innerHTML = json.qty
+    document.getElementById("item-cnt").innerHTML = json.qty
   },
   error: function (xhr, errmsg, err) {}
 });
@@ -83,19 +84,19 @@ $.ajax({
 // Update basket Item
 $(document).on('click', '.update-button', function (e) {
 e.preventDefault();
-var prodid = $(this).data('index');
+var book_id = $(this).data('index');
 $.ajax({
   type: 'POST',
-  url: '{% url "basket:basket_update" %}',
+  url: 'http://127.0.0.1:8001/payments/update-basket/',
   data: {
-    productid: $(this).data('index'),
-    productqty: $('#select' + prodid + ' option:selected').text(),
-    csrfmiddlewaretoken: "{{csrf_token}}",
-    action: 'post'
+    book_id: $(this).data('index'),
+    book_qty: $('#number').val(),
+    action: 'post',
   },
+  headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
   success: function (json) {
-    document.getElementById("basket-qty").innerHTML = json.qty
     document.getElementById("total").innerHTML = json.total
+    document.getElementById("item-cnt").innerHTML = json.qty
   },
   error: function (xhr, errmsg, err) {}
 });

@@ -24,7 +24,7 @@ class Basket():
         if book_id in self.basket:
             self.basket[book_id]['quantity'] = qty
         else:
-            self.basket[book.id] = {'price': book.price, 'quantity': qty}
+            self.basket[book.id] = {'price': book.get_final_price(), 'quantity': qty}
 
         self.save()
 

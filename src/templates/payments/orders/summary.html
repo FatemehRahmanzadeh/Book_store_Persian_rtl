@@ -8,7 +8,7 @@
   <div class="container p-3" style="background-color: aquamarine; border-radius: 20px;">
     {% for item in basket %}
     {% with book=item.book %}
-    <div data-index="{{book.id}}" class="row mb-4 border product-item m-3 bg-light" style="border-radius: 10px;">
+    <div data-index="{{book.id}}" class="row mb-4 border book-item m-3 bg-light" style="border-radius: 10px;">
       <div class="col-md-3 col-lg-2 order-md-first bg-light">
           <a href="{% url 'detail' book.slug %}">
               <img class="img-fluid mx-auto d-block" width="120px" alt="Responsive image" src="{{ book.image.url }}">
@@ -35,9 +35,11 @@
           </div>
           <div class="col">
             <div class="row p-3">
-              <div class="col-12">
-                <label for="select">تعداد</label>
-                <input type="number" value="{{item.quantity}}" min="1" step="1" max="{{ book.quantity }}">
+              <form class="col-12" method="post">
+                  {% csrf_token %}
+                <label for="number">تعداد</label>
+                <input id="number" type="number" value="{{item.quantity}}" min="1" step="1" max="{{ book.quantity }}">
+                  {% csrf_token %}
                 <button type="button" id="update-button" data-index="{{book.id}}"
                   class="btn btn-primary btn-outline-secondary btn-sm update-button text-light">
                   بروزرسانی
@@ -46,7 +48,7 @@
                   class="btn btn-danger btn-outline-secondary btn-sm delete-button text-light">
                   <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
-              </div>
+              </form>
             </div>
           </div>
         </div>
@@ -56,13 +58,15 @@
     {% endfor %}
     <div class="col-12 text-end">
       <div class="h4 fw-bold text-primary border rounded p-2 bg-light">
-        <div class="row">
-          <div id="total" class="col d-inline-flex mx-3">جمع خرید: {{basket.get_total_price}}</div>
+        <form class="row" method="post">
+            {% csrf_token %}
+
+          <div class="col d-inline-flex mx-3">جمع خرید:<span class="me-3" id="total">{{basket.get_total_price}}</span></div>
           <button  type="button" id="basket-login" data-index="{{basket.session.pk}}"
               class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
               ورود و ادامه خرید
           </button>
-        </div>
+        </form>
       </div>
     </div>
   </div>

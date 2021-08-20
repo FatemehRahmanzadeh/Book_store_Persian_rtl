@@ -35,3 +35,28 @@ def add_to_basket(request):
         basket_qty = basket.__len__()
         response = JsonResponse({'qty': basket_qty, 'text_msg': text_msg, 's': status})
         return response
+
+
+def basket_delete(request):
+    basket = SBasket(request)
+    if request.POST.get('action') == 'post':
+        book_id = int(request.POST.get('book_id'))
+        basket.delete(book=book_id)
+
+        basket_qty = basket.__len__()
+        basket_total = basket.get_total_price()
+        response = JsonResponse({'qty': basket_qty, 'total': basket_total})
+        return response
+
+
+def basket_update(request):
+    basket = SBasket(request)
+    if request.POST.get('action') == 'post':
+        book_id = int(request.POST.get('book_id'))
+        book_qty = int(request.POST.get('book_qty'))
+        basket.update(book=book_id, qty=book_qty)
+
+        basket_qty = basket.__len__()
+        basket_total = basket.get_total_price()
+        response = JsonResponse({'qty': basket_qty, 'total': basket_total})
+        return response
