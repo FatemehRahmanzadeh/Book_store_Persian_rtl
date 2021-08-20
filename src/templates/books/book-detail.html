@@ -51,6 +51,7 @@
                                 {% csrf_token %}
                                 <input class="num form-control w-50" id="num" type="number" min="1" step="1" max="{{ book.quantity }}" value="1" placeholder="تعداد">
                                 <button id="add-button" value="{{ book.id }}" type="button" class="add-button btn btn-success text-white my-2 w-50" data-abc="true"><i class="fas fa-plus"></i> سبد خرید</button>
+                                <input type="hidden" id="Url-add" data-url="{% url 'add_to_basket' %}" />
                             </form>
                         </div>
                     </div>

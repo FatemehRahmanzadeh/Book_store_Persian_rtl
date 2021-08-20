@@ -26,12 +26,13 @@
 // add item to basket
 $(document).on('click', '.add-button', function (e) {
     e.preventDefault();
+    var book_id = $(this).data('index');
     $.ajax({
         type: 'POST',
-        url: ' http://127.0.0.1:8001/payments/add-to-basket/',
+        url:$("#Url-add").attr("data-url"),
         data: {
-            book_id: $('.add-button').val(),
-            book_qty: $('.num').val(),
+            book_id: book_id,
+            book_qty: $('#num' + book_id).val(),
             action: 'post',
         },
         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
@@ -65,7 +66,7 @@ e.preventDefault();
 var book_id = $(this).data('index');
 $.ajax({
   type: 'POST',
-  url: 'http://127.0.0.1:8001/payments/delete-from-basket/',
+  url: $("#Url-del").attr("data-url"),
   data: {
     book_id: $(this).data('index'),
     action: 'post',
@@ -87,10 +88,10 @@ e.preventDefault();
 var book_id = $(this).data('index');
 $.ajax({
   type: 'POST',
-  url: 'http://127.0.0.1:8001/payments/update-basket/',
+  url: $("#Url-up").attr("data-url"),
   data: {
-    book_id: $(this).data('index'),
-    book_qty: $('#number').val(),
+    book_id: book_id,
+    book_qty: $('#number'+ book_id).val(),
     action: 'post',
   },
   headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
