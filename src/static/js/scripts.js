@@ -76,7 +76,25 @@ $.ajax({
   success: function (json) {
     $('.book-item[data-index="' + book_id + '"]').remove();
     document.getElementById("total").innerHTML = json.total;
-    document.getElementById("item-cnt").innerHTML = json.qty
+    document.getElementById("item-cnt").innerHTML = json.qty;
+    iziToast.show({
+                    color: 'blue',
+                    icon: 'fas fa-info-circle',
+                    message: 'سبد خرید بروز شد',
+                    messageColor: 'green',
+                    timeout: 2000,
+                    closeOnClick: true,
+                    drag: true,
+                });
+        iziToast.show({
+                    color: 'blue',
+                    icon: 'fas fa-info-circle',
+                    message: 'کتاب از سبد حذف شد',
+                    messageColor: 'green',
+                    timeout: 2000,
+                    closeOnClick: true,
+                    drag: true,
+                });
   },
   error: function (xhr, errmsg, err) {}
 });
@@ -98,6 +116,15 @@ $.ajax({
   success: function (json) {
     document.getElementById("total").innerHTML = json.total
     document.getElementById("item-cnt").innerHTML = json.qty
+    iziToast.show({
+                color: 'blue',
+                icon: 'fas fa-info-circle',
+                message: 'سبد خرید بروز شد',
+                messageColor: 'green',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
   },
   error: function (xhr, errmsg, err) {}
 });

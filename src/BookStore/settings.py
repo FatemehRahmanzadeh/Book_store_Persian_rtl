@@ -47,13 +47,15 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
+    # 3rd party apps
     'crispy_forms',
     'django_filters',
     # my apps
     'books',
     'accounts',
     'payments',
-    'pages'
+    'pages',
+    'basket',
 
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -108,7 +110,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'books.context_processors.categories',
                 'books.context_processors.books',
-                'payments.context_processors.basket',
+                'basket.context_processors.basket',
             ],
         },
     },
