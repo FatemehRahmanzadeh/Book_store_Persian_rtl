@@ -23,7 +23,7 @@
 //     })
 //
 
-// add item to basket
+// add item to session_basket
 $(document).on('click', '.add-button', function (e) {
     e.preventDefault();
     var book_id = $(this).data('index');
@@ -60,7 +60,7 @@ $(document).on('click', '.add-button', function (e) {
     });
 })
 
-// Delete basket Item
+// Delete session_basket Item
 $(document).on('click', '.delete-button', function (e) {
 e.preventDefault();
 var book_id = $(this).data('index');
@@ -100,7 +100,7 @@ $.ajax({
 });
 })
 
-// Update basket Item
+// Update session_basket Item
 $(document).on('click', '.update-button', function (e) {
 e.preventDefault();
 var book_id = $(this).data('index');
@@ -109,7 +109,7 @@ $.ajax({
   url: $("#Url-up").attr("data-url"),
   data: {
     book_id: book_id,
-    book_qty: $('#number'+ book_id).val(),
+    book_qty: $('#num'+ book_id).val(),
     action: 'post',
   },
   headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},

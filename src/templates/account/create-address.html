@@ -1,0 +1,9 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}ورود آدرس جدید{% endblock %}
+{% block content %}
+    <form>
+        {{ form.as_p }}
+        <button class="btn btn-success ml-2 my-3" type="submit">ذخیره شود</button>
+    </form>
+{% endblock %}

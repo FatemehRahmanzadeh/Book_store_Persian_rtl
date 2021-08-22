@@ -17,7 +17,6 @@ from django.conf.global_settings import CSRF_COOKIE_HTTPONLY
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -28,7 +27,6 @@ SECRET_KEY = 'django-insecure-3c^+7zut^t#7j19#pxzmu7s5yk!n!&!5a6oxj*771=koa5j(1k
 DEBUG = True
 
 ALLOWED_HOSTS = ['bookstoredjango.com', '127.0.0.1']
-
 
 # Application definition
 
@@ -50,12 +48,14 @@ INSTALLED_APPS = [
     # 3rd party apps
     'crispy_forms',
     'django_filters',
+    'rest_framework.authtoken',
+    'dj_rest_auth',
     # my apps
     'books',
     'accounts',
-    'payments',
+    'orders',
     'pages',
-    'basket',
+    'session_basket',
 
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -110,14 +110,13 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'books.context_processors.categories',
                 'books.context_processors.books',
-                'basket.context_processors.basket',
+                'session_basket.context_processors.basket',
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'BookStore.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -132,7 +131,6 @@ DATABASES = {
         'PORT': 5432
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -151,8 +149,23 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    # فیلتر دیفالت برای استفاده از Api
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    # permissionهای پیشفرض استفاده از رست
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    # استفاده از روش اعتبار سنجی براساس سشن برای API
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # سشن برای قابلیت آدرس دهی و لاگین ولاگ اوت از سایت
+        'rest_framework.authentication.SessionAuthentication',
+        #  و روش بیسیک برای ارسال سشن به منظور استفاده از  خود ای پی آی
+        'rest_framework.authentication.BasicAuthentication',
+        # برای استفاده از لاگین به وسیله توکن و ارسال آن از سرور به کلاینت و اجبار وجود آن در هدر درخواست.
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 
 # Internationalization
@@ -167,7 +180,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -194,7 +206,6 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

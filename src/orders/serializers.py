@@ -1,7 +1,10 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from payments.models import (Basket, CashOff, DiscountCode, Order, OrderItem,
-                             PercentOff)
+from accounts.models import Address
+from books.models import Book
+from orders.models import (DefaultBasket, CashOff, DiscountCode, Order, OrderItem,
+                           PercentOff)
 
 
 class DiscountCodeSerializer(serializers.ModelSerializer):
@@ -10,8 +13,9 @@ class DiscountCodeSerializer(serializers.ModelSerializer):
     :param: creator: یک رابطه یک به چند بین تخفیف و کاربران مدیر یا کارمند به عنوان ایجادکننده تخفیف وجود دارد
     :param: editors: یک رابطه چند به چند بین تخفیف و کاربران مدیر یا کارمند به عنوان ویرایش کننده تخفیف وجود دارد
     """
-    creator = serializers.PrimaryKeyRelatedField()
-    editors = serializers.PrimaryKeyRelatedField(many=True)
+
+    creator = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all())
+    editors = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all(), many=True)
 
     class Meta:
         model = DiscountCode
@@ -19,8 +23,8 @@ class DiscountCodeSerializer(serializers.ModelSerializer):
 
 
 class PercentOffSerializer(serializers.ModelSerializer):
-    creator = serializers.PrimaryKeyRelatedField()
-    editors = serializers.PrimaryKeyRelatedField(many=True)
+    creator = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all())
+    editors = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all(), many=True)
 
     class Meta:
         model = PercentOff
@@ -28,8 +32,8 @@ class PercentOffSerializer(serializers.ModelSerializer):
 
 
 class CashOffSerializer(serializers.ModelSerializer):
-    creator = serializers.PrimaryKeyRelatedField()
-    editors = serializers.PrimaryKeyRelatedField(many=True)
+    creator = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all())
+    editors = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all(), many=True)
 
     class Meta:
         model = CashOff
@@ -37,17 +41,17 @@ class CashOffSerializer(serializers.ModelSerializer):
 
 
 class BasketSerializer(serializers.ModelSerializer):
-    customer = serializers.PrimaryKeyRelatedField()
+    customer = serializers.PrimaryKeyRelatedField(queryset=get_user_model().objects.all())
 
     class Meta:
-        model = Basket
+        model = DefaultBasket
         fields = '__all__'
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    discount = serializers.PrimaryKeyRelatedField()
-    delivery_address = serializers.PrimaryKeyRelatedField()
-    basket = serializers.PrimaryKeyRelatedField()
+    discount = serializers.PrimaryKeyRelatedField(queryset=DiscountCode.objects.all())
+    delivery_address = serializers.PrimaryKeyRelatedField(queryset=Address.objects.all())
+    basket = serializers.PrimaryKeyRelatedField(queryset=DefaultBasket.objects.all())
 
     class Meta:
         model = Order
@@ -55,8 +59,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    order = serializers.PrimaryKeyRelatedField()
-    book = serializers.PrimaryKeyRelatedField()
+    order = serializers.PrimaryKeyRelatedField(queryset=Order.objects.all())
+    book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
 
     class Meta:
         model = OrderItem

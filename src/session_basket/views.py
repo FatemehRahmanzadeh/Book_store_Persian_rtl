@@ -1,21 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
-# from django.views.generic import ListView
 
 from books.models import Book
-# from payments.models import Order
-from basket.shopping_basket import Basket as SBasket
+from session_basket.shopping_basket import Basket as SBasket
 
-
-# class OrderSummary(ListView):
-#     model = Order
-#     template_name = 'payments/orders/summary.html'
-#
-#
 
 def basket_summary(request):
     basket = SBasket(request)
-    return render(request, 'payments/orders/summary.html', {'basket':basket})
+    return render(request, 'payments/orders/summary.html', {'basket': basket})
 
 
 def add_to_basket(request):
@@ -24,6 +16,7 @@ def add_to_basket(request):
         book_id = int(request.POST.get('book_id'))
         book_qty = int(request.POST.get('book_qty'))
         book = get_object_or_404(Book, id=book_id)
+
         basket.add(book=book, qty=book_qty)
         if book.quantity == 0:
             text_msg = 'متاسفانه درحال حاضر کتاب موجود نیست '

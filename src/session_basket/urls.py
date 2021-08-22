@@ -1,14 +1,12 @@
 from django.urls import path
 
-from basket import views
-
-# from payments.views import OrderSummary
+from session_basket import views
 
 
 urlpatterns = [
     # path('order-summary/', OrderSummary.as_view(), name='summary'),
     path('add-to-basket/', views.add_to_basket, name='add_to_basket'),
     path('baske-summary/', views.basket_summary, name='summary'),
-    path('delete-from-basket/', views.basket_delete, name='delete'),
-    path('update-basket/', views.basket_update, name='update'),
+    path('delete-from-session_basket/', views.basket_delete, name='delete'),
+    path('update-session_basket/', views.basket_update, name='update'),
 ]

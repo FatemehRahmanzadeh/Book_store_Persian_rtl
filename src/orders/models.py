@@ -60,7 +60,7 @@ class CashOff(models.Model):
         verbose_name_plural = 'تخفیف های نقدی'
 
 
-class Basket(models.Model):
+class DefaultBasket(models.Model):
     customer = models.OneToOneField(get_user_model(),
                                     verbose_name='مشتری',
                                     on_delete=models.DO_NOTHING,
@@ -69,6 +69,9 @@ class Basket(models.Model):
     class Meta:
         verbose_name = 'سبد خرید مشتری'
         verbose_name_plural = 'سبدهای خرید مشتریان'
+
+    def __str__(self):
+        return f'{self.customer.slug}'
 
 
 class Order(models.Model):
@@ -84,7 +87,7 @@ class Order(models.Model):
                                          on_delete=models.DO_NOTHING,
                                          related_name='order_addresses')
     status = models.CharField(verbose_name='وضعیت سفارش', max_length=2, choices=STATUS, default='O')
-    basket = models.ForeignKey(Basket, verbose_name='سبد خرید',
+    basket = models.ForeignKey(DefaultBasket, verbose_name='سبد خرید',
                                on_delete=models.DO_NOTHING,
                                related_name='basket_orders')
 
@@ -105,7 +108,7 @@ class Order(models.Model):
             return order_price
 
     def __str__(self):
-        return f'سفارش مربوط به {self.customer.slug}'
+        return f'سفارش مربوط به {self.basket.customer.slug}'
 
 
 class OrderItem(models.Model):

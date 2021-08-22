@@ -21,9 +21,14 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('accounts/', include('accounts.urls')),
     path('books/', include('books.urls')),
-    path('payments/', include('basket.urls')),
+    path('orders/', include('orders.urls')),
+    path('session/', include('session_basket.urls')),
+    path('api-auth/', include('rest_framework.urls')),
     path('', include('pages.urls')),
+    path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.MEDIA_ROOT)

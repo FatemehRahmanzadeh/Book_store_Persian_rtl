@@ -1,11 +1,12 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from accounts.models import Address, CustomUser
+from accounts.models import Address
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = get_user_model()
         fields = '__all__'
 
 

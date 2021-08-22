@@ -58,13 +58,13 @@ class Book(models.Model):
     quantity = models.IntegerField(verbose_name='تعداد')
     price = models.BigIntegerField(verbose_name='قیمت')
     image = models.ImageField(verbose_name='عکس', upload_to='./images/books', blank=True, null=True)
-    percent_off = models.ForeignKey('payments.PercentOff',
+    percent_off = models.ForeignKey('orders.PercentOff',
                                     verbose_name='درصد تخفیف',
                                     on_delete=models.DO_NOTHING,
                                     related_name='percent_disc',
                                     blank=True, null=True)
 
-    max_cash_off = models.ForeignKey('payments.CashOff',
+    max_cash_off = models.ForeignKey('orders.CashOff',
                                      verbose_name='تخفیف نقدی',
                                      on_delete=models.DO_NOTHING,
                                      related_name='cash_disc',

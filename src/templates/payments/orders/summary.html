@@ -37,8 +37,8 @@
             <div class="row p-3">
               <form class="col-12" method="post">
                   {% csrf_token %}
-                <label for="number">تعداد</label>
-                <input id="number{{ book.id }}" type="number" value="{{item.quantity}}" min="1" step="1" max="{{ book.quantity }}">
+                <label for="num">تعداد</label>
+                <input id="num{{ book.id }}" type="number" value="{{item.quantity}}" min="1" step="1" max="{{ book.quantity }}">
                   {% csrf_token %}
                 <button type="button" id="update-button" data-index="{{book.id}}"
                   class="btn btn-primary btn-outline-secondary btn-sm update-button text-light px-3">
@@ -62,14 +62,20 @@
   {% if num > 0 %}
     <div class="col-12 text-end">
       <div class="h4 fw-bold text-primary border rounded p-2 bg-light">
-        <form class="row" method="post">
-            {% csrf_token %}
+        <form class="row" method="get">
+{#            {% csrf_token %}#}
 
           <div class="col d-inline-flex mx-3">جمع خرید:<span class="me-3" id="total">{{basket.get_total_price}}</span></div>
-          <button  type="button" id="basket-login" data-index="{{basket.session.pk}}"
-              class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
-              ورود و ادامه خرید
-          </button>
+            {% if user.is_authenticated %}
+                <a href="{" role="button" id="basket-login" class="finalize col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+                  ادامه و ثبت سفارش
+                </a>
+            {% else %}
+              <a role="button" id="basket-login" class="finalize col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+                ورود و ادامه خرید
+              </a>
+            {% endif %}
+{#            <input type="hidden" id="Url-add" data-url="{% url 'accounts:addresses' %}" />#}
         </form>
       </div>
         {% else %}
