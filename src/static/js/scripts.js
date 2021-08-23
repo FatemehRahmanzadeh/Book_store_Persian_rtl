@@ -129,3 +129,29 @@ $.ajax({
   error: function (xhr, errmsg, err) {}
 });
 })
+// send orders to database
+// $(document).on('click', '#finalize', function (e) {
+// $.ajax({
+//   type: 'POST',
+//   url: $("#Url-finalize").attr("data-url"),
+//   // data: {
+//   //   basket: $("#login-data"),
+//   //   book_qty: $('#num'+ book_id).val(),
+//   //   action: 'post',
+//   // },
+//   headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
+//   success: function (json) {
+//       console.log(json)
+//     iziToast.show({
+//                 color: 'blue',
+//                 icon: 'fas fa-info-circle',
+//                 message: json.msg,
+//                 messageColor: 'green',
+//                 timeout: 2000,
+//                 closeOnClick: true,
+//                 drag: true,
+//             });
+//   },
+//   error: function (xhr, errmsg, err) {}
+// });
+// })

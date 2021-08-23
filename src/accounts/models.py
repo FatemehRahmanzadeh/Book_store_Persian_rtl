@@ -73,6 +73,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return "/accounts/%s/" % self.slug
 
+    def __str__(self):
+        return f'{self.email}'
+
 
 class CustomerProxy(CustomUser):
     class Meta:

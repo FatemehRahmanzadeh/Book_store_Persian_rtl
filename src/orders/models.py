@@ -85,7 +85,7 @@ class Order(models.Model):
     delivery_address = models.ForeignKey('accounts.Address',
                                          verbose_name='آدرس سفارش',
                                          on_delete=models.DO_NOTHING,
-                                         related_name='order_addresses')
+                                         related_name='order_addresses', blank=True, null=True)
     status = models.CharField(verbose_name='وضعیت سفارش', max_length=2, choices=STATUS, default='O')
     basket = models.ForeignKey(DefaultBasket, verbose_name='سبد خرید',
                                on_delete=models.DO_NOTHING,
@@ -94,6 +94,9 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'سفارش'
         verbose_name_plural = 'سفارش های مشتریان'
+
+    def get_absolute_url(self):
+        return "/orders/%i/" % self.pk
 
     def get_order_price(self):
         order_price = sum(self.order_items.get_item_price())
@@ -127,4 +130,4 @@ class OrderItem(models.Model):
         return item_price
 
     def __str__(self):
-        return f'مورد مربوط به{self.order.customer.username}'
+        return f'مورد مربوط به{self.order.basket.customer}'

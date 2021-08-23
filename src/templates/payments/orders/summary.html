@@ -60,30 +60,28 @@
     {% endfor %}
   {% with num=basket|length%}
   {% if num > 0 %}
-    <div class="col-12 text-end">
+    <form class="col-12 text-end">
       <div class="h4 fw-bold text-primary border rounded p-2 bg-light">
-        <form class="row" method="get">
-{#            {% csrf_token %}#}
-
+        <div class="row">
           <div class="col d-inline-flex mx-3">جمع خرید:<span class="me-3" id="total">{{basket.get_total_price}}</span></div>
             {% if user.is_authenticated %}
-                <a href="{" role="button" id="basket-login" class="finalize col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+                <a href="{% url 'order-send' %}" role="button" id="basket-login" class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
                   ادامه و ثبت سفارش
                 </a>
             {% else %}
-              <a role="button" id="basket-login" class="finalize col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
-                ورود و ادامه خرید
-              </a>
+                    <a href="{% url 'create-order' %}" type="button" id="finalize" class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+                        ورود و ادامه خرید
+                    </a>
             {% endif %}
-{#            <input type="hidden" id="Url-add" data-url="{% url 'accounts:addresses' %}" />#}
-        </form>
+            <input type="hidden" id="Url-finalize" data-url="{% url 'create-order' %}" />
+        </div>
       </div>
         {% else %}
         <h3 class="text-primary text-center">سبد خرید شما خالی است</h3>
   {% endif %}
   {% endwith %}
 
-    </div>
+    </form>
   </div>
 </main>
 {% endblock %}

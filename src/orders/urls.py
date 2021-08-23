@@ -6,10 +6,9 @@
 # router.register('create_order', OrderViewSet, basename='create_order')
 # urlpatterns = router.urls
 from django.urls import path
-
-from orders import API_views
+from orders.views import OrderUpdate, create
 
 urlpatterns = [
-    path('api/orders/', API_views.OrderListAPIView.as_view(), name='orders'),
-    path('api/orders/', API_views.OrderListAPIView.as_view(), name='order-send'),
+    path('create-order/', create, name='create-order'),
+    path('<int:pk>/', OrderUpdate.as_view(), name='order-send'),
 ]
