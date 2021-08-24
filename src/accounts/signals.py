@@ -1,6 +1,7 @@
 from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
 from django.dispatch import receiver
-from orders.models import DefaultBasket, Order
+from orders.models import DefaultBasket, Order, OrderItem
+from orders.views import create
 from session_basket.shopping_basket import Basket
 
 
@@ -10,6 +11,5 @@ def log_user_login(sender, user, request, **kwargs):
         pass
     else:
         DefaultBasket.objects.create(customer=user)
-        return 'session_basket created'
 
 

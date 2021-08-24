@@ -65,15 +65,15 @@
         <div class="row">
           <div class="col d-inline-flex mx-3">جمع خرید:<span class="me-3" id="total">{{basket.get_total_price}}</span></div>
             {% if user.is_authenticated %}
-                <a href="{% url 'order-send' %}" role="button" id="basket-login" class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
-                  ادامه و ثبت سفارش
-                </a>
+{#                <a href="{% url 'order-send' order.pk %}" role="button" id="basket-login" class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">#}
+{#                  ادامه و ثبت سفارش#}
+{#                </a>#}
             {% else %}
-                    <a href="{% url 'create-order' %}" type="button" id="finalize" class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+                    <a href="{% url 'create-order' %}" type="button" class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
                         ورود و ادامه خرید
                     </a>
             {% endif %}
-            <input type="hidden" id="Url-finalize" data-url="{% url 'create-order' %}" />
+
         </div>
       </div>
         {% else %}

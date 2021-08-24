@@ -111,6 +111,7 @@ TEMPLATES = [
                 'books.context_processors.categories',
                 'books.context_processors.books',
                 'session_basket.context_processors.basket',
+                'orders.context_processor.default_basket',
             ],
         },
     },
@@ -162,9 +163,9 @@ REST_FRAMEWORK = {
         # سشن برای قابلیت آدرس دهی و لاگین ولاگ اوت از سایت
         'rest_framework.authentication.SessionAuthentication',
         #  و روش بیسیک برای ارسال سشن به منظور استفاده از  خود ای پی آی
-        'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
         # برای استفاده از لاگین به وسیله توکن و ارسال آن از سرور به کلاینت و اجبار وجود آن در هدر درخواست.
-        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ],
 }
 

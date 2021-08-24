@@ -11,6 +11,8 @@ class Search(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('query')
+        if query.isdigit():
+            return Book.actives.filter(Q(price__lte=query))
         return Book.actives.filter(Q(title__icontains=query) | Q(authors__icontains=query))
 
 

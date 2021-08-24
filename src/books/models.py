@@ -57,7 +57,7 @@ class Book(models.Model):
     description = models.TextField(verbose_name='درباره کتاب', max_length=700, blank=True, null=True)
     quantity = models.IntegerField(verbose_name='تعداد')
     price = models.BigIntegerField(verbose_name='قیمت')
-    image = models.ImageField(verbose_name='عکس', upload_to='./images/books', blank=True, null=True)
+    image = models.ImageField(verbose_name='عکس', upload_to='./images/books', blank=True, default='../static/images/image.png')
     percent_off = models.ForeignKey('orders.PercentOff',
                                     verbose_name='درصد تخفیف',
                                     on_delete=models.DO_NOTHING,
@@ -95,7 +95,7 @@ class Book(models.Model):
         if self.percent_off:
             final_price = int(self.price * (100 - self.percent_off.percent_off) / 100)
         elif self.max_cash_off and self.price >= self.max_cash_off.min_price_off:
-            final_price = self.quantity * (self.price - self.max_cash_off.cash_off)
+            final_price = self.price - self.max_cash_off.cash_off
         else:
             final_price = self.price
         return final_price

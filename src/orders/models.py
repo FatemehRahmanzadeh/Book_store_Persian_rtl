@@ -99,7 +99,7 @@ class Order(models.Model):
         return "/orders/%i/" % self.pk
 
     def get_order_price(self):
-        order_price = sum(self.order_items.get_item_price())
+        order_price = sum(_.get_item_price() for _ in self.order_items.all())
         if self.discount:
             if self.discount.type == 'C' and order_price >= self.discount.min_price_off:
                 return order_price - self.discount.cash_off
