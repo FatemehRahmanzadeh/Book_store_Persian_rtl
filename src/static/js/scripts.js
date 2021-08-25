@@ -173,7 +173,7 @@ $(document).on('click', '.update-button', function (e) {
 function showAddPopup(triggeringLink) {
     var name = triggeringLink.id.replace(/^add_/, '');
     href = triggeringLink.href;
-    var win = window.open(href, 'height=500,width=800,resizable=yes,scrollbars=yes');
+    var win = window.open(href, name, 'height=500,width=800,resizable=yes,scrollbars=yes');
     win.focus();
     return false;
 }
@@ -200,3 +200,30 @@ function closePopup(data) {
 //         }
 //     });
 // })
+$(document).on('click', '#disc_btn', function (e) {
+    $.ajax({
+        type: 'POST',
+        url: $("#disc_btn").attr("data-url"),
+        data: {
+            disc_id: $("#disc_btn").attr("data-disc"),
+            order_id: $("#disc_btn").attr("data-disc"),
+            action: 'post',
+        },
+        headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
+        success: function (json) {
+            document.getElementById("total").innerHTML = json.total
+            // document.getElementById("item-cnt").innerHTML = json.qty
+            iziToast.show({
+                color: 'blue',
+                icon: 'fas fa-info-circle',
+                message: json.msg,
+                messageColor: 'green',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
+        },
+        error: function (xhr, errmsg, err) {
+        }
+    });
+})

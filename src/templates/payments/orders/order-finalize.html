@@ -37,8 +37,12 @@
 {#                            <i class="fas fa-edit"></i></a>#}
 {#                    {% endif %}#}
                     <br><br>
-                    <p class="form-control">{{ form.discount }}</p>
-                    <h5> مبلغ قابل پرداخت: {{ order.get_order_price }}</h5>
+                    <p class="form-control">{{ form.discount }}
+                        <button id="disc_btn" data-url = {% url 'discount-check' %} type="button"
+                                data-disc = "{{ form.discount.value }}"
+                                data-order ='{{ object.id }}'
+                                class="btn btn-primary">بررسی تخفیف</button></p>
+                    <h5 id="total"> مبلغ قابل پرداخت: {{ order.get_order_price }}</h5>
                     <br><br>
                     <button type="submit" class="btn btn-primary">تایید</button>
                 </form>

@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView
@@ -71,11 +71,19 @@ def last_uncheck_orders(request):
     """
     نمایش سفارشات بعد از لاگین و خواندن آن ها از دیتابیس بجای سشن
     """
-    unchecked = Order.objects.filter(basket__customer=request.user, status='O').last()
-    if unchecked:
-        items = unchecked.order_items.all()
-        data = {'items': items, 'unchecked': unchecked}
+    last_unchecked = Order.objects.filter(basket__customer=request.user, status='O').last()
+    if last_unchecked:
+        items = last_unchecked.order_items.all()
+        data = {'items': items, 'unchecked': last_unchecked}
     else:
         data = {'items': {}, 'unchecked': {}}
     return render(request, 'payments/orders/order_summary.html', data)
 
+@login_required
+def order_discount_check(request):
+    if request.POST.get('action') == 'post':
+        disc_id = int(request.POST.get('disc_id'))
+        order_id = int(request.POST.get('order_id'))
+        order = Order.objects.get(id=order_id)
+        valid = order.valid_discount(disc_id)
+        return JsonResponse({'total': order.get_order_price()})

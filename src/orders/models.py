@@ -158,6 +158,20 @@ class Order(models.Model):
     def __str__(self):
         return f'سفارش مربوط به {self.basket.customer.slug}'
 
+    def valid_discount(self, disc_id):
+        discount = DiscountCode.objects.get(id=disc_id)
+        if discount.cash_off and self.get_order_price() >= discount.min_price_off:
+            self.discount = discount
+            self.save()
+            return True
+        elif discount.percent_off:
+            self.discount = discount
+            self.save()
+            return True
+        else:
+            return False
+
+
 
 class OrderItem(models.Model):
     """
