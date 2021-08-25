@@ -57,7 +57,8 @@ class Book(models.Model):
     description = models.TextField(verbose_name='درباره کتاب', max_length=700, blank=True, null=True)
     quantity = models.IntegerField(verbose_name='تعداد')
     price = models.BigIntegerField(verbose_name='قیمت')
-    image = models.ImageField(verbose_name='عکس', upload_to='./images/books', blank=True, default='../static/images/image.png')
+    image = models.ImageField(verbose_name='عکس', upload_to='./images/books', blank=True,
+                              default='../static/images/image.png')
     percent_off = models.ForeignKey('orders.PercentOff',
                                     verbose_name='درصد تخفیف',
                                     on_delete=models.DO_NOTHING,
@@ -104,7 +105,9 @@ class Book(models.Model):
         return "/books/%s/" % self.slug
 
     def update_quantity(self, number):
-        if number < self.quantity:
-            return self.quantity - number
+        if number <= self.quantity:
+            self.quantity -= number
+            self.save()
+            return 'تعداد بروز شد'
         else:
             return 'موجودی کافی نیست'

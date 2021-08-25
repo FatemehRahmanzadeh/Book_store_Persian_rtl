@@ -62,7 +62,7 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 # DJANGO ALLAUTH SETTINGS
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'create-order'
 ACCOUNT_LOGOUT_REDIRECT = 'home'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',

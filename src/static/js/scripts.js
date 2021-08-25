@@ -37,7 +37,9 @@ $(document).on('click', '.add-button', function (e) {
         },
         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
         success: function (jsonData) {
-            document.getElementById('item-cnt').innerHTML = jsonData.qty
+            if (jsonData.qty !== 0) {
+                document.getElementById('item-cnt').innerHTML = jsonData.qty
+            }
             let $color;
             let $icon;
             if (jsonData.s === 0) {
@@ -71,11 +73,12 @@ $(document).on('click', '.delete-button', function (e) {
             book_id: $(this).data('index'),
             action: 'post',
 
+
         },
         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
         success: function (json) {
             $('.book-item[data-index="' + book_id + '"]').remove();
-            document.getElementById("total").innerHTML = json.total;
+                document.getElementById("total").innerHTML = json.total;
             document.getElementById("item-cnt").innerHTML = json.qty;
             iziToast.show({
                 color: 'blue',

@@ -61,6 +61,9 @@ class CashOff(models.Model):
 
 
 class DefaultBasket(models.Model):
+    """
+    این سبد خرید مشتری بعد از لاگین است که رفتارهای مشتری در سایت را مدیریت میکند. مثل افزودن و حذف کالا از سفارش،
+    """
     customer = models.OneToOneField(get_user_model(),
                                     verbose_name='مشتری',
                                     on_delete=models.DO_NOTHING,
@@ -72,6 +75,48 @@ class DefaultBasket(models.Model):
 
     def __str__(self):
         return f'{self.customer.slug}'
+
+    def add(self, book, qty):
+        book_id = book.id
+        current_order = self.basket_orders.filter(status='O').last()
+        if current_order:
+            items = current_order.order_items.all()
+            print(items)
+
+            if book_id in [b.book.id for b in items]:
+                item = items.get(book__id=book_id)
+                item.quantity = qty
+                # item.book.update_quantity(qty)
+                item.save()
+            else:
+                OrderItem.objects.create(order=current_order, book=book, quantity=qty)
+            print('current', current_order)
+            return current_order
+        else:
+            new_order = Order.objects.create(basket=self)
+            OrderItem.objects.create(order=new_order, book=book, quantity=qty)
+            print('new', new_order)
+            return new_order
+
+    def update(self, item, qty):
+        """
+        اعمال تغییر در تعداد آیتم انتخابی با زدن دکمه بروزرسانی در سبد خرید.
+        """
+        current_order = self.basket_orders.filter(status='O').last()
+        item = current_order.order_items.all().get(id=item)
+        item.quantity = qty
+        item.save()
+        return current_order
+
+    def delete_item(self, item_id):
+        """
+        حذف آیتم انتخابی از سبد خرید و سفارش
+        """
+        current_order = self.basket_orders.get(order_items__id=item_id)
+        item = current_order.order_items.all().get(id=item_id)
+        if item:
+            item.delete()
+        return current_order
 
 
 class Order(models.Model):
@@ -115,6 +160,10 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    """
+    مدل مربوط به اقلام سفارش مشتری. هر مورد دارای یک کتاب و تعداد آن است. به عبارتی اگر سفارش را یک جدول فرض کنیم
+    ، آبجکت های این کلاس سطرهای آن جدول را تشکیل می دهند.
+    """
     book = models.ForeignKey('books.Book', verbose_name='کتاب', on_delete=models.DO_NOTHING, related_name='orders')
     order = models.ForeignKey(Order, verbose_name='سفارش مربوطه', on_delete=models.CASCADE,
                               related_name='order_items')
@@ -125,6 +174,9 @@ class OrderItem(models.Model):
         verbose_name_plural = 'موارد سفارش'
 
     def get_item_price(self):
+        """
+        محاسبه قیمت هر مورد با توجه به تعداد درخواستی مشتری
+        """
         book_final_price = self.book.get_final_price()
         item_price = book_final_price * self.quantity
         return item_price

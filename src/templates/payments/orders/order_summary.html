@@ -8,7 +8,7 @@
         <div class="container p-3" style="background-color: aquamarine; border-radius: 20px;">
             {% for item in items %}
                 {% with book=item.book %}
-                    <div data-index="{{ book.id }}" class="row mb-4 border book-item m-3 bg-light"
+                    <div data-index="{{ item.id }}" class="row mb-4 border book-item m-3 bg-light"
                          style="border-radius: 10px;">
                         <div class="col-md-3 col-lg-2 order-md-first bg-light">
                             <a href="{% url 'detail' book.slug %}">
@@ -41,15 +41,15 @@
                                         <form class="col-12" method="post">
                                             {% csrf_token %}
                                             <label for="num">تعداد</label>
-                                            <input id="num{{ book.id }}" type="number" value="{{ item.quantity }}"
+                                            <input id="num{{ item.id }}" type="number" value="{{ item.quantity }}"
                                                    min="1" step="1" max="{{ book.quantity }}">
                                             {% csrf_token %}
-                                            <button type="button" id="update-button" data-index="{{ book.id }}"
+                                            <button type="button" id="update-button" data-index="{{ item.id }}"
                                                     class="btn btn-primary btn-outline-secondary btn-sm update-button text-light px-3">
                                                 بروزرسانی
                                             </button>
                                             <input type="hidden" id="Url-up" data-url="{% url 'update' %}"/>
-                                            <button type="button" id="delete-button" data-index="{{ book.id }}"
+                                            <button type="button" id="delete-button" data-index="{{ item.id }}"
                                                     class="btn btn-danger btn-outline-secondary btn-sm delete-button text-light">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </button>
