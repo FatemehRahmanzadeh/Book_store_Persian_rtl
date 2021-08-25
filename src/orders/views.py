@@ -1,8 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView
 
 from accounts.models import Address
@@ -22,7 +22,19 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
     form_class = OrderUpdateForm
     success_url = reverse_lazy('home')
 
+    def get_form_kwargs(self):
+        """
+        به منظور اورراید کردن کوئری ست مربوط به آدرس کاربر. فقط کاربر آدرس های خودش را ببیند.
+        از آنجا که فیلد ریکوئست به صورت پیشفرض در فرم وجود ندارد باید آن را از ویو به فرم بدهیم .
+        """
+        kwargs = super(OrderUpdate, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
+        """
+        وقتی کاربر آدرس و کد تخفیفش را وارد کرد تغییرات ایجاد شده را به دیتابیس اعمال می کند.
+        """
         self.order_register_confirm()
         return super(OrderUpdate, self).form_valid(form)
 
@@ -34,10 +46,12 @@ class OrderUpdate(LoginRequiredMixin, UpdateView):
         items = OrderItem.objects.filter(order__basket__customer=self.request.user)
         for item in items:
             if item.book.quantity > item.quantity:
-                item.book.quantity = item.book.quantity - item.quantity
+                item.book.update_quantity(item.quantity)
                 item.book.save()
+            if item.book.quantity == 0:
+                return HttpResponse('<h1>متاسفانه کتاب موجود نیست</h1>')
             else:
-                return 'کتاب به تعداد درخواست موجود نیست.'
+                return HttpResponse('<h1>کتاب به تعداد درخواست موجود نیست.</h1>')
 
 
 @login_required
@@ -51,7 +65,7 @@ def create(request, *args, **kwargs):
         order = Order.objects.create(basket=default_basket)
         for item in basket_session:
             OrderItem.objects.create(order=order, book=item['book'], quantity=item['quantity'])
-    return JsonResponse({'msg': 'ok'})
+    return HttpResponseRedirect("/")
 
 
 @login_required
@@ -59,6 +73,10 @@ def last_uncheck_orders(request):
     """
     نمایش سفارشات بعد از لاگین و خواندن آن ها از دیتابیس بجای سشن
     """
-    unchecked = Order.objects.filter(status='O').last()
-    items = unchecked.order_items.all()
-    return render(request, 'payments/orders/order_summary.html', {'items': items, 'unchecked': unchecked})
+    unchecked = Order.objects.filter(basket__customer=request.user, status='O').last()
+    if unchecked:
+        items = unchecked.order_items.all()
+        data = {'items': items, 'unchecked': unchecked}
+    else:
+        data = {'items': {}, 'unchecked': {}}
+    return render(request, 'payments/orders/order_summary.html', data)

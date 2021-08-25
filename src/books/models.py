@@ -102,3 +102,9 @@ class Book(models.Model):
 
     def get_absolute_url(self):
         return "/books/%s/" % self.slug
+
+    def update_quantity(self, number):
+        if number < self.quantity:
+            return self.quantity - number
+        else:
+            return 'موجودی کافی نیست'

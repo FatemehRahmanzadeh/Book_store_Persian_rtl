@@ -1,18 +1,49 @@
 {% extends '_base.html' %}
+{% load static %}
 {% block title %}تکمیل سفارش{% endblock %}
 {% block content %}
+    {#    <section class="container m-5" style="background-color: blanchedalmond">#}
+    {#        <h3 class="text-center">تکمیل سفارش</h3>#}
+    {#        <div class="row justify-content-center align-items-center">#}
+    {#            <form class="col-8 m-5" method="post">#}
+    {#                {% csrf_token %}#}
+    {#                <p class="form-control">{{ form.delivery_address }}</p>#}
+    {#                <p class="form-control">{{ form.discount }}</p>#}
+    {##}
+    {#                <p>مبلغ قابل پرداخت: {{ order.get_order_price }}</p>#}
+    {##}
+    {#                <button type="submit" class="btn btn-primary">ثبت سفارش</button>#}
+    {#            </form>#}
+    {#        </div>#}
+    {#    </section>#}
+
+
+
+
     <section class="container m-5" style="background-color: blanchedalmond">
-        <h3 class="text-center">تکمیل سفارش</h3>
-        <div class="row justify-content-center align-items-center">
-            <form class="col-8 m-5" method="post">
-                {% csrf_token %}
-                <p class="form-control">{{ form.delivery_address }}</p>
-                <p class="form-control">{{ form.discount }}</p>
-
-                <p>مبلغ قابل پرداخت: {{ order.get_order_price }}</p>
-
-                <button type="submit" class="btn btn-primary">ثبت سفارش</button>
-            </form>
+        <div>
+            <h3 class="text-center">تکمیل سفارش</h3>
+            <div class="row justify-content-center align-items-center">
+                <form method='POST' action='' enctype="multipart/form-data" novalidate id="book-form" class="col-8 m-5" method="post">
+                    {% csrf_token %}
+                    <label for="book-author" class="control-label">آدرس:</label>
+                    {{ form.delivery_address }}
+                    <a href="{% url 'accounts:address-create' %}" id="add" onclick="return showAddPopup(this);">
+                        <i class="fas fa-plus"></i>
+                    </a>
+{#                    {% if order.delivery_address %}:#}
+{#                        <a href="{% url "accounts:address-update" order.delivery_address.pk %}" id="edit_author"#}
+{#                           style="cursor: pointer; cursor: hand;">#}
+{#                            <i class="fas fa-edit"></i></a>#}
+{#                    {% endif %}#}
+                    <br><br>
+                    <p class="form-control">{{ form.discount }}</p>
+                    <h5> مبلغ قابل پرداخت: {{ order.get_order_price }}</h5>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary">تایید</button>
+                </form>
+            </div>
         </div>
     </section>
+
 {% endblock %}

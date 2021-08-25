@@ -120,4 +120,4 @@ class Address(models.Model):
         return f'{self.city}  (کدپستی: {self.postcode})'
 
     def get_absolute_url(self):
-        return "/accounts/%i/" % self.pk
+        return "/accounts/address/%i/" % self.pk
