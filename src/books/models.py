@@ -108,6 +108,6 @@ class Book(models.Model):
         if number <= self.quantity:
             self.quantity -= number
             self.save()
-            return 'تعداد بروز شد'
+            return True
         else:
-            return 'موجودی کافی نیست'
+            return False

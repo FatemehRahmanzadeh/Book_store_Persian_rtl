@@ -78,7 +78,7 @@ $(document).on('click', '.delete-button', function (e) {
         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
         success: function (json) {
             $('.book-item[data-index="' + book_id + '"]').remove();
-                document.getElementById("total").innerHTML = json.total;
+            document.getElementById("total").innerHTML = json.total;
             document.getElementById("item-cnt").innerHTML = json.qty;
             iziToast.show({
                 color: 'blue',
@@ -200,19 +200,18 @@ function closePopup(data) {
 //         }
 //     });
 // })
+// check discount
 $(document).on('click', '#disc_btn', function (e) {
     $.ajax({
         type: 'POST',
         url: $("#disc_btn").attr("data-url"),
         data: {
-            disc_id: $("#disc_btn").attr("data-disc"),
-            order_id: $("#disc_btn").attr("data-disc"),
+            disc_code: $("#disc-input").val(),
             action: 'post',
         },
         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
         success: function (json) {
-            document.getElementById("total").innerHTML = json.total
-            // document.getElementById("item-cnt").innerHTML = json.qty
+            document.getElementById("total-order").innerHTML = json.total
             iziToast.show({
                 color: 'blue',
                 icon: 'fas fa-info-circle',
@@ -224,6 +223,72 @@ $(document).on('click', '#disc_btn', function (e) {
             });
         },
         error: function (xhr, errmsg, err) {
+            iziToast.show({
+                color: 'yellow',
+                icon: 'fa fa-exclamation-triangle',
+                iconColor: 'red',
+                message: errmsg + ':' + err,
+                messageColor: 'red',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
+        }
+    });
+})
+
+
+// check_quantity
+
+$(document).on('click', '#submit-order', function (e) {
+    e.preventDefault()
+    $.ajax({
+        type: 'GET',
+        url: $("#disc_btn").attr("data-url"),
+        data: {
+            disc_code: $("#disc-input").val(),
+            action: 'check_quantity',
+        },
+        // headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
+        success: function (json) {
+            if (json.checkes === []) {
+                iziToast.show({
+                    color: 'blue',
+                    icon: 'fas fa-info-circle',
+                    message: 'از خرید شما متشکریم سفارش ثبت شد',
+                    messageColor: 'green',
+                    timeout: 2000,
+                    closeOnClick: true,
+                    drag: true,
+                });
+                window.location.href = 'home';
+            } else {
+                for (book of json.checkes) {
+                    iziToast.show({
+                        color: 'yellow',
+                        icon: 'fas fa-info-circle',
+                        message:'موجود نیست. لطفاٌ سفارش خود را اصلاح کنید' + book + 'کتاب',
+                        messageColor: 'red',
+                        timeout: 2000,
+                        closeOnClick: true,
+                        drag: true,
+                    });
+                    window.location.href = json.url;
+                }
+            }
+
+        },
+        error: function (xhr, errmsg, err) {
+            iziToast.show({
+                color: 'yellow',
+                icon: 'fa fa-exclamation-triangle',
+                iconColor: 'red',
+                message: errmsg + ':' + err,
+                messageColor: 'red',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
         }
     });
 })

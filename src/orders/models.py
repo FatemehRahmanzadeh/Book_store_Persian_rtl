@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils import timezone
 
 
 class DiscountCode(models.Model):
@@ -24,7 +25,38 @@ class DiscountCode(models.Model):
         verbose_name_plural = 'تخفیف های کددار'
 
     def __str__(self):
-        return f'{self.title} discount is valid until {self.end}'
+        return f'{self.title} تا  {self.end} فعال است'
+
+    def discount_is_valid(self):
+        """
+        بررسی تخفیف از نظر اوضعیت اعتبار و زمان انقضا
+        """
+        if self.status == 'E' or self.end <= timezone.now():
+            return False
+
+        else:
+            return True
+
+    def add_order(self, order, user):
+        """
+        اعمال تخفیف به سفارش.
+        :return: اگز تخفیف مجاز بود سفارش به لیست سفارشات این تخفیف اضافه می شود و 1 برمیگرداند.
+        اگر تخفیف از نظر زمان و یا فعال بودن معتبر نبود 3 برمیگرداند
+        اگر مبلغ سفارش از حداقل مبلغ شامل تخفیف کمتر بود 2 بر می گرداند
+        """
+        if self.discount_is_valid():
+            if order.get_order_price() >= self.min_price_off:
+                user_orders = user.customer_basket.basket_orders.all().filter(discount__isnull=False)
+                user_discs = [_.discount.id for _ in user_orders]
+                if self.id in user_discs:
+                    return 0
+                self.discount_orders.add(order)
+                self.save()
+                return 1
+            else:
+                return 2
+        else:
+            return 3
 
 
 class PercentOff(models.Model):
@@ -86,7 +118,6 @@ class DefaultBasket(models.Model):
             if book_id in [b.book.id for b in items]:
                 item = items.get(book__id=book_id)
                 item.quantity = qty
-                # item.book.update_quantity(qty)
                 item.save()
             else:
                 OrderItem.objects.create(order=current_order, book=book, quantity=qty)
@@ -146,31 +177,16 @@ class Order(models.Model):
     def get_order_price(self):
         order_price = sum(_.get_item_price() for _ in self.order_items.all())
         if self.discount:
-            if self.discount.type == 'C' and order_price >= self.discount.min_price_off:
-                return order_price - self.discount.cash_off
+            if self.discount.type == 'Ch' and order_price >= self.discount.min_price_off:
+                order_price -= self.discount.cash_off
 
             elif self.discount.type == 'P':
-                return order_price * (100 - self.discount.percent_off) / 100
+                order_price *= (100 - self.discount.percent_off) / 100
 
-        else:
-            return order_price
+        return order_price
 
     def __str__(self):
         return f'سفارش مربوط به {self.basket.customer.slug}'
-
-    def valid_discount(self, disc_id):
-        discount = DiscountCode.objects.get(id=disc_id)
-        if discount.cash_off and self.get_order_price() >= discount.min_price_off:
-            self.discount = discount
-            self.save()
-            return True
-        elif discount.percent_off:
-            self.discount = discount
-            self.save()
-            return True
-        else:
-            return False
-
 
 
 class OrderItem(models.Model):
@@ -197,3 +213,12 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'مورد مربوط به{self.order.basket.customer}'
+
+    def check_item_quantity(self):
+        """
+        بررسی می کند که آیا تعداد کتاب ها موجو است یا خیر
+        """
+        if self.quantity >= self.book.quantity:
+            return True
+        else:
+            return False

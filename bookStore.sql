@@ -1,153 +1,0 @@
-PGDMP                         y        
-   Book_Store    13.2    13.3 ?    t           0    0    ENCODING    ENCODING        SET client_encoding = 'UTF8';
-                      false            u           0    0 
-   STDSTRINGS 
-   STDSTRINGS     (   SET standard_conforming_strings = 'on';
-                      false            v           0    0 
-   SEARCHPATH 
-   SEARCHPATH     8   SELECT pg_catalog.set_config('search_path', '', false);
-                      false            w           1262    22645 
-   Book_Store    DATABASE     p   CREATE DATABASE "Book_Store" WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'English_United States.1252';
-    DROP DATABASE "Book_Store";
-                postgres    false            B          0    22721    accounts_customuser 
-   TABLE DATA           ¥   COPY public.accounts_customuser (id, password, username, email, first_name, last_name, is_staff, is_superuser, is_active, last_login, date_joined, slug) FROM stdin;
-    public          postgres    false    211   v:       I          0    22801    account_emailaddress 
-   TABLE DATA           W   COPY public.account_emailaddress (id, email, verified, "primary", user_id) FROM stdin;
-    public          postgres    false    218   J<       J          0    22811    account_emailconfirmation 
-   TABLE DATA           ]   COPY public.account_emailconfirmation (id, created, sent, key, email_address_id) FROM stdin;
-    public          postgres    false    219   ¬<       H          0    22752    accounts_address 
-   TABLE DATA           r   COPY public.accounts_address (id, is_default, province, city, street, details, postcode, customer_id) FROM stdin;
-    public          postgres    false    217   É<       >          0    22677 
-   auth_group 
-   TABLE DATA           .   COPY public.auth_group (id, name) FROM stdin;
-    public          postgres    false    207   y=       D          0    22736    accounts_customuser_groups 
-   TABLE DATA           Q   COPY public.accounts_customuser_groups (id, customuser_id, group_id) FROM stdin;
-    public          postgres    false    213   ³=       :          0    22659    django_content_type 
-   TABLE DATA           C   COPY public.django_content_type (id, app_label, model) FROM stdin;
-    public          postgres    false    203   à=       <          0    22669    auth_permission 
-   TABLE DATA           N   COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
-    public          postgres    false    205   è>       F          0    22744 $   accounts_customuser_user_permissions 
-   TABLE DATA           `   COPY public.accounts_customuser_user_permissions (id, customuser_id, permission_id) FROM stdin;
-    public          postgres    false    215   C       @          0    22687    auth_group_permissions 
-   TABLE DATA           M   COPY public.auth_group_permissions (id, group_id, permission_id) FROM stdin;
-    public          postgres    false    209   gD       d          0    23028    orders_cashoff 
-   TABLE DATA           p   COPY public.orders_cashoff (id, title, cash_off, min_price_off, start, "end", status, creator_id) FROM stdin;
-    public          postgres    false    245   SE       ^          0    23004    orders_percentoff 
-   TABLE DATA           g   COPY public.orders_percentoff (id, title, percent_off, start, "end", status, creator_id) FROM stdin;
-    public          postgres    false    239   pE       R          0    22909 
-   books_book 
-   TABLE DATA           Ä   COPY public.books_book (id, title, created_at, updated_at, authors, description, quantity, price, image, slug, creator_id, last_edit_by_id, max_cash_off_id, percent_off_id, is_active) FROM stdin;
-    public          postgres    false    227   ¿E       P          0    22901    books_category 
-   TABLE DATA           m   COPY public.books_category (id, name, created_at, updated_at, slug, creator_id, last_edit_by_id) FROM stdin;
-    public          postgres    false    225   N       T          0    22920    books_book_categories 
-   TABLE DATA           I   COPY public.books_book_categories (id, book_id, category_id) FROM stdin;
-    public          postgres    false    229   !O       N          0    22877    django_admin_log 
-   TABLE DATA           Š   COPY public.django_admin_log (id, action_time, object_id, object_repr, action_flag, change_message, content_type_id, user_id) FROM stdin;
-    public          postgres    false    223   hO       8          0    22648    django_migrations 
-   TABLE DATA           C   COPY public.django_migrations (id, app, name, applied) FROM stdin;
-    public          postgres    false    201   ¯T       g          0    23157    django_session 
-   TABLE DATA           P   COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
-    public          postgres    false    248   ÒW       i          0    23169    django_site 
-   TABLE DATA           7   COPY public.django_site (id, domain, name) FROM stdin;
-    public          postgres    false    250   jb       V          0    22970    orders_basket 
-   TABLE DATA           :   COPY public.orders_basket (id, customer_id) FROM stdin;
-    public          postgres    false    231   —b       f          0    23036    orders_cashoff_editors 
-   TABLE DATA           Q   COPY public.orders_cashoff_editors (id, cashoff_id, customuser_id) FROM stdin;
-    public          postgres    false    247   ´b       X          0    22980    orders_discountcode 
-   TABLE DATA              COPY public.orders_discountcode (id, title, type, percent_off, cash_off, min_price_off, code, start, "end", status, creator_id) FROM stdin;
-    public          postgres    false    233   Ñb       Z          0    22988    orders_discountcode_editors 
-   TABLE DATA           [   COPY public.orders_discountcode_editors (id, discountcode_id, customuser_id) FROM stdin;
-    public          postgres    false    235   îb       \          0    22996    orders_order 
-   TABLE DATA           m   COPY public.orders_order (id, created_at, status, basket_id, delivery_address_id, discount_id) FROM stdin;
-    public          postgres    false    237   c       b          0    23020    orders_orderitem 
-   TABLE DATA           M   COPY public.orders_orderitem (id, quantity, book_id, order_id) FROM stdin;
-    public          postgres    false    243   (c       `          0    23012    orders_percentoff_editors 
-   TABLE DATA           W   COPY public.orders_percentoff_editors (id, percentoff_id, customuser_id) FROM stdin;
-    public          postgres    false    241   Ec       j          0    23180    socialaccount_socialaccount 
-   TABLE DATA           v   COPY public.socialaccount_socialaccount (id, provider, uid, last_login, date_joined, extra_data, user_id) FROM stdin;
-    public          postgres    false    251   hc       k          0    23191    socialaccount_socialapp 
-   TABLE DATA           ]   COPY public.socialaccount_socialapp (id, provider, name, client_id, secret, key) FROM stdin;
-    public          postgres    false    252   …c       m          0    23199    socialaccount_socialapp_sites 
-   TABLE DATA           R   COPY public.socialaccount_socialapp_sites (id, socialapp_id, site_id) FROM stdin;
-    public          postgres    false    254   ¢c       n          0    23207    socialaccount_socialtoken 
-   TABLE DATA           l   COPY public.socialaccount_socialtoken (id, token, token_secret, expires_at, account_id, app_id) FROM stdin;
-    public          postgres    false    255   ¿c       x           0    0    account_emailaddress_id_seq    SEQUENCE SET     I   SELECT pg_catalog.setval('public.account_emailaddress_id_seq', 4, true);
-          public          postgres    false    220            y           0    0     account_emailconfirmation_id_seq    SEQUENCE SET     O   SELECT pg_catalog.setval('public.account_emailconfirmation_id_seq', 1, false);
-          public          postgres    false    221            z           0    0    accounts_address_id_seq    SEQUENCE SET     E   SELECT pg_catalog.setval('public.accounts_address_id_seq', 3, true);
-          public          postgres    false    216            {           0    0 !   accounts_customuser_groups_id_seq    SEQUENCE SET     O   SELECT pg_catalog.setval('public.accounts_customuser_groups_id_seq', 4, true);
-          public          postgres    false    212            |           0    0    accounts_customuser_id_seq    SEQUENCE SET     H   SELECT pg_catalog.setval('public.accounts_customuser_id_seq', 6, true);
-          public          postgres    false    210            }           0    0 +   accounts_customuser_user_permissions_id_seq    SEQUENCE SET     Z   SELECT pg_catalog.setval('public.accounts_customuser_user_permissions_id_seq', 96, true);
-          public          postgres    false    214            ~           0    0    auth_group_id_seq    SEQUENCE SET     ?   SELECT pg_catalog.setval('public.auth_group_id_seq', 2, true);
-          public          postgres    false    206                       0    0    auth_group_permissions_id_seq    SEQUENCE SET     L   SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 64, true);
-          public          postgres    false    208            €           0    0    auth_permission_id_seq    SEQUENCE SET     E   SELECT pg_catalog.setval('public.auth_permission_id_seq', 96, true);
-          public          postgres    false    204                       0    0    books_book_categories_id_seq    SEQUENCE SET     K   SELECT pg_catalog.setval('public.books_book_categories_id_seq', 11, true);
-          public          postgres    false    228            ‚           0    0    books_book_id_seq    SEQUENCE SET     ?   SELECT pg_catalog.setval('public.books_book_id_seq', 9, true);
-          public          postgres    false    226            ƒ           0    0    books_category_id_seq    SEQUENCE SET     C   SELECT pg_catalog.setval('public.books_category_id_seq', 8, true);
-          public          postgres    false    224            „           0    0    django_admin_log_id_seq    SEQUENCE SET     F   SELECT pg_catalog.setval('public.django_admin_log_id_seq', 49, true);
-          public          postgres    false    222            …           0    0    django_content_type_id_seq    SEQUENCE SET     I   SELECT pg_catalog.setval('public.django_content_type_id_seq', 24, true);
-          public          postgres    false    202            †           0    0    django_migrations_id_seq    SEQUENCE SET     G   SELECT pg_catalog.setval('public.django_migrations_id_seq', 39, true);
-          public          postgres    false    200            ‡           0    0    django_site_id_seq    SEQUENCE SET     @   SELECT pg_catalog.setval('public.django_site_id_seq', 1, true);
-          public          postgres    false    249            ˆ           0    0    orders_basket_id_seq    SEQUENCE SET     E   SELECT pg_catalog.setval('public.orders_basket_id_seq', 1, false);
-          public          postgres    false    230            ‰           0    0    orders_cashoff_editors_id_seq    SEQUENCE SET     N   SELECT pg_catalog.setval('public.orders_cashoff_editors_id_seq', 1, false);
-          public          postgres    false    246            Š           0    0    orders_cashoff_id_seq    SEQUENCE SET     F   SELECT pg_catalog.setval('public.orders_cashoff_id_seq', 1, false);
-          public          postgres    false    244            ‹           0    0 $   orders_discountcode_editors_id_seq    SEQUENCE SET     S   SELECT pg_catalog.setval('public.orders_discountcode_editors_id_seq', 1, false);
-          public          postgres    false    234            Œ           0    0    orders_discountcode_id_seq    SEQUENCE SET     K   SELECT pg_catalog.setval('public.orders_discountcode_id_seq', 1, false);
-          public          postgres    false    232                       0    0    orders_order_id_seq    SEQUENCE SET     D   SELECT pg_catalog.setval('public.orders_order_id_seq', 1, false);
-          public          postgres    false    236                       0    0    orders_orderitem_id_seq    SEQUENCE SET     H   SELECT pg_catalog.setval('public.orders_orderitem_id_seq', 1, false);
-          public          postgres    false    242                       0    0 "   orders_percentoff_editors_id_seq    SEQUENCE SET     P   SELECT pg_catalog.setval('public.orders_percentoff_editors_id_seq', 1, true);
-          public          postgres    false    240                       0    0    orders_percentoff_id_seq    SEQUENCE SET     H   SELECT pg_catalog.setval('public.orders_percentoff_id_seq', 1, true);
-          public          postgres    false    238            ‘           0    0 "   socialaccount_socialaccount_id_seq    SEQUENCE SET     Q   SELECT pg_catalog.setval('public.socialaccount_socialaccount_id_seq', 1, false);
-          public          postgres    false    256            ’           0    0    socialaccount_socialapp_id_seq    SEQUENCE SET     M   SELECT pg_catalog.setval('public.socialaccount_socialapp_id_seq', 1, false);
-          public          postgres    false    257            “           0    0 $   socialaccount_socialapp_sites_id_seq    SEQUENCE SET     S   SELECT pg_catalog.setval('public.socialaccount_socialapp_sites_id_seq', 1, false);
-          public          postgres    false    253            ”           0    0     socialaccount_socialtoken_id_seq    SEQUENCE SET     O   SELECT pg_catalog.setval('public.socialaccount_socialtoken_id_seq', 1, false);
-          public          postgres    false    258            B   Ä  xœu’ßNÛ0Æ¯§ÈEï&"ûØÎKHĞBXF[:&¤É¡qš–4mhÉİ¤±İì=Ğ.&Äv±WI¶—Y:
-Có9’­ã#Ÿß÷É€”ÌüÈX•ï‹›âGy]~B*‹’| |#ˆdxnœÅÑÓÛâ{ù¡¸)¯}FªŠ"À@Ö°½F,8‚ØcƒÙ„šìf‚b¤Q4ñF}ïÒnÖÀÄÕªµ#®:9	OâF×îñ]¾ukíæÎÔ‹ç~èÎ\o;¨“ÙÕ+ìîá·½«¦l¾¿õ2İìÕ‡M÷`e~š]¤~Oş#yEWå=é#¦­. °‡£ösEÇ"Fa²lxf‚f"å9ÊPšI¥Èr{BñóKåß]åßÇâ–,€²¬»g²æ†ƒ)s¬åÈÕ·4ò¼•²}Ğñš¯Ùåñd¶ù¶O¼ÖIcZ£IG]mÏ.Ó|¯t“aóMÈÉ‘×â©ìNçæ`‡Ï·êù8êëHö£pŒ¼8¥Yœøı¡1üŸŸpW|]HÒ‹oUí¶ªdâA`@,Ò4€bÎÈªÍ\"Œ±)}hÖá¾ík§†¦i¿ãÔØ`      I   R   xœ3âLÊÏÏ..É/JMÉJÌKÏ712pHÏMÌÌÑKÎÏåLBC.CÎ’Ôâ’ÒâÔ"#‡T¸\	s™p—$¦¥"I€4™qÅèqqq Ò¼Ü      J      xœ‹Ñãââ Å ©      H       xœ}KÂ0D×Î)r¤Ä)Ÿ»°æ ’fÑ{„² ª
-Bl8Ç¸½I¥ŠÏ‚•glÏÓÚz9ŠGO¸¦Q¡“€–dm’ıX‚”ZR"“±ìŠåj½1d”ıÃÄ9Ëi?4/Õ/ÍÍ4vLVq¦½S2§ÆÜĞ.IFœòEãF)‡lRİ™¬M%ÙYS«íB)õ2‡z      >   *   xœ àÿ1	Ù…Ø¯ÛŒØ±
-2	Ú©Ø§Ø±Ù…Ù†Ø¯
-\.
-
-
-›Ö      D      xœ3ä4ä4ä2æ4æ4â2á4’1z\\\ !âÄ      :   ø   xœm‘MÃ …×ø0£BÒ¿»ÌÆ’¢„a"5·§“ˆ¶êÆ²¿÷l¬º&5Rï§’0
-çrWÉç˜MĞü“>Óœ U–¦"Ö²$Ï¯ûgï	œ‡"¶5ÂY¡µ4OEùˆaDç²ØàòebrÄ²ö_“8î·
-ôá»œhıU*4ø	´Q7¢A¶Çâ{’Gëf#kİî+‰eæBqfŸA+Ş—×§W&™2=dŞùs‚Ï›r©
-ìº_UÂ%úß_À*rŸ=–œ£«@ÙÉfÆT"‡³’P×i>Œr…¦­Ô"ßWçï üâ·I      <     xœ}—MrÛF…×3§à	\@üpk¤*“ Œ’H° (±–J•,|Šlìh•JÎ]€ø2ÌôL÷A•7äà{òë™yİD¤~*O«r¿_İ57«êÔ·*Ræû/æ»ıªc‹ì>”§›
-(·Ä`bÁ}uWõº%7üµ®~lZ`(ÎÎU{¬»®nN*¶ÖxAgÒ€äN°¹ô,lÁ´·.oÚæş¬kĞ~ÖÑZšóÏÉ!‘ôä²CHÌV<`]Ğã$8Ø5§Şìİª8WjcĞÒ´¢£´3ƒÉğ©ô6ãÉ"ğÑÖ/°ypİUnoSk˜¾é¨f™!ŸÛJŒ‘=Åk¶ÆuˆÕ}¥2gÇ|Ô1$€z#€›O€·`qãé±ûÏíC¾éÕ±¬ï¦O­q¥rkÁ®Ñ’á¾Ïqò„
-¸õs™D…¸ûsŞºFz;soùP·Ç²Ÿ6¹àäºNÖ—uÌ„²ÔF—Í´²,ÔÆóÚfJ.uœ²®ÙÕ¥Ù“İ®¹?õjëî‰]¤5@Ò.şê Òv¡ñ·	5"q
-wÁÏ/ª8Ÿïê+Ş´+QÊù¬“b©T`-“h»TŠ°#Ú¬/A‰¬fDoT²ê›ÛÊ¨"Q]Ò›øíŠX	u‘8y»2C}$Ş¼U!KE$äî0<¯ÃÓøÇjø6~|Q‘›‡æT7Í4X¡=,ò¾Ñ	ô‡E‰ïõA"Ä¢Àµû€s‡øïïáiø:|S‘›“ï›æV§Ğ$B^©—Ùs”È·d¬#GˆyyßõÍqußU­Šh^Ú¥iE§8.‘õ»(pœ–ˆû¸–»İ(§vøËì÷Ëğª"7-}N!©’"£„tJ,z0‰”˜5 Náøi:üáEE9;Ö§sÛ||Ğ„N‚Á³1ÉÌŠHI’,2—J—ßÍ¥x™®i.¼j	ÍfVGùÌ¯À¡A¦.=Àœ¯ÃËøi
-™ŠÜXíúòppd>ÏÀ¾™	~&à}ÿ<æ
-h×²Ë	{_v·U¯"7$İ7C°ñi'
-òÄ”O;Q"FÌ¸´!Òó4ü3>şø2>N5<›¦»±·¯;;$wÍ¾Ò9æéš£vMJe€´™»&´µ¡ŒS8¼8|W±›~M»7-¤€"EEùC,(Â‡˜5HPº´÷¶™ükgEŞçvæÍ 9t‘]ÙyTñË]æWö…ü¦„Åâ®£Ì¿öÑVô”ñOƒ>Ã6$¼ùæ'şQo×ØX%ò$œ*Âî²¨’ÇâT±l1‹>#§H–Îiü<şîê§ÙXv¦Ú·›+G$ágiÒ+§#5áwi²Åƒ‘
-ú¡áøŸßi­ÿ&½ƒ¼      F   E  xœÒÉm 1CÑs~1µË½¤ÿ:bÎ…ğƒG¢ıØOş#^:©OÔË¤_ó²Ù—Ã}¹ØyÇÅL÷öİ7L‚9&Ã“b‰É±Â$Yc²l0i¶¸8»¸<?¸<Ïú^ä¸<\'.Ï—çËóÁåùòüòâòÂ	yÄ÷IÈ‹"äEòbyñyqIyyHyi¤¼|£’—AÊË$¿©)/›”—CÊË%åå¥äÕ¡ä•QòÊ)yõ†/¯’’WE}{hJ^%¯–’W—–×‡–×FËk§åuĞòú­S^-¯›ş6;´¼^Z^_FŞFŞ#oœ‘7ÁÈ›däÍ+ˆ¼iFŞóueysYy{Xyk¬¼uVŞ+o“•·ÅÊÛW9y;¬¼]ökßå~õ;\y×¸ò®såİàÊ»É•w‹+ï6¿À?*hË      @   Ü   xœÑ¹m AA[ŒpüÉ\”Ú¶Úö±ÿñ’“VQ’U‘S¿Ä§!¦%®#!ûhÊŒ–(Z†#ƒŠ•aÅÉÀò“¡¥ÉàÒexr¼L9^¾sáeËñräx¹r¼<9^}r¼29^¹¯FW«À«Sàõ§ÀëRàõ»8^¿=^¿=^¿=Ş¼=Ş˜o\‰7¡Ä›TâM)ñ¦•xó^oV‰7§ÄÛO‰·¦Â[Wám¨ğ6Ux[*¼mŞ
-oß×àí©ğîSá©ñÎÕxj¼K5Ş•ïZ¿’ş§FÖ      d      xœ‹Ñãââ Å ©      ^   ?   xœ3ä¼±ófëÍ›­·{8MM9Œu,t-¬ÀHÛÀÄÊØ *c©k`ˆ.ÆiÈ£ÇÅÅ ‡X¹      R   A  xœXËnÛV]Ë_ÁeKR¤,i—İèª› EÒEÓ4.¢Ev±+KB ÈÚ(*E±ÍR¢“(¼ÈW\J»~Içœ¹—"e	Š6‰DŞ;Ï3gf5ÂÀ[¥fRœxfj23Yñ=+Ì¬È³Õ•™™l=–/Å 8Á3kDAŞ
-Ú·Â–İ8îÆ¿­ ş2ˆ»Í`s ã…I7»QÇoî·ƒ0²DüHÄMÌÂ]"µ¬^5 _4­^‰Ò‰™zæ\^ŒÄ&„!Ğ¾z¹ÿû|\ÍÄ+FâÂz¼ze¯Ç¸âü‘ë±IéO1ôäD
-ÿ Ó
-xq‚§øKnêa9:,#4+!J>ŠÂ¯D!_éı¡Éä…§<M™'pK5ˆyru&EÜÜãué
-RåÀÜ¤]ïŸsÍ„ÄËœA<F"DÓœZÍ`EŸ!•«g¢v¦VfÆ˜Øã_XÇa]Üí•¤=\AÅ ¾©Û"ÏÌ!óB,›Â.¹ß¨P¯HøÅÑ ‘³ÏåÉ[+V¯J˜DŸFMå&‘6S±|ñFÄ¾Åcw\¤¿o§ÖEe ßú¢!ZJªÄ|©¢HàPÅ[yß—£Õ]6åKNÕz®”o£29æ¼8–— ¬‡ZîŸ•¨àS¤º­^R¢½ÂÂ“œÁEt"r­ÿv`ÔT×'Ğp‚C š²‘#àèu‘»	ë±¼¤ŠÌ”õ¶19…E&•šnDí ?ÿz÷§ƒŞW÷é}½'¿õü¿ıôÿÈäŞ3o7„òßoå¯Û{ÍF®#Ê¨8R'·˜(‰ºIè·Ú­v'¹‰‰šû~Òj†Iè˜èŒ­jÍ•-’Å’á+00YCßÚ o“CèĞ4õ·¾b—à[(×T°‘k:ø7“=,N,²(Ûùº¹Ruš‚aP;Û$w-Ñbà© ,CØB`í_ó¥ª”+ürj^£fXº"ØV:Ñ{´šÜ«Ğ†hÆJ%xà#càWiÑÍÁÔ]‰µèDJfReÅŠÇ¬Ì+©˜ßj\ è^g_éw²’¥-Ùù0lDÉuG½§?şxĞ³ Ş4ÀôSRA­|ì´ãíf)½0öã(N:ÍİºaÛöƒV‰a!ş‘h=óØ.Àı†‹,2R•ÚÕf4X¥`fÛ`
-f”MJĞY—dã—)·*ÿ¥D3s‰ö«¡ÌéãĞc¾(!%0—”*˜ådÂ‚©rP&¬„jrX¥y%1Ö2ÔÊ_"›âò]üY¥®ÇI,ÄCPÖ‚”Ÿvï<¾ón©S9ĞŒÈT<‹ê3äd—»§øS­ÖJ=dëåúİ:WıE_{ƒ¸Z+”$Zr¿†cË œÔ\’ó„“H*ĞŒì* úáÁw_ÜBE§< ¯#¢‚¼0·±áb «Té¸KaÅ°›´ıV’t’ÖM°ŒZ~ÔlEIÛÁr!ºç‡‹\é»ú„ôè.|Ô4ø·StÅÃ¤‘±Qe`‚ı\ê}†Jô>¯9u›q7júa;Iöor²Ùô£v+j7K'µq.ÌR?œs£%B`Êí{½Ã‡OŸ<|æ}Óë<zòóİ‡Ş÷‡ï÷HZbWŸót8yC
-åd6'ÜV°œ{!1xá
-¤øÃÎ—Ú SWÍRk—œ®@‹,üÂ wm-3A2tZ‚ló$[ó«:
-‹¸ 9oõ’½~ÃqGàL^@Ôå¬xæº¸ºêš*¸$¨gtÚOUmV2Í¦ÀXÎàúªÁHtÅ‘ßyÕª‹ÂkePxiİ¦C'Mx«ƒõ)È_„çl˜Ò;g:fnÍµiy/Ì\—¢s¨QF@Pâ9ˆ§¤¸¥ySrˆ³*eqpUoIgœ–œ=Yh£çˆ¾Ô·ú¼Ç¸íèòæ5÷;ˆú‘°óĞs‘T|Ú´ç-› ¦kÂ<Êaz{Tâ$rÅÁ9·ö¥ØÇÊYÉ®l›Zf¨u¸3ä@…Mï‘îË‘w»ÑË~„	F¬Úì‹H³¡;Ğ¤¥TFoÊLù9¯±ÚıÃß=<¼{ŸÄöIŒDr»‘R,ÃÉÿ·÷:‰Ó™a»é¢NWA»…~'Âø>kÊ¼>KâÖÅ{¨Œ[»™òc«ğŸèÊi{ÕBG6Û­/2Œ˜óÎíºHÈè¹”•›š¿¹&«íÏö=WDHY„¨EêdR“dNa¥+»©Ûß†:Ã(ô—X‹ËmØ¢Ò°êr	ëÄ\ZdÃ"Ö¥N?ïñK§ßz`:dÙÕŠ¥­•uÛE-•	:ô\€Ã3l‚"”€ãÎåŞVÖfG†wêd6µ5»9CöÔ0µDl™)Í¸ »çØİ }á–ş	w}‰ş‚Á–Ç”á‡à[DíÃkî¿öDf›i)Óˆş‡¼
-ëŞZ£y¦°Ò¢tCv¼\ÊI/GÕÛ.’t”ó®¸‡Bê[Ä¸‰6s°ııç„ëfTÙGô©Î¢WİpLe›/aÎKŒsq/®×ì$S‰gîv'R¡Q1´l4ğ`»‘Ûù¼xnG¤W:RVÃPÛ0±Zê°k9çn`‚ªî‹"F(Ô·Ûçfõ<ãï(ÃÚòÁ§ÌÚüSÓí"XªşXƒ%J™^‘k#áPÏŒ^´Ü éÜ*;]SİæI”sË™l÷jWK¾ıĞš(ŒÛ
-®û†zPê%Ã_#ä­/¡Viü¿··÷Ûåµ"      P     xœ…’ANÃ0 ÏÎ+¸Wµ¼Ş]ÇÎ[øL-ú
-.‘*TTÚ?YÓÏàˆãÀÁÊÁ£­7`ä(£œäùº7ŞyX»¸†pn@,Ä>­èş~ÉÀ@çœò£Œy'—rF9Ï+<8¶œØ¡oWæ@Cª54ò–ïó¶Õ ¶RDZjÔÀJÍdä)oKôU.-»÷{·8ALtZ`#/_#½ë÷¡UA°!q„¸T©™RKÁÈA—tİË±U!´ÄámÔÀD§…ş3,g½È»f#YJüâ$5P	µ>aŞä»’>T
-*–Ç ÍFÈ—×ò˜¾ÿİ‰N·¶ëº²N š      T   7   xœÉ± !ÃÀØ*†Ãñ½|ÿuàdÈ²ÌŒÍRJÅbkéğEÓªxbsµsm]Mş<
-‹      N   7  xœµWÍnÛF>ÓOAø” öbgfyÊ­ÇÚK’ƒbQ±Ø
-$åĞ9¤¨ü¹81‚n‚¹ä9Hûe:KÒEŠ–¡¸€jeó›oş¾™…%Â¶tÛ`b	©DƒPàœ5?H•Œ Ê>f§Ùyöáò„÷_n†Ãt¸™Ä/_½zF°mH-´·’*Œ²óü¯ì4?Î¾ğïiö¹ºh …ÑàèŠEÙ×üÏü¨DuAY*eoó#fõwö¥Hw„ñÖ­€t”}*]»Ï7ı`¦¦H(í$]±2Qvâ}y’}ì²K€¼PŞú
-È¬²Ï.?î‡r-(	°ƒLIa]?§“ôpöÓhí§;³øÜ]‚ˆÑwQ	¥ ¥­Á;oÇ°Œ1È6ŠJ”V9íM]U ã"æGqökôôò$œÏó×ÙY~Ìß]|c÷9–|Èó£ğ/Ù›Å^³Ğ6ËÕç„6ÆiW™uQ(›üuşGˆn_\¡İŒ¤+GSíÀ‰Ó}Æş0ÒÎîàğq‰µ9ÚKŸ§üñşæƒÏ¥Q¦x -O:.£âATåíæÃ9—vOiH¤œe³"É«IéòM2E‚EŠP>tóË’iQ;Ğn\A’ŒGç¡î~Àxº¿õ$~º5›÷9ŸÔ›ÏvÿjJÈ³ç là…Lr&¸L	)€WúO¾™åRdª,\Úí¯Y'Ax‡ÊA®ÒOlü|‰GH»õ¬ğÊIœw×£ñøÉt6¤Ã}&>V(ï=>ì=;ãƒuËlà3[\óÄ©ÜŠ—côş¡*t1lKbY•Ë`Ô0õãdüüÙ4|úušNâgéä`o:İN«¸«²¶ÄqÈÈpÈ¤S7ØÖ‚¸!…‘Én=ø†\®şk¼À† Ú€-% )ènµ’«D5jaÁ:%á…Vh¤îŠúw™Â¶)h'Î#Ì"¡eÔ<3WşüøâË%şÛ±ú>´@C‡1&­PxÈ®àÁ§µx¬ÖT¬<÷~‚ ¤7ZÎëo0<Ø;\&‰:@è6„Ã@y"=Ÿ¬£ÙÁäÅ.êFá.Á³Ïtñˆ„!ÙÔŒÓì_.É7½´l¹Q½°ÎX;¯ïY:=ç&Y:À˜F³»x¡e6(¬Ñt¶_»ƒÃƒaºë<â½ß»ãqŸ“.ÀúXÖ\N’CW/”]¼«{yœ}êÑo’] ŞkĞ8º¿ëJ©RÃ¹f´qX¤‡£¨ÂÁ.’»Á×UWçæ^z#±û-ìñqX¥DÔ²ƒT†¿²İ¸¡nXTÛñzÉRjko(šÎ£4Lp0
-ºû²Ö•5uê¥o—¶Mûu.K”òõ óvOUR£g|JR1^›º÷t¤¥âaPmÄÙiVâìC~tñíN¸Õeï.Oî²Lé¾Š\ÛŠ)¯¨^i…µ°eæöÔü3nvS4;ãçÑä+Ş?Ù×bfoù6{Î,LŸ³J.@ò†F	:!ù6‹+CŠhC¸ Ñ^q’¯ªØ/Åğ½¬°Éó=ËHéná6´2%õÍ•ãj»oNQE]âdÃ}
-”¿­emjªMÃU­2ÖXiÖæ¡»<X¤‘<j{Û‹ÆÚ$M—$Ï?¾•a=¶nUÖ&j»DùÚíP’3+šïÿ#åÚ¤(´¯ò½ï&uÍ«|×n˜ÛÎku»Ê±±±ñ3 ë·      8     xœ–Í’œ:…×ÌSÌşV(KşçYRå"´§Cà˜©™·¿¢ƒ©&i6,š>Ÿ¥#ÉŠ&Ñ1~İüT0ÆÀµCÛº+!|cæÈW„
-°bP¦”äÿ1Qqö‚bt£ïÃ‡wë·¼qCİûc
-%õÁ2Ğz‰,BWwÑîæÇ¾¦6÷s]_ºÎWú×1Mƒ–+Mf_ióDß×m÷d™àÖ¬ •AbZ÷ Â-NÇ ¡EgŠÜSºzŠ®×–2œ»c“,ƒÉY“9ŠêóknÇ\ {åÜbß1áJ±™¢×h>ê®½Ô1Œ“«/çÇ1Œ®÷ÓT_ı_ÒCË­XÀ2ÑºôÌq®”IÑd˜}0ëMp¥3ØJ»a¾#).dª!ä¶póìòî6†Ï¯]£şÅ+ÍŒÎ^åFÜ§÷ÖgóÓÚ(›pÔéMæ!>y,™–œç|TR>g‚å#õ^ˆg†Š‚gÌ^Oó9Çà3ä,¹+	È¹æi€zøÒ·ÃóĞQKÌæ#Ûd¸LÎø•®º{ ÔÿÇ£1Ï3ÂÆág™º‰ËõÖÕW×üms8@Ä³$?Bx?QBNa˜tg"/nõWïO_“jˆb;ÿ-3–‹œ·,&¿vúÓ5SvUSŸ/&’¢nK2½ÉÒ¸\5Üàæ¡ı5m#BPÑYöÖShè´ÓİN@Ú´IĞ>ÊÑÅğî‡]Ï×Ø
-	˜RáìÄÿŒcíè2¡‡«ç.ºKÛÄcœÒyz9<ÒÄ¹Qâ%h¦UŞÖøG%—ÔÓ»Ë~;º×lŠ>!¸D•0|ë¨´s—ÜÔÍ×M®^*NS€éæ»†{ùm¤Úôú•Rj±ÃhC+6éåYğ4Óa¼©™§z?nûÊX%u%m)%}
-å8Ô‡üA;İ‡úÃïÕ îQØ’3k¬7µÚgqÌ”FÅ±””GşãfcèSY,µ5Æä8ìÆ0§ºâÄ`1Mì÷òåååH}Å      g   ˆ
-  xœµXÉ®êH\W}Eí[ L§‡´w6`°±°µ„<Ïx¿¾ÍÓ½UõnµªUı$vŞDÄ9‘Ğ'!™m„´ïõUSIRCïº(®²ğ—¥'•GåÌ'u¡L€ne_±´Úh†˜9YqN[1¸o…¸Ø‡–){gó!_…‚„¹+›‡D°ù*ùU0ê¢EÁKÆvµ/Ôõf³9öğ‘®6ÏÁlGå*—Që\RçÂ6«örU}‘Çê	•›Êjhc‡¨®e¾ù… \ vĞoå ÃQxÉ`–e©’Cà×±¨?lF·)3b,+Ïß(f¢XP9I”¼IF¼N}Ì_ïmÓôHp¿(&a‘6=HÏ/ñ,µà˜ˆ‡Õ"»%]j
-¶Ã––²M3×ØºÇ¶«ÓY«ƒãBcRãb›õH´ñÔ…l «ñy ÛŞmjkm{Ò#Y•C‰QSKÒq—‚{önwê™¤òÓ*b%Ş}İê§à?xª×¸	ÈÇ[$QŞÜ ‘›N²Ü{¹¿—3ş<ZYİúß¼+D“=_ìiá9"áÁşF@RÅ.YŒšş©¬[±P\÷Ub@e0.3ö)åø¾7Ôw¬­ıuúy´ (­^ôû°ğg
-Ûò|çZÈ<¢ÙLØkûK¹ï‹Š¿„ÊMnQ¥¬nz„«3ùç9‚£H —„Ì'ƒ(*Š—ã¦	å´QC7ÄÎØÚ‰?tSÇôÿl—ß|©ZDSñ&n3õMbr$.%y]–bPyuµcª?Lr•M#I£S)½y]Îú¿ÿnY	„ —²‹?X ’Â”İã4O¡×õ.‘;)Šp\”QŠPı„9\}(vµÖbW„%½Ä¢:E2;^ìyÄÊî¬ŞòCT5ÜJ_ç@sˆYBÄ°ès~\Œ™_´‘z«ÀM36ˆ‚eoãÉræ±ü
-æ¦"ˆ¤È,‡Õe7æÊŠNÎ?ğ}a7“ûB…†¼Bò^¥À¼§  óûâ8¨kÔD@…=¸yÔ9D°“Ä‚ŸÀ`Up‹ãÙä­‡ÕŞ¦•¶?ôH¡Ú°k†ãGké”Ş.İbem“/æ \"Ğ}P œ*èœaŒÑ+Í© †iï1Î ıüa0L¡·Ç æïsè3Ù§ŠE»GüÈZ|Ò®£}­Ğ7„JF‹ğhWãNÅd«[w²VÊ™"\zÍ’u‚¿Q+Ï4G<ƒS¨³ ”üÌ3ØK<5~‘"ö¹Bp_¹«»vœ$³QVH]F•¹xt¶*Ä‚ßX×mu­Ófä]Di#%è»…Ûm}*Quğ-unƒ³èVnVë‹6˜-«`®1foæã^i‘=ÕøÚ\â7‚àò½¹†4ñ)ó
-ìh°j`åMÁÄ¦£®i_S	ÿ5FÖ/Ş(OÛa²L¶½Mê%ÚCïÚÉ¶¯ã•3ŒÙôÇ
-íñcQHşf )w}²RZP:3w×İ¾GƒŞ#Ä’Æ,b?À´s‡%í}ìÍÎ+“¬²ú.ë›¡Ä?s)8r·p ­âh]Å´J‘¦µ¢”hå’±l;ævo<V™úrÆƒ–MD|öC=flJ²ŒpëÆn‘¾C’I‰Ó1´«úÇhŒ‚ó|³Ş€f_¬ğB“èuÚ“ò>õ¦UgeÖÁ®J§xY+ş+ê=(0A|Vz;ZMÜ”EÑ05Ñ‹Jro²qtM”Myñc4s…ûã¶ªÏŠAa×BA·Ö¦:ùâÂÒvMJµ*JÖãqÿŠ†å ¹$IDÀO4¡r¼%Èkè¦é¬MçC:Å$û¢­¯Õ›}0ñš~Â)5Èf|}Õµï.46L UX÷x³W¼ıÓÀ¯Siì9}¤¶.tú™WUÒ›½J$”+ï6†~‰Ò]¢,ÍW^6Œëu²¿^•Ä8‹¦n*¶^æReı¾Û¸a$\,mÂŠŞ™]lËP/æÔm­ê”QšÍ-ŸmÀFåíÉ<j@[æF]4KZCaj÷ú¸y?Õ”£ÂáC½.ÖZpÊÁ$N °ÛB»¥‰PjÕùi„ÎäĞù}ğ‡’äo¾«°s…SøÜù®tl+‰‚œ&;pÚp*Ò!MæØš"mÆŸ¼wÄ‰H`ÇVÀë¶¸3ôs LšX†«\İ€ÌnîD.<¾+p€8 8À,1ƒi†ü 0¯)$‡~¨ÃÀ£½2ó»j».s
-Ğuü¿R¨®´©ê3äÍ=·Õ·ıÍN÷iñ(JÏÚÂÚ+€ºğ4¨\>G}«OUvZ3Ä5 ’¿8ğßAñ¢wÛ1$`~÷v{QWteTÅÄ´	ívq4‚²ªªg¼ôÇnz‰œy4ÇqÍ„WaNÚvj×˜‚ƒcŞ®O¦k²›àfáüÍìm<?8)ø¦u&]Â8Ã1‰â¸ª3¿/½W;üŒcsr¢ŞŸäM¦ÜÇşZú>M/DÓ3®ú)QÓSŞ"‹àÚ\¿î 9gÂ’@€Ÿ‚^m—Q=Õ]œ•,Õ•IS ‡"pÂWu?´Ì\Y'’NQô‰İ/¨FbÈsS¡ê>^öíš0åñ•¸—ä¥„¨ş‚f¾ X’ğSP—š;§ğG›Æ3Ìv6+¿`ˆ¡jôCA7zÏäü¿*ŸÕD¸?¶H«Ê=yQÂ²p³)Z‹r‹ôXf>¬Üuw§™[J‹—ŞY#d¶nê‰~”*ÿò°™!È%KÑ}†­Ó#T‡ ¨Ú!+ãrFDñ0õ¯6!·#şù3_¾Îlö]‚8#æ3µæï¥´âEÛ„¼”jŠ›¼Ãhg§#‹“ó©[Ó
-ƒ…­,6¨<^İyšœTiSÖ÷ô÷ë»Fj¾_>ßÍ$ˆq7¸wı¾pˆÊj;ÄLÜ0ÿÿ/~ÑKÜ•èøPm)#¯‡øØE'ùàgM»ÉàWÆ¢ë­³hØ¶öe8Ä·ë…¢)‚`>½;EtaêûÎl–>¨<¢Ø©3:ÿ0¿ó?Q ‡"üFa¸r•,ŒüQé\axa²Ê[7Û	
-Éä«­>.¶7¶é6¹>§Ğè|¥0ÿÀ’b!ûû~u°AMa?xQ“—YYİÇ–EÑIXå™¥?!~”‡„ğ¬¼BVànØi³k½ºm©ä9Ô£&uÒÜDa 4@Á_(4GQËÙÊˆùŒŸ¬š£Ì¯è!ií—áÀ©Ì!JŒÙÁvÿoÿêÌáûÜ¾›¼xReüf‹.á˜[RU7³¡ãùfã;¬öùDºRÛÓu<+¶¸}ÎNO¾ëHr€âà|ÏJ~$xEáœ‡0â<ÂYÂ f˜^¯Æam¯-ı¿½S?0ü'9ˆö~ö
-¿I2!Ó6¦p¶I´åUc»’
-uu~ğæ¶yÁ¾óÏ=~Ï¯ÊD.£Nß¦d……JÉÓ»*Ñ5gÌ¦XÕè®‘(M¯ßÍo–s\²D¿Ÿ!ÿ^şúë¯ÿKñ1ƒ      i      xœ3äL­HÌ-ÈIÕKÎÏEfsÅèqqq ¨<	¨      V      xœ‹Ñãââ Å ©      f      xœ‹Ñãââ Å ©      X      xœ‹Ñãââ Å ©      Z      xœ‹Ñãââ Å ©      \      xœ‹Ñãââ Å ©      b      xœ‹Ñãââ Å ©      `      xœ3ä4ä4äŠÑãââ ÔX      j      xœ‹Ñãââ Å ©      k      xœ‹Ñãââ Å ©      m      xœ‹Ñãââ Å ©      n      xœ‹Ñãââ Å ©     

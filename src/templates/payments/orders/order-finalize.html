@@ -37,14 +37,16 @@
 {#                            <i class="fas fa-edit"></i></a>#}
 {#                    {% endif %}#}
                     <br><br>
-                    <p class="form-control">{{ form.discount }}
-                        <button id="disc_btn" data-url = {% url 'discount-check' %} type="button"
-                                data-disc = "{{ form.discount.value }}"
-                                data-order ='{{ object.id }}'
-                                class="btn btn-primary">بررسی تخفیف</button></p>
-                    <h5 id="total"> مبلغ قابل پرداخت: {{ order.get_order_price }}</h5>
+                    <h5 class="text-danger">{{ form.discount.errors }}</h5>
+                    <div>
+                        <input id="disc-input" title="کدتخفیف" type="text" class="form-control" name="discount" placeholder="اگر کد تخفیف دارید وارد کنید">
+                        <button id="disc_btn" data-url = {% url 'order-send' form.instance.id %} type="button"
+                                data-order ='{{ form.instance.id }}'
+                                class="btn btn-primary">بررسی تخفیف</button>
+                    </div>
+                    <h5 id="total-order"> مبلغ قابل پرداخت: {{ order.get_order_price }}</h5>
                     <br><br>
-                    <button type="submit" class="btn btn-primary">تایید</button>
+                    <button id="submit-order" type="submit" class="btn btn-primary">تایید</button>
                 </form>
             </div>
         </div>

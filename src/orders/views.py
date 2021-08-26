@@ -1,12 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView
 
 from orders.forms import OrderUpdateForm
-from orders.models import DefaultBasket, Order, OrderItem
+from orders.models import DefaultBasket, Order, OrderItem, DiscountCode
 from session_basket.shopping_basket import Basket
 
 
@@ -36,20 +36,42 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
         self.order_register_confirm()
         return super(OrderRegister, self).form_valid(form)
 
+    def form_invalid(self, form):
+
+        if self.request.is_ajax():
+            if self.request.POST.get('action') == 'post':
+                disc_code = self.request.POST.get('disc_code')
+                order = self.object
+                if disc_code:
+                    discount = DiscountCode.objects.get(code=disc_code)
+                    print('order:', order)
+                    valid_status = discount.add_order(order, self.request.user)
+                else:
+                    valid_status = 4
+                msg = {0: 'شما قبلا از این تخفیف استفاده کرده اید',
+                       1: 'تخفیف اعمال شد',
+                       2: 'مبلغ سفارش شامل تخفیف نمی باشد',
+                       3: 'تخفیف منقضی شده است',
+                       4: 'هیچ کد تحفیفی وارد نشده است'}
+                return JsonResponse({'total': order.get_order_price(), 'msg': msg[valid_status]})
+            if self.request.is_ajax():
+                checks = dict()
+                if self.request.GET.get('action') == 'check_quantity':
+                    order_items = self.object.order_items.all()
+                    for _ in order_items:
+                        if not _.check_item_quantity():
+                            checks[_.id] = _.book.title
+                    return JsonResponse({'checks': checks, 'url': 'last-order'})
+        return super().form_invalid(form)
+
     def order_register_confirm(self):
         """
         بعد از اینکه مشتری آدرس تحویل و کد تخفیف را وارد کرد، فیلد استاتوس را از حالت سفارش به ثبت شده تغییر می دهد.
         """
         self.object.status = 'R'
-        # items = self.object.order_items.all()
-        items = OrderItem.objects.filter(order__basket__customer=self.request.user)
+        items = self.object.order_items.all()
         for item in items:
-            if item.book.quantity > item.quantity:
-                msg = item.book.update_quantity(item.quantity)
-            if item.book.quantity == 0:
-                return HttpResponse('<h1>متاسفانه کتاب موجود نیست</h1>')
-            else:
-                return HttpResponse('<h1>کتاب به تعداد درخواست موجود نیست.</h1>')
+            item.book.update_quantity(item.quantity)
 
 
 @login_required
@@ -79,11 +101,21 @@ def last_uncheck_orders(request):
         data = {'items': {}, 'unchecked': {}}
     return render(request, 'payments/orders/order_summary.html', data)
 
+
 @login_required
 def order_discount_check(request):
+    """
+    برای چک کردن اینکه تخفیف معتبر است یا خیر و اعمال تخفیف به سبد خرید
+    """
     if request.POST.get('action') == 'post':
-        disc_id = int(request.POST.get('disc_id'))
+        disc_code = request.POST.get('disc_code')
         order_id = int(request.POST.get('order_id'))
         order = Order.objects.get(id=order_id)
-        valid = order.valid_discount(disc_id)
-        return JsonResponse({'total': order.get_order_price()})
+        print('order:', order)
+        print('order id:', order_id)
+        valid = order.valid_discount(disc_code)
+        if valid:
+            msg = 'تخفیف اعمال شد'
+        else:
+            msg = 'تخفیف معتبر نیست'
+        return JsonResponse({'total': order.get_order_price(), 'msg': msg})
