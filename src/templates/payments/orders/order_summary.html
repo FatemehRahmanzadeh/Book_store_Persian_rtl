@@ -71,7 +71,7 @@
                                                                                id="total">{{ unchecked.get_order_price }}</span>
                             </div>
 
-                            <a href="{% url 'order-send' unchecked.pk %}" type="button"
+                            <a id="final-submit" href="{% url 'order-send' unchecked.pk %}" type="button"
                                class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
                                 ثبت نهایی سفارش
                             </a>

@@ -218,7 +218,7 @@ class OrderItem(models.Model):
         """
         بررسی می کند که آیا تعداد کتاب ها موجو است یا خیر
         """
-        if self.quantity >= self.book.quantity:
+        if self.quantity <= self.book.quantity:
             return True
         else:
             return False

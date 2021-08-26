@@ -1,4 +1,5 @@
 // const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+// search using ajax and api
 // $(document).ready(function () {
 //     $('#srchContent').keydown(function (e)
 //     {
@@ -134,41 +135,6 @@ $(document).on('click', '.update-button', function (e) {
         }
     });
 })
-// send orders to database
-// $(document).on('click', '#finalize', function (e) {
-//     $.ajax({
-//         type: 'POST',
-//         url: $("#Url-finalize").attr("data-url"),
-//         // data: {
-//         //   basket: $("#login-data"),
-//         //   book_qty: $('#num'+ book_id).val(),
-//         //   action: 'post',
-//         // },
-//         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
-//         success: function (json) {
-//             console.log(json)
-//             iziToast.show({
-//                 color: 'blue',
-//                 icon: 'fas fa-info-circle',
-//                 message: json.msg,
-//                 messageColor: 'green',
-//                 timeout: 2000,
-//                 closeOnClick: true,
-//                 drag: true,
-//             });
-//             console.log(json)
-//         },
-//         error: function (xhr, errmsg, err) {
-//         }
-//     });
-// })
-
-// add address to order
-// function showEditPopup(url) {
-//     var win = window.open(url, "Edit",
-//         'height=500,width=800,resizable=yes,scrollbars=yes');
-//     return false;
-// }
 
 function showAddPopup(triggeringLink) {
     var name = triggeringLink.id.replace(/^add_/, '');
@@ -240,55 +206,50 @@ $(document).on('click', '#disc_btn', function (e) {
 
 // check_quantity
 
-$(document).on('click', '#submit-order', function (e) {
-    e.preventDefault()
-    $.ajax({
-        type: 'GET',
-        url: $("#disc_btn").attr("data-url"),
-        data: {
-            disc_code: $("#disc-input").val(),
-            action: 'check_quantity',
-        },
-        // headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
-        success: function (json) {
-            if (json.checkes === []) {
-                iziToast.show({
-                    color: 'blue',
-                    icon: 'fas fa-info-circle',
-                    message: 'از خرید شما متشکریم سفارش ثبت شد',
-                    messageColor: 'green',
-                    timeout: 2000,
-                    closeOnClick: true,
-                    drag: true,
-                });
-                window.location.href = 'home';
-            } else {
-                for (book of json.checkes) {
-                    iziToast.show({
-                        color: 'yellow',
-                        icon: 'fas fa-info-circle',
-                        message:'موجود نیست. لطفاٌ سفارش خود را اصلاح کنید' + book + 'کتاب',
-                        messageColor: 'red',
-                        timeout: 2000,
-                        closeOnClick: true,
-                        drag: true,
-                    });
-                    window.location.href = json.url;
-                }
-            }
-
-        },
-        error: function (xhr, errmsg, err) {
-            iziToast.show({
-                color: 'yellow',
-                icon: 'fa fa-exclamation-triangle',
-                iconColor: 'red',
-                message: errmsg + ':' + err,
-                messageColor: 'red',
-                timeout: 2000,
-                closeOnClick: true,
-                drag: true,
-            });
-        }
-    });
-})
+// $(document).on('click', '#final-submit', function (e) {
+//     $.ajax({
+//         type: 'POST',
+//         url: $("#disc_btn").attr("data-url"),
+//         data: {
+//             action: 'check_quantity',
+//         },
+//         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
+//         success: function (json) {
+//             if (json.checkes === []) {
+//                 iziToast.show({
+//                     color: 'blue',
+//                     icon: 'fas fa-info-circle',
+//                     message: 'تکمیل سفارش',
+//                     messageColor: 'green',
+//                     timeout: 2000,
+//                     closeOnClick: true,
+//                     drag: true,
+//                 });
+//             } else {
+//                 $.each( json.checkes, function( key, book ) {
+//                     iziToast.show({
+//                         color: 'yellow',
+//                         icon: 'fas fa-info-circle',
+//                         message:'موجود نیست. لطفاٌ سفارش خود را اصلاح کنید' + book + 'کتاب',
+//                         messageColor: 'red',
+//                         timeout: 2000,
+//                         closeOnClick: true,
+//                         drag: true,
+//                     });
+//                 });
+//             }
+//         },
+//         error: function (xhr, errmsg, err) {
+//             iziToast.show({
+//                 color: 'yellow',
+//                 icon: 'fa fa-exclamation-triangle',
+//                 iconColor: 'red',
+//                 message: errmsg + ':' + err,
+//                 messageColor: 'red',
+//                 timeout: 2000,
+//                 closeOnClick: true,
+//                 drag: true,
+//             });
+//         }
+//     });
+// })

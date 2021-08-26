@@ -2,30 +2,13 @@
 {% load static %}
 {% block title %}تکمیل سفارش{% endblock %}
 {% block content %}
-    {#    <section class="container m-5" style="background-color: blanchedalmond">#}
-    {#        <h3 class="text-center">تکمیل سفارش</h3>#}
-    {#        <div class="row justify-content-center align-items-center">#}
-    {#            <form class="col-8 m-5" method="post">#}
-    {#                {% csrf_token %}#}
-    {#                <p class="form-control">{{ form.delivery_address }}</p>#}
-    {#                <p class="form-control">{{ form.discount }}</p>#}
-    {##}
-    {#                <p>مبلغ قابل پرداخت: {{ order.get_order_price }}</p>#}
-    {##}
-    {#                <button type="submit" class="btn btn-primary">ثبت سفارش</button>#}
-    {#            </form>#}
-    {#        </div>#}
-    {#    </section>#}
-
-
-
-
     <section class="container m-5" style="background-color: blanchedalmond">
         <div>
             <h3 class="text-center">تکمیل سفارش</h3>
             <div class="row justify-content-center align-items-center">
                 <form method='POST' action='' enctype="multipart/form-data" novalidate id="book-form" class="col-8 m-5" method="post">
                     {% csrf_token %}
+                    <h5 class="text-danger">{{ form.non_field_errors }}</h5>
                     <label for="book-author" class="control-label">آدرس:</label>
                     {{ form.delivery_address }}
                     <a href="{% url 'accounts:address-create' %}" id="add" onclick="return showAddPopup(this);">

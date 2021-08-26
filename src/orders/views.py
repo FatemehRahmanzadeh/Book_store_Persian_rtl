@@ -27,12 +27,14 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
         """
         kwargs = super(OrderRegister, self).get_form_kwargs()
         kwargs['user'] = self.request.user
+        kwargs['items'] = self.object.order_items.all()
         return kwargs
 
     def form_valid(self, form):
         """
         وقتی کاربر آدرس و کد تخفیفش را وارد کرد تغییرات ایجاد شده را به دیتابیس اعمال می کند.
         """
+
         self.order_register_confirm()
         return super(OrderRegister, self).form_valid(form)
 
@@ -54,14 +56,6 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
                        3: 'تخفیف منقضی شده است',
                        4: 'هیچ کد تحفیفی وارد نشده است'}
                 return JsonResponse({'total': order.get_order_price(), 'msg': msg[valid_status]})
-            if self.request.is_ajax():
-                checks = dict()
-                if self.request.GET.get('action') == 'check_quantity':
-                    order_items = self.object.order_items.all()
-                    for _ in order_items:
-                        if not _.check_item_quantity():
-                            checks[_.id] = _.book.title
-                    return JsonResponse({'checks': checks, 'url': 'last-order'})
         return super().form_invalid(form)
 
     def order_register_confirm(self):
@@ -102,20 +96,20 @@ def last_uncheck_orders(request):
     return render(request, 'payments/orders/order_summary.html', data)
 
 
-@login_required
-def order_discount_check(request):
-    """
-    برای چک کردن اینکه تخفیف معتبر است یا خیر و اعمال تخفیف به سبد خرید
-    """
-    if request.POST.get('action') == 'post':
-        disc_code = request.POST.get('disc_code')
-        order_id = int(request.POST.get('order_id'))
-        order = Order.objects.get(id=order_id)
-        print('order:', order)
-        print('order id:', order_id)
-        valid = order.valid_discount(disc_code)
-        if valid:
-            msg = 'تخفیف اعمال شد'
-        else:
-            msg = 'تخفیف معتبر نیست'
-        return JsonResponse({'total': order.get_order_price(), 'msg': msg})
+# @login_required
+# def order_discount_check(request):
+#     """
+#     برای چک کردن اینکه تخفیف معتبر است یا خیر و اعمال تخفیف به سبد خرید
+#     """
+#     if request.POST.get('action') == 'post':
+#         disc_code = request.POST.get('disc_code')
+#         order_id = int(request.POST.get('order_id'))
+#         order = Order.objects.get(id=order_id)
+#         print('order:', order)
+#         print('order id:', order_id)
+#         valid = order.valid_discount(disc_code)
+#         if valid:
+#             msg = 'تخفیف اعمال شد'
+#         else:
+#             msg = 'تخفیف معتبر نیست'
+#         return JsonResponse({'total': order.get_order_price(), 'msg': msg})

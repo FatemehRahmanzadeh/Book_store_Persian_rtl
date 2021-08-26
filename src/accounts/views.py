@@ -13,8 +13,6 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
     form_class = AddressForm
     template_name = 'account/create-address.html'
 
-    # fields = ['is_default', 'province', 'city', 'street', 'details', 'postcode']
-
     def form_valid(self, form):
         """
          اتوماتیک یوزر فعال به عنوان صاحب آدرس انتخاب شود .
@@ -38,11 +36,10 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
     form_class = AddressForm
     template_name = 'account/create-address.html'
 
-    # fields = ['is_default', 'province', 'city', 'street', 'details', 'postcode']
-
     def form_valid(self, form):
         """
         اتوماتیک یوزر فعال به عنوان صاحب آدرس انتخاب شود
         """
         form.instance.user = self.request.user
         return super().form_valid(form)
+
