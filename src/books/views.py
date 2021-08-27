@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 
 from books.models import Book, Category
 
@@ -25,6 +26,7 @@ class CategoryView(ListView):
     model = Category
     template_name = 'books/category-list.html'
     paginate_by = 10
+
     def get_queryset(self):
         return super(CategoryView, self).get_queryset().exclude(book_categories__isnull=True)
 
@@ -41,3 +43,11 @@ class CategoryDetail(DetailView):
         except Book.DoesNotExist:
             context['object_list'] = None
         return context
+
+class CreateBook(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    """
+
+    """
+    def test_func(self):
+        obj = self.get_object()
+        return obj.Creator == self.request.user

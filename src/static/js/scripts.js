@@ -177,7 +177,7 @@ $(document).on('click', '#disc_btn', function (e) {
         },
         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
         success: function (json) {
-            document.getElementById("total-order").innerHTML = json.total
+            document.getElementById("total-price").innerHTML = json.total
             iziToast.show({
                 color: 'blue',
                 icon: 'fas fa-info-circle',

@@ -106,7 +106,19 @@ class DefaultBasket(models.Model):
         verbose_name_plural = 'سبدهای خرید مشتریان'
 
     def __str__(self):
-        return f'{self.customer.slug}'
+        return f'{self.customer.email}'
+
+    def get_registered_orders(self):
+        """
+        فیلتر سفارشات بر اساس وضعیت ثبت شده
+        """
+        return self.basket_orders.filter(status='R')
+
+    def get_ordered_orders(self):
+        """
+        فیلتر سفارشات سبد خرید بر اساس وضعیت ثبت نشده
+        """
+        return self.basket_orders.filter(status='O')
 
     def add(self, book, qty):
         book_id = book.id
@@ -149,6 +161,9 @@ class DefaultBasket(models.Model):
             item.delete()
         return current_order
 
+    def get_absolute_url(self):
+        return "/orders/basket/%i/" % self.pk
+
 
 class Order(models.Model):
     STATUS = [('R', 'ثبت شده'), ('O', 'سفارش'), ('D', 'تحویل')]
@@ -176,6 +191,7 @@ class Order(models.Model):
 
     def get_order_price(self):
         order_price = sum(_.get_item_price() for _ in self.order_items.all())
+        print('order price model', order_price)
         if self.discount:
             if self.discount.type == 'Ch' and order_price >= self.discount.min_price_off:
                 order_price -= self.discount.cash_off
@@ -186,7 +202,7 @@ class Order(models.Model):
         return order_price
 
     def __str__(self):
-        return f'سفارش مربوط به {self.basket.customer.slug}'
+        return f'سفارش مربوط به {self.basket.customer.email}'
 
 
 class OrderItem(models.Model):

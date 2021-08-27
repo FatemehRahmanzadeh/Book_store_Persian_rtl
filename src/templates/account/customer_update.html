@@ -1,0 +1,14 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}ویرایش مشخصات{% endblock %}
+{% block content %}
+    <section class="container mx-auto my-3 w-75">
+        <div class="row my-3 bg-light border rounded w-75 mx-autho">
+            <form class="my-4" action="" method="post">
+                {% csrf_token %}
+                {{ form |crispy }}
+            </form>
+
+        </div>
+    </section>
+{% endblock %}

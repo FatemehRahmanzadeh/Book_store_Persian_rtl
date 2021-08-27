@@ -1,0 +1,100 @@
+{% extends '_base.html' %}
+{% block title %}پنل کارمند{% endblock %}
+{% load static %}
+{% block content %}
+    <section>
+        <div class="container mt-3">
+            <div class="main-body">
+
+                <div class="row gutters-sm">
+                    <div class="col-md-4 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex flex-column align-items-center text-center">
+                                    <img src="{% static 'images/profile.jpg' %}" alt="Admin"
+                                         class="rounded-circle" width="150">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mt-3">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <a class="text-decoration-none" style="color: #264b5d" href="#">همه سفارشات</a>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    <a class="text-decoration-none" style="color: #264b5d" href="{% url 'last-order' %}">آخرین سفارش ناتمام</a>
+                                </li>
+
+                                <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                    آدرس ها
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">نام: </h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ object.first_name }} {{ object.last_name }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">پست الکترونیکی:</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ object.email }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">تاریخ ثبت نام</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ object.date_joined }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">آخرین بازدید:</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        {{ object.last_login }}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <h6 class="mb-0">آدرس:</h6>
+                                    </div>
+                                    <div class="col-sm-9 text-secondary">
+                                        آدرس کاربر
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a class="btn btn-info " target="__blank"
+                                           href="{% url 'accounts:customer-edit' object.slug%}">ویرایش</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+        </div>
+    </section>
+{% endblock %}

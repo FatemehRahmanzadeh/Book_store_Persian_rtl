@@ -1,13 +1,47 @@
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DetailView
 
 from orders.forms import OrderUpdateForm
 from orders.models import DefaultBasket, Order, OrderItem, DiscountCode
 from session_basket.shopping_basket import Basket
+
+
+class OrderDetail(DetailView):
+    """
+        برای نمایش جزییات هر سفارش مشتری
+    """
+    model = Order
+    template_name = 'payments/orders/summary.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderDetail, self).get_context_data()
+        context['items'] = self.object.order_items.all()
+        return context
+
+
+class CustomerOrderHistory(LoginRequiredMixin, UserPassesTestMixin, DetailView):
+    """
+    کلاس ویو برای نشان دادن تمام سفارشات مشتری
+    """
+    model = DefaultBasket
+    template_name = 'payments/orders/all_customer_orders.html'
+
+    def test_func(self):
+        """
+        برای اینکه هر مشتری فقط سفارشات مربوط به خودش را ببیند
+        """
+        obj = self.get_object()
+        return obj.customer == self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super(CustomerOrderHistory, self).get_context_data()
+        context['registered'] = self.object.get_registered_orders()
+        context['ordered'] = self.object.get_ordered_orders()
+        return context
 
 
 class OrderRegister(LoginRequiredMixin, UpdateView):
@@ -16,7 +50,6 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
     """
     model = Order
     template_name = 'payments/orders/order-finalize.html'
-    # fields = ('discount', 'delivery_address',)
     form_class = OrderUpdateForm
     success_url = reverse_lazy('home')
 
@@ -44,17 +77,22 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
             if self.request.POST.get('action') == 'post':
                 disc_code = self.request.POST.get('disc_code')
                 order = self.object
+                print('order price view before', order.get_order_price())
                 if disc_code:
-                    discount = DiscountCode.objects.get(code=disc_code)
-                    print('order:', order)
-                    valid_status = discount.add_order(order, self.request.user)
+                    try:
+                        discount = DiscountCode.objects.get(code=disc_code)
+                        valid_status = discount.add_order(order, self.request.user)
+                    except DiscountCode.DoesNotExist:
+                        valid_status = 5
                 else:
                     valid_status = 4
                 msg = {0: 'شما قبلا از این تخفیف استفاده کرده اید',
                        1: 'تخفیف اعمال شد',
                        2: 'مبلغ سفارش شامل تخفیف نمی باشد',
                        3: 'تخفیف منقضی شده است',
-                       4: 'هیچ کد تحفیفی وارد نشده است'}
+                       4: 'هیچ کد تحفیفی وارد نشده است',
+                       5: 'کد تخفیف اشتباه است!'}
+                print('order price view after', order.get_order_price())
                 return JsonResponse({'total': order.get_order_price(), 'msg': msg[valid_status]})
         return super().form_invalid(form)
 
@@ -90,11 +128,10 @@ def last_uncheck_orders(request):
     last_unchecked = Order.objects.filter(basket__customer=request.user, status='O').last()
     if last_unchecked:
         items = last_unchecked.order_items.all()
-        data = {'items': items, 'unchecked': last_unchecked}
+        data = {'items': items, 'last_unchecked': last_unchecked}
     else:
-        data = {'items': {}, 'unchecked': {}}
+        data = {'items': {}, 'last_unchecked': {}}
     return render(request, 'payments/orders/order_summary.html', data)
-
 
 # @login_required
 # def order_discount_check(request):

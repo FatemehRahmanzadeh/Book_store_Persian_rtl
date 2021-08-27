@@ -27,7 +27,7 @@
                                 data-order ='{{ form.instance.id }}'
                                 class="btn btn-primary">بررسی تخفیف</button>
                     </div>
-                    <h5 id="total-order"> مبلغ قابل پرداخت: {{ order.get_order_price }}</h5>
+                    <h5> مبلغ قابل پرداخت: <span id="total-price">{{ order.get_order_price }}</span></h5>
                     <br><br>
                     <button id="submit-order" type="submit" class="btn btn-primary">تایید</button>
                 </form>

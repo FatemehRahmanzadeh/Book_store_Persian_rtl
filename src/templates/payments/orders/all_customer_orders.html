@@ -1,0 +1,61 @@
+{% extends '_base.html' %}
+{% block title %}تاریخچه سفارشات{% endblock %}
+{% block content %}
+    <main class="container mx-auto mt-3">
+        <section class="container">
+            <h3><span class="bg-light text-success m-2 px-3 py-2">سفارشات ثبت شده</span></h3>
+            <div class="row  border rounded align-items-center my-3">
+                {% for order in registered %}
+                    <div class="col-12 bg-light m-2">
+                        <h5>
+                            وضعیت سفارش: {{ order.get_status_display }} |
+                            <span style="font-size: smaller" class="text-muted">تاریخ: {{ order.created_at }}</span>
+                        </h5>
+                        <div class="container">
+                            <div class="border rounded row justify-content-end">
+                                {% for item in order.order_items.all %}
+                                    <a class="col" href="{% url 'detail' item.book.slug %}">
+                                        <img class="img-all-orders" style="width:100px"
+                                             src="{{ item.book.image.url }}"
+                                             alt="{{ item.book.title }}">
+                                    </a>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </section>
+        <section class="container mt-5 mx-auto">
+
+            <h3><span class="bg-warning m-2 px-3 py-2">سفارشات نهایی نشده</span></h3>
+            <div class="row my-3">
+                {% for order in ordered %}
+                    <div class="col-12 bg-light m-2">
+                        <h5>
+                            وضعیت سفارش: {{ order.get_status_display }} |
+                            <span style="font-size: smaller" class="text-muted">تاریخ: {{ order.created_at }}</span>
+                        </h5>
+                        <div class="container">
+                            <div class="border rounded row justify-content-end">
+                                {% for item in order.order_items.all %}
+                                    <a class="col" href="{% url 'detail' item.book.slug %}">
+                                        <img class="img-all-orders" style="width:100px"
+                                             src="{{ item.book.image.url }}"
+                                             alt="{{ item.book.title }}">
+                                    </a>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+        </section>
+    </main>
+{% endblock %}

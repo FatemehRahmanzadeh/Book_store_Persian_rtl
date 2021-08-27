@@ -36,9 +36,8 @@ class OrderUpdateForm(forms.ModelForm):
         for item in self.items:
             if not item.check_item_quantity():
                 raise forms.ValidationError(
-                    "موجود نیست{}متاسفانه کتاب".format(item.book.title)
+                    " موجود نیست{}متاسفانه لطفاٌ خرید خود را اصلاح کنید.".format(item.book.title)
                 )
-            item.delete()
         return cleaned_data
 
 

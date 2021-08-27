@@ -81,22 +81,25 @@
                         <a class="nav-link" href="#" id="navbarScrollingDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             {% if not user.is_superuser and user.is_staff %}
-                                <i class="fas fas fa-user-tie fa-2x" style="color: lightgreen"></i></a>
+                                <i class="fas fas fa-user-tie fa-2x" style="color: lightgreen"><span style="font-size: 1rem;"> {{ user.first_name }} </span></i>
+
                             {% elif user.is_superuser and user.is_staff %}
-                                <i class="fas fas fas fa-user-tie fa-2x" style="color: green"></i></a>
+                                <i class="fas fas fas fa-user-tie fa-2x" style="color: green"><span style="font-size: 1rem;"> {{ user.first_name }} </span></i>
                             {% else %}
-                                <i class="fas fas fa-user-alt fa-2x"></i></a>
+                                <i class="fas fas fa-user-alt fa-2x">
+                                    <span style="font-size: 1rem;"> {{ user.first_name }} </span></i></a>
                             {% endif %}
                         <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                             <li><a class="dropdown-item" href="{% url 'account_change_password' %}">تغییر رمز عبور</a>
                             </li>
-                            <li><a class="dropdown-item" href="{% url 'summary' %}">همه سفارشات</a></li>
+                            <li><a class="dropdown-item" href="{% url 'all-basket-orders' default_basket.pk %}">همه سفارشات</a></li>
                             {% if user.is_superuser %}
                                 <li><a class="dropdown-item" href="{% url 'admin:index' %}">پنل ادمین</a></li>
                             {% elif not user.is_superuser and user.is_staff %}
                                 <li><a class="dropdown-item" href="#">پنل کارمند</a></li>
                             {% else %}
-                                <li><a class="dropdown-item" href="#">پنل مشتری</a></li>
+                                <li><a class="dropdown-item" href="{% url 'accounts:customer-panel' user.slug %}">پنل
+                                    مشتری</a></li>
                             {% endif %}
                             <li>
                                 <hr class="dropdown-divider">
