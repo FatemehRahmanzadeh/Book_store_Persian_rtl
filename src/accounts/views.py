@@ -38,10 +38,9 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
         if not self.request.user.user_addresses.filter(is_default=True):
             instance.is_default = True
         instance.save()
-
         if self.request.is_ajax():
             return JsonResponse({'success': True, 'address': instance}, status=201)
-        return redirect(reverse('home'))
+        return redirect(reverse_lazy('accounts:customer-panel', args=[str(self.request.user.slug)]))
 
     def form_invalid(self, form):
         if self.request.is_ajax():
@@ -89,11 +88,13 @@ class DeleteAddress(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             if not address.is_default:
                 try:
                     address.delete()
+                    return JsonResponse({"success": True, "msg": "آدرس با موفقیت حذف شد"})
                 except IntegrityError:
-                    return JsonResponse({"success": False, "error": "شما اجازه حذف این آدرس را ندارید!"})
+                    return JsonResponse({"success": False, "error": "شما اجازه حذف آدرس سفارش را ندارید!"})
             else:
                 return JsonResponse({"success": False, "error": "شما اجازه حذف آدرس اصلی را ندارید!"})
-        return super(DeleteAddress, self).delete(request, *args, **kwargs)
+        else:
+            return super(DeleteAddress, self).delete(request, *args, **kwargs)
 
 
 class StaffDashboard(TemplateView):

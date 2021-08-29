@@ -50,7 +50,11 @@
                             <form class="form-group col" method="post">
                                 {% csrf_token %}
                                 <input class="num form-control w-50" id="num{{ book.id }}" type="number" min="1" step="1" max="{{ book.quantity }}" value="1" placeholder="تعداد">
-                                <button id="add-button" data-index="{{book.id}}" type="button" class="add-button btn btn-success text-white my-2 w-50" data-abc="true"><i class="fas fa-plus"></i> سبد خرید</button>
+                                {% if book.quantity > 0 %}
+                                    <button id="add-button" data-index="{{book.id}}" type="button" class="add-button btn btn-success text-white my-2 w-50" data-abc="true"><i class="fas fa-plus"></i> سبد خرید</button>
+                                {% else %}
+                                <button id="add-button" data-index="{{book.id}}" type="button" class="add-button btn btn-success text-white my-2 w-50" data-abc="true" disabled><i class="fas fa-plus"></i> سبد خرید</button>
+                                {% endif %}
                                 <input type="hidden" id="Url-add" data-url="{% url 'add_to_basket' %}" />
                             </form>
                         </div>

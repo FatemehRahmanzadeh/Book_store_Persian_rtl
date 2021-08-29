@@ -217,8 +217,6 @@ $(document).on('click', '#show-addr', function (e) {
     $.ajax({
         type: 'GET',
         url: $("#show-addr").attr("data-url"),
-        // headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
-
         success: function (json) {
 
             json.addresses.forEach(function (item) {
@@ -261,31 +259,45 @@ function createAddressLi(item) {
 function delAddress(item_id) {
     let del = document.createElement('i');
     del.className = "del fa fa-trash btn btn-danger";
-    del.id = 'addr'+item_id;
+    del.id = 'addr' + item_id;
     del.attributes['aria-hidden'] = true;
     del.dataset.idDel = item_id;
-    del.dataset.urlDel ='/accounts/address/' + item_id + '/delete/' ;
+    del.dataset.urlDel = '/accounts/address/' + item_id + '/delete/';
     del.title = 'حذف';
     return del
 }
 
 // ajax call for delete address
 $(document).on('click', '.del', function (e) {
-    console.log(this.dataset.urlDel)
+    var addLi = this.parentElement
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: this.dataset.urlDel,
+        headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
         success: function (json) {
-            document.getElementById("total-price").innerHTML = json.total
-            iziToast.show({
-                color: 'blue',
-                icon: 'fas fa-info-circle',
-                message: json.msg,
-                messageColor: 'green',
-                timeout: 2000,
-                closeOnClick: true,
-                drag: true,
-            });
+            if (json.success === true) {
+                addLi.remove()
+                iziToast.show({
+                    color: 'blue',
+                    icon: 'fas fa-info-circle',
+                    message: json.msg,
+                    messageColor: 'green',
+                    timeout: 2000,
+                    closeOnClick: true,
+                    drag: true,
+                });
+            } else {
+                iziToast.show({
+                    color: 'yellow',
+                    icon: 'fa fa-exclamation-triangle',
+                    iconColor: 'red',
+                    message: json.error,
+                    messageColor: 'red',
+                    timeout: 2000,
+                    closeOnClick: true,
+                    drag: true,
+                });
+            }
         },
         error: function (xhr, errmsg, err) {
             iziToast.show({
