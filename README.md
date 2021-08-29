@@ -10,7 +10,9 @@
   * books: All data about books category model
   * And maybe some other apps in the future
 * Customer orders save in session before login or sign up.
-###### If users log in for the first time, an unique basket object will create automaticly for them to organize every user orders.
+
+
+ If users log in for the first time, an unique basket object will create automaticly for them to organize every user orders.
 users can add item to basket, remove from it or update quantity of their order items Whether they are authenticated or not, based on ajax requests.
 every user has a dashboard to manage addresses and personal informations. They can add or remove their addresses except address is related to an order or it is their default address. 
 
