@@ -12,6 +12,6 @@ urlpatterns = [
     path('create-order/', create, name='create-order'),
     path('<int:pk>/send-order/', OrderRegister.as_view(), name='order-send'),
     path('last-order/', last_uncheck_orders, name='last-order'),
-    path('<int:pk>', OrderDetail.as_view(), name='order-detail'),
+    path('<int:pk>/', OrderDetail.as_view(), name='order-detail'),
     path('basket/<int:pk>/', CustomerOrderHistory.as_view(), name='all-basket-orders'),
 ]

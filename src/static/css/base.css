@@ -17,6 +17,6 @@ url('../fonts/Vazir.ttf')  format('truetype'), /* Safari, Android, iOS */
 /* Main Styling */
 
 
-.navbar {
+.navbar, .footer {
     background-color: lightsteelblue !important;
 }

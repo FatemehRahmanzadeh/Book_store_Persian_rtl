@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
 
     def _create_user(self, email, password, is_staff, is_superuser, **extra_fields):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('برای ثبت نام وارد کردن ایمیل لازم است.')
         now = timezone.now()
         email = self.normalize_email(email)
         user = self.model(
@@ -76,6 +76,26 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f'{self.email}'
 
+    def get_default_address(self):
+        """
+        آدرس پیشفرض کاربر را برمی گرداند
+        """
+        return self.user_addresses.get(is_default=True)
+
+    def set_default_address(self, addr):
+        """
+        انتخاب آدرس اصلی کاربر از بین آدرس ها
+        """
+        addresses = self.user_addresses.all()
+        if len(addresses) > 1:
+            for _ in addresses:
+                if _ == addr:
+                    _.is_default = True
+                    _.save()
+                else:
+                    _.is_default = False
+                    _.save()
+
 
 class CustomerProxy(CustomUser):
     class Meta:
@@ -125,3 +145,11 @@ class Address(models.Model):
 
     def get_absolute_url(self):
         return "/accounts/address/%i/" % self.pk
+
+    def change_default(self):
+        if self.is_default:
+            self.is_default = False
+        else:
+            self.is_default = True
+        return self.is_default
+

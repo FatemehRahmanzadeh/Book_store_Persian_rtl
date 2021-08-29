@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}ورود آدرس جدید{% endblock %}
+{% block content %}
+
+    <div class="container d-flex justify-content-center my-5 w-75">
+        <div class="row" style="background-color: lavender;border-radius: 20px;">
+            <div class="col">
+                <form class="px-5" method="post">
+                    <h2 class="my-5">ثبت آدرس</h2>
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-success ml-2 my-3" type="submit">ذخیره</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -70,11 +70,14 @@
                             <div class="col d-inline-flex mx-3">جمع خرید:<span class="me-3"
                                                                                id="total">{{ last_unchecked.get_order_price }}</span>
                             </div>
-
+                            {% if last_unchecked.status == 'O' %}
                             <a id="final-submit" href="{% url 'order-send' last_unchecked.pk %}" type="button"
                                class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
                                 ثبت نهایی سفارش
                             </a>
+                                {% else %}
+                                <button class="col-3 btn btn-outline-secondary mx-3 text-success" type="button" disabled><b>سفارش ثبت شده است</b></button>
+                                {% endif %}
                             <input type="hidden" id="data-url" data-url="{% url 'order-send' last_unchecked.pk %}"/>
                         </div>
                     </div>

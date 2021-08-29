@@ -23,6 +23,8 @@
 
                             </div>
                         </div>
+                        <a role="button" class="btn btn-primary my-3" href="{% url 'order-detail' order.pk %}">جزئیات
+                            سفارش</a>
                     </div>
                 {% endfor %}
 
@@ -50,6 +52,12 @@
                                 {% endfor %}
 
                             </div>
+                        </div>
+                        <div>
+                            <a role="button" class="btn btn-success my-3" href="{% url 'order-send' order.pk %}">تکمیل
+                                سفارش</a>
+                            <a role="button" class="btn btn-primary my-3" href="{% url 'order-detail' order.pk %}">جزئیات
+                                سفارش</a>
                         </div>
                     </div>
                 {% endfor %}

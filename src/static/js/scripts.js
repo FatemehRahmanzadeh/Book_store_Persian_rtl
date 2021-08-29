@@ -202,54 +202,102 @@ $(document).on('click', '#disc_btn', function (e) {
         }
     });
 })
+var addrCard = document.getElementById('addr-card')
+var addrList = document.getElementById('addr-list')
+addrCard.style.display = "none";
+// show customer addresses
+$(document).on('click', '#show-addr', function (e) {
+    if (addrCard.style.display === "none") {
+        addrList.innerHTML = '';
+        addrCard.style.display = "block";
+    } else {
+        addrList.innerHTML = '';
+        addrCard.style.display = "none";
+    }
+    $.ajax({
+        type: 'GET',
+        url: $("#show-addr").attr("data-url"),
+        // headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
 
+        success: function (json) {
 
-// check_quantity
+            json.addresses.forEach(function (item) {
+                let li = createAddressLi(item)
+                $('#addr-list').append(li)
+            });
+        },
+        error: function (xhr, errmsg, err) {
+            iziToast.show({
+                color: 'yellow',
+                icon: 'fa fa-exclamation-triangle',
+                iconColor: 'red',
+                message: errmsg + ':' + err,
+                messageColor: 'red',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
+        }
+    });
+})
 
-// $(document).on('click', '#final-submit', function (e) {
-//     $.ajax({
-//         type: 'POST',
-//         url: $("#disc_btn").attr("data-url"),
-//         data: {
-//             action: 'check_quantity',
-//         },
-//         headers: {'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value},
-//         success: function (json) {
-//             if (json.checkes === []) {
-//                 iziToast.show({
-//                     color: 'blue',
-//                     icon: 'fas fa-info-circle',
-//                     message: 'تکمیل سفارش',
-//                     messageColor: 'green',
-//                     timeout: 2000,
-//                     closeOnClick: true,
-//                     drag: true,
-//                 });
-//             } else {
-//                 $.each( json.checkes, function( key, book ) {
-//                     iziToast.show({
-//                         color: 'yellow',
-//                         icon: 'fas fa-info-circle',
-//                         message:'موجود نیست. لطفاٌ سفارش خود را اصلاح کنید' + book + 'کتاب',
-//                         messageColor: 'red',
-//                         timeout: 2000,
-//                         closeOnClick: true,
-//                         drag: true,
-//                     });
-//                 });
-//             }
-//         },
-//         error: function (xhr, errmsg, err) {
-//             iziToast.show({
-//                 color: 'yellow',
-//                 icon: 'fa fa-exclamation-triangle',
-//                 iconColor: 'red',
-//                 message: errmsg + ':' + err,
-//                 messageColor: 'red',
-//                 timeout: 2000,
-//                 closeOnClick: true,
-//                 drag: true,
-//             });
-//         }
-//     });
-// })
+function createAddressLi(item) {
+    let li = document.createElement('li');
+    li.className = "list-group-item d-flex justify-content-between align-items-center flex-wrap";
+    let address;
+    address = item.province + ',' + item.city + ',' + item.street + ',' + item.details + ',' + '(' + 'کدپستی:' + item.postcode + ')';
+    li.appendChild(document.createTextNode(address));
+    if (item.is_default === true) {
+        let i = document.createElement('i');
+        i.className = "fa fa-check text-success"
+        i.appendChild(document.createTextNode('اصلی'))
+        li.appendChild(i);
+    }
+    li.appendChild(delAddress(item.id))
+    return li
+}
+
+// create delete button for addresses
+function delAddress(item_id) {
+    let del = document.createElement('i');
+    del.className = "del fa fa-trash btn btn-danger";
+    del.id = 'addr'+item_id;
+    del.attributes['aria-hidden'] = true;
+    del.dataset.idDel = item_id;
+    del.dataset.urlDel ='/accounts/address/' + item_id + '/delete/' ;
+    del.title = 'حذف';
+    return del
+}
+
+// ajax call for delete address
+$(document).on('click', '.del', function (e) {
+    console.log(this.dataset.urlDel)
+    $.ajax({
+        type: 'GET',
+        url: this.dataset.urlDel,
+        success: function (json) {
+            document.getElementById("total-price").innerHTML = json.total
+            iziToast.show({
+                color: 'blue',
+                icon: 'fas fa-info-circle',
+                message: json.msg,
+                messageColor: 'green',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
+        },
+        error: function (xhr, errmsg, err) {
+            iziToast.show({
+                color: 'yellow',
+                icon: 'fa fa-exclamation-triangle',
+                iconColor: 'red',
+                message: errmsg + ':' + err,
+                messageColor: 'red',
+                timeout: 2000,
+                closeOnClick: true,
+                drag: true,
+            });
+        }
+    });
+})

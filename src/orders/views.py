@@ -15,7 +15,8 @@ class OrderDetail(DetailView):
         برای نمایش جزییات هر سفارش مشتری
     """
     model = Order
-    template_name = 'payments/orders/summary.html'
+    template_name = 'payments/orders/order_summary.html'
+    context_object_name = 'last_unchecked'
 
     def get_context_data(self, **kwargs):
         context = super(OrderDetail, self).get_context_data()

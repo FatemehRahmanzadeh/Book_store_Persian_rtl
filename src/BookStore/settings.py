@@ -45,17 +45,18 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
-    # 3rd party apps
     'crispy_forms',
     'django_filters',
     'rest_framework.authtoken',
     'dj_rest_auth',
+    'widget_tweaks',
     # my apps
     'books',
     'accounts',
     'orders',
     'pages',
     'session_basket',
+    'bootstrap_modal_forms',
 
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'

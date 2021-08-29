@@ -1,5 +1,5 @@
 {% extends '_base.html' %}
-{% block title %}پنل کارمند{% endblock %}
+{% block title %}پنل{{ object.username }}{% endblock %}
 {% load static %}
 {% block content %}
     <section>
@@ -19,14 +19,26 @@
                         <div class="card mt-3">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                    <a class="text-decoration-none" style="color: #264b5d" href="#">همه سفارشات</a>
+                                    <a class="text-decoration-none" style="color: #264b5d"
+                                       href="{% url 'all-basket-orders' default_basket.pk %}">همه سفارشات</a>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                    <a class="text-decoration-none" style="color: #264b5d" href="{% url 'last-order' %}">آخرین سفارش ناتمام</a>
+                                    <a class="text-decoration-none" style="color: #264b5d"
+                                       href="{% url 'last-order' %}">آخرین سفارش ناتمام</a>
                                 </li>
 
                                 <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                    آدرس ها
+                                    <a role="button" class="btn btn-success"
+                                       data-url="{% url 'accounts:user-addresses' %}"
+                                       id="show-addr">
+                                        نمایش آدرس ها
+                                        {% csrf_token %}
+                                    </a>
+                                    <a href="{% url 'accounts:address-create' %}" role="button" class="btn btn-primary"
+                                       data-url="{% url 'accounts:address-create' %}"
+                                       id="add-addr">
+                                        افزودن آدرس
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -72,29 +84,32 @@
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-3">
-                                        <h6 class="mb-0">آدرس:</h6>
+                                        <h6 class="mb-0"> آدرس اصلی:</h6>
                                     </div>
                                     <div class="col-sm-9 text-secondary">
-                                        آدرس کاربر
+                                        {{ object.get_default_address }}
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <a class="btn btn-info " target="__blank"
-                                           href="{% url 'accounts:customer-edit' object.slug%}">ویرایش</a>
+                                           href="{% url 'accounts:customer-edit' object.slug %}">ویرایش</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                    <div id="addr-card" class="card mt-3 w-50">
+                        <ul id="addr-list" class="list-group list-group-flush border-light rounded">
+                        </ul>
 
-
+                    </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
         </div>
     </section>
+
 {% endblock %}
