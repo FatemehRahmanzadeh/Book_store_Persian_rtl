@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %} افزودن کتاب جدید{% endblock %}
+{% block content %}
+    <div class="container d-flex justify-content-center my-5">
+        <div class="row" style="background-color: lavender;border-radius: 20px;">
+            <h2 class="my-3">افزودن کتاب جدید</h2>
+            <div class="col-">
+                <form method="post" enctype="multipart/form-data"> {# enctype برای این است که فایل آپلود شده در فرم به درستی به فولدر مدیا منتقل شود. #}
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-success my-3" type="submit">ثبت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -4,8 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, UpdateView, DetailView, TemplateView, ListView, DeleteView
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, UpdateView, DetailView, TemplateView, DeleteView
 
 from accounts.forms import AddressForm, CustomerProfileForm, CustomUserCreationForm
 from accounts.models import Address, CustomerProxy, CustomUser
@@ -13,6 +13,9 @@ from accounts.serializers import AddressSerializer
 
 
 class SignUpView(BSModalCreateView):
+    """
+        برای ایجاد مودال ثبت نام
+    """
     model = CustomUser
     form_class = CustomUserCreationForm
     template_name = 'account/signup_modal.html'
@@ -31,7 +34,6 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
         """
         instance = form.save(commit=False)
         instance.customer = self.request.user
-        print(instance.is_default)
         if instance.is_default:
             self.request.user.set_default_address(instance)
 
@@ -60,7 +62,7 @@ class AddressUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         """
         اتوماتیک یوزر فعال به عنوان صاحب آدرس انتخاب شود
         """
-        form.instance.user = self.request.user
+        form.instance.customer = self.request.user
         return super().form_valid(form)
 
     def test_func(self):
@@ -105,7 +107,7 @@ class CustomerPanel(DetailView):
     """
     صفحه کاربری مشتری
     """
-    model = CustomerProxy
+    model = CustomUser
     template_name = 'account/customer_dashboard.html'
 
 
@@ -113,7 +115,7 @@ class CustomerUpdateView(UpdateView):
     """
     ویرایش اطلاعات کاربر
     """
-    model = CustomerProxy
+    model = CustomUser
     form_class = CustomerProfileForm
     template_name = 'account/customer_update.html'
 
@@ -167,6 +169,6 @@ def get_user_addresses(request):
             return render(request, 'account/address/addresses.html', {'addresses': addresses})
     except Address.DoesNotExist:
         if request.is_ajax():
-            return JsonResponse({'msg': 'هیچ آدرسی یافت نشد'})
+            return JsonResponse({'msg': 'هیچ آدرسی پیدا نشد'})
         else:
             return HttpResponse('<h1 class="text-danger">هیچ آدرسی پیدا نشد!</h1>')

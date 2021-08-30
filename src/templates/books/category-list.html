@@ -8,15 +8,44 @@
                     <h2 class="py-3">دسته بندی ها:</h2>
                     <ul class="list-group m-3" style="border-radius: 10px;">
                         {% for obj in object_list %}
-                            <a href="{% url 'category_detail' obj.pk %}" class="list-group-item list-group-item-action dropdown-toggle" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: lightcyan" aria-current="true">{{ obj.name }}</a>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <li><a class="dropdown-item" href="{% url 'category_detail'  obj.slug%}">جزییات</a></li>
-{#                                    <li><a class="dropdown-item" href="{% url 'edit_ctg' obj.pk%}">ویرایش</a></li>#}
-{#                                    <li><a class="dropdown-item" href="{% url 'delete_ctg'  obj.pk%}">حذف</a></li>#}
-                                </ul>
+                            <a href="{% url 'category_detail' obj.slug %}"
+                               class="list-group-item list-group-item-action dropdown-toggle" role="button"
+                               id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                               style="background-color: lightcyan" aria-current="true">{{ obj.name }}</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item" href="{% url 'category_detail'  obj.slug %}">جزییات</a>
+                                </li>
+                                {% if user.is_staff %}
+                                    <li><a class="dropdown-item" href="{% url 'edit-category' obj.slug %}">ویرایش</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'delete-category'  obj.slug %}">حذف</a></li>
+                                {% endif %}
+                            </ul>
                         {% endfor %}
                     </ul>
                 </div>
+                {% if user.is_staff %}
+                    <div class="card px-3 my-5 col-8" style="background-color: azure;border-radius: 10px;">
+                        <h2 class="py-3">دسته بندی های خالی:</h2>
+                        <ul class="list-group m-3" style="border-radius: 10px;">
+                            {% for obj in empty_categories %}
+                                <a href="{% url 'category_detail' obj.pk %}"
+                                   class="list-group-item list-group-item-action dropdown-toggle" role="button"
+                                   id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                                   style="background-color: lightcyan" aria-current="true">{{ obj.name }}</a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="{% url 'category_detail'  obj.slug %}">جزییات</a>
+                                    </li>
+                                    {% if user.is_staff %}
+                                        <li><a class="dropdown-item" href="{% url 'edit-category' obj.slug %}">ویرایش</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="{% url 'delete-category'  obj.slug %}">حذف</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

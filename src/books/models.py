@@ -5,7 +5,7 @@ from books.managers import BookManager
 
 
 class Category(models.Model):
-    name = models.CharField(verbose_name='نام دسته', max_length=100)
+    name = models.CharField(verbose_name='نام دسته', max_length=100, unique=True)
     creator = models.ForeignKey(get_user_model(),
                                 verbose_name='ایجادکننده',
                                 on_delete=models.DO_NOTHING,
@@ -34,7 +34,7 @@ class Category(models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return "/categories/%s/" % self.slug
+        return "books/categories/%s/" % self.slug
 
 
 class Book(models.Model):
