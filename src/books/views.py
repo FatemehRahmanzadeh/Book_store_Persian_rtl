@@ -52,7 +52,7 @@ class CreateCategory(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
         try:
-            instance = form.save(commit=False)
+            instance = form.instance
             instance.creator = self.request.user
             return super(CreateCategory, self).form_valid(form)
 
@@ -101,7 +101,7 @@ class EditCategoryView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         try:
-            instance = form.save(commit=False)
+            instance = form.instance
             instance.last_edited_by = self.request.user
             return super(EditCategoryView, self).form_valid(form)
 
@@ -197,7 +197,8 @@ class EditBook(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def form_valid(self, form):
         try:
             instance = form.save(commit=False)
-            instance.last_edited_by = self.request.user
+            instance.last_edit_by = self.request.user
+            instance.save()
             return super(EditBook, self).form_valid(form)
 
         except IntegrityError:

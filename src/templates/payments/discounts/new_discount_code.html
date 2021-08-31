@@ -1,0 +1,27 @@
+{% extends 'account/staff_dashboard.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block csses %}
+    {% load bootstrap4 %}
+    {% bootstrap_javascript jquery='full' %}
+
+    {{ form.media }}
+{% endblock %}
+{% block title %} افزودن تخفیف جدید{% endblock %}
+{% block content-disc %}
+    <div class="container d-flex justify-content-center my-5">
+        <div class="row" style="background-color: lavender;border-radius: 20px;">
+            <h2 class="my-3">افزودن تخفیف جدید</h2>
+            <div class="col-">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn btn-success my-3" type="submit">ثبت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+    </script>
+
+{% endblock %}

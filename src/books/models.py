@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 
 from books.managers import BookManager
+from orders.models import PercentOff, CashOff
 
 
 class Category(models.Model):
@@ -29,8 +30,8 @@ class Category(models.Model):
         return f'{self.name}'
 
     def save(self, *args, **kwargs):
-        book_slug = f'{self.name}'
-        self.slug = book_slug
+        cat_slug = f'{self.name}'
+        self.slug = cat_slug
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
@@ -61,14 +62,14 @@ class Book(models.Model):
                               default='../static/images/image.png')
     percent_off = models.ForeignKey('orders.PercentOff',
                                     verbose_name='درصد تخفیف',
-                                    on_delete=models.DO_NOTHING,
-                                    related_name='percent_disc',
+                                    on_delete=models.SET_NULL,
+                                    related_name='discount_percent_books',
                                     blank=True, null=True)
 
     max_cash_off = models.ForeignKey('orders.CashOff',
                                      verbose_name='تخفیف نقدی',
-                                     on_delete=models.DO_NOTHING,
-                                     related_name='cash_disc',
+                                     on_delete=models.SET_NULL,
+                                     related_name='discount_cash_books',
                                      blank=True, null=True)
     is_active = models.CharField(verbose_name='در دسترس', max_length=1, choices=ACTIVE, default='A')
     slug = models.SlugField(max_length=100, null=True, blank=True)
@@ -111,3 +112,19 @@ class Book(models.Model):
             return True
         else:
             return False
+
+    def update_discount(self, off):
+        """
+        هر کتاب فقط یک تخفیف بگیرد
+        """
+        if isinstance(off, PercentOff):
+            if self.max_cash_off:
+                self.max_cash_off = None
+            self.percent_off = off
+            self.save()
+        elif isinstance(off, CashOff):
+            if self.percent_off:
+                self.percent_off = None
+            self.max_cash_off = off
+            self.save()
+        return self.get_final_price()

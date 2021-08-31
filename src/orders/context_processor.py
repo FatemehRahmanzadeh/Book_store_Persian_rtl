@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AnonymousUser
+from django.utils import timezone
 
-from orders.models import DefaultBasket
+from orders.models import DefaultBasket, Order
 
 
 def default_basket(request):
@@ -16,3 +17,10 @@ def default_basket(request):
         return {'default_basket': def_basket, 'item_cnt': cnt, 'unchecked': unchecked, 'all_orders': all_orders}
     else:
         return {'item_cnt': 0, 'default_basket': def_basket, 'unchecked': [], 'all_orders': all_orders}
+
+
+def all_orders(request):
+    registered = Order.objects.filter(status='R')
+    ordered = Order.objects.filter(status='O')
+    new_orders = Order.objects.filter(created_at__day=timezone.now().day)
+    return {'registered': registered, 'ordered':ordered, 'new_orders':new_orders}

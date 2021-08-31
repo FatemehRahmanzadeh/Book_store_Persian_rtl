@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Address
+from books.models import Book
 from orders.models import Order, DiscountCode, PercentOff, CashOff
 from bootstrap_datepicker_plus import DateTimePickerInput
 
@@ -64,6 +65,22 @@ class PercentOffForm(forms.ModelForm):
             'end': DateTimePickerInput(),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(PercentOffForm, self).__init__(*args, **kwargs)
+        queryset = Book.objects.all()
+        self.fields['discount_books'] = forms.ModelMultipleChoiceField(queryset=queryset, label='کتاب های شامل تخفیف')
+
+    def save(self, *args, **kwargs):
+        """
+        برای اعمال تخفیف به کتاب های انتخاب شده در فرم لازم است این متد اوراید شود. چون به صورت پیشفرض فیلدی برای کوئری معکوس در مدل-فرم وجود ندارد
+        """
+        self.instance.save()
+        for book in self.cleaned_data.get('discount_books'):
+            print(book)
+            book.update_discount(self.instance)
+            print(book.get_final_price())
+        return super(PercentOffForm, self).save(*args, **kwargs)
+
 
 class CashOffForm(forms.ModelForm):
     class Meta:
@@ -74,3 +91,16 @@ class CashOffForm(forms.ModelForm):
             'start': DateTimePickerInput(),
             'end': DateTimePickerInput(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(CashOffForm, self).__init__(*args, **kwargs)
+        queryset = Book.objects.all()
+        self.fields['discount_books'] = forms.ModelMultipleChoiceField(queryset=queryset, label='کتاب های شامل تخفیف')
+
+    def save(self, *args, **kwargs):
+        self.instance.save()
+        for book in self.cleaned_data.get('discount_books'):
+            print(book)
+            book.update_discount(self.instance)
+            print(book.get_final_price())
+        return super(CashOffForm, self).save(*args, **kwargs)

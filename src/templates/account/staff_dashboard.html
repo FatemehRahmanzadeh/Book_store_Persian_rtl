@@ -2,79 +2,82 @@
 {% block title %}پنل کارمند {{ user.username }}{% endblock %}
 
 {% block content %}
-<div class="row">
-        <div class="flex-shrink-0 p-3 col-2 mx-4" style="width: 280px;background-color:lightblue">
-        <a href="#" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-            <span class="fs-5 fw-semibold">داشبورد</span>
-        </a>
-        <ul class="list-unstyled ps-0">
-            <li class="mb-1">
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#home-collapse" aria-expanded="true">
-                    کتاب ها
-                </button>
-                <div class="collapse show" id="home-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="{% url 'create-book' %}" class="link-dark rounded text-decoration-none">کتاب
-                            جدید</a></li>
-                        <li><a href="{% url 'new-category' %}" class="link-dark rounded text-decoration-none">دسته
-                            جدید</a></li>
-                        <li><a href="{% url 'home' %}" class="link-dark rounded text-decoration-none">همه کتابها</a>
-                        </li>
-                        <li><a href="{% url 'categories' %}" class="link-dark rounded text-decoration-none">همه دسته
-                            ها</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="mb-1">
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#dashboard-collapse" aria-expanded="false">
-                    تخفیف
-                </button>
-                <div class="collapse" id="dashboard-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="{% url 'create-code' %}" class="link-dark rounded text-decoration-none"> کد تخفیف
-                            جدید</a></li>
-                        <li><a href="{% url 'create-percent' %}" class="link-dark rounded text-decoration-none">تخفیف
-                            درصدی جدید</a></li>
-                        <li><a href="{% url 'create-cash' %}" class="link-dark rounded text-decoration-none">تخفیف نقدی
-                            جدید</a></li>
-                        <li><a href="#" class="link-dark rounded text-decoration-none">همه تخفیف ها</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="mb-1">
-                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
-                        data-bs-target="#orders-collapse" aria-expanded="false">
-                    سفارشات
-                </button>
-                <div class="collapse" id="orders-collapse">
-                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات جدید</a></li>
-                        <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات ثبت شده</a></li>
-                        <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات نهایی نشده</a></li>
-                    </ul>
-                </div>
-            </li>
-            <li class="border-top my-3"></li>
-            {#            <li class="mb-1">#}
-            {#                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"#}
-            {#                        data-bs-target="#account-collapse" aria-expanded="false">#}
-            {#                    مشتریان#}
-            {#                </button>#}
-            {#                <div class="collapse" id="account-collapse">#}
-            {#                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">#}
-            {#                        <li><a href="#" class="link-dark rounded"></a></li>#}
-            {#                        <li><a href="#" class="link-dark rounded">مشتریان جدید</a></li>#}
-            {#                        <li><a href="#" class="link-dark rounded">مشتریان وفادار</a></li>#}
-            {#                        <li><a href="#" class="link-dark rounded">پنل مشتری</a></li>#}
-            {#                    </ul>#}
-            {#                </div>#}
-            {#            </li>#}
-        </ul>
-    </div>
-        <div class="col-8">
+    <div class="row">
+        <div class="flex-shrink-0 p-2 col-2 mx-2 text-center" style="width: 180px;background-color:lightblue">
+            <a href="#" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom text-center">
+                <span class="fs-5 fw-semibold text-center">داشبورد</span>
+            </a>
+            <ul class="list-unstyled ps-0">
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#home-collapse" aria-expanded="true">
+                        کتاب ها
+                    </button>
+                    <div class="collapse show" id="home-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'create-book' %}" class="link-dark rounded text-decoration-none">کتاب
+                                جدید</a></li>
+                            <li><a href="{% url 'new-category' %}" class="link-dark rounded text-decoration-none">دسته
+                                جدید</a></li>
+                            <li><a href="{% url 'home' %}" class="link-dark rounded text-decoration-none">همه کتابها</a>
+                            </li>
+                            <li><a href="{% url 'categories' %}" class="link-dark rounded text-decoration-none">همه دسته
+                                ها</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#dashboard-collapse" aria-expanded="false">
+                        تخفیف
+                    </button>
+                    <div class="collapse" id="dashboard-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="{% url 'create-code' %}" class="link-dark rounded text-decoration-none"> کد
+                                تخفیف
+                                جدید</a></li>
+                            <li><a href="{% url 'create-percent' %}" class="link-dark rounded text-decoration-none">تخفیف
+                                درصدی جدید</a></li>
+                            <li><a href="{% url 'create-cash' %}" class="link-dark rounded text-decoration-none">تخفیف
+                                نقدی
+                                جدید</a></li>
+                            <li><a href="{% url 'all-discount-percents' %}" class="link-dark rounded text-decoration-none">تخفیف های درصدی</a></li>
+                            <li><a href="{% url 'all-discount-cash' %}" class="link-dark rounded text-decoration-none">تخفیف های نقدی</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#orders-collapse" aria-expanded="false">
+                        سفارشات
+                    </button>
+                    <div class="collapse" id="orders-collapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                            <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات جدید</a></li>
+                            <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات ثبت شده</a></li>
+                            <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات نهایی نشده</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="border-top my-3"></li>
+                {#            <li class="mb-1">#}
+                {#                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"#}
+                {#                        data-bs-target="#account-collapse" aria-expanded="false">#}
+                {#                    مشتریان#}
+                {#                </button>#}
+                {#                <div class="collapse" id="account-collapse">#}
+                {#                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">#}
+                {#                        <li><a href="#" class="link-dark rounded"></a></li>#}
+                {#                        <li><a href="#" class="link-dark rounded">مشتریان جدید</a></li>#}
+                {#                        <li><a href="#" class="link-dark rounded">مشتریان وفادار</a></li>#}
+                {#                        <li><a href="#" class="link-dark rounded">پنل مشتری</a></li>#}
+                {#                    </ul>#}
+                {#                </div>#}
+                {#            </li>#}
+            </ul>
+        </div>
+        <div class="col-10">
             {% block content-disc %}{% endblock %}
         </div>
-</div>
+    </div>
 {% endblock %}

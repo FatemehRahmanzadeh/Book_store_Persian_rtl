@@ -13,9 +13,9 @@
                 {% for book in object_list %}
                     <tr>
                         <td class="rounded-2">
-                            <div class="card m-3 text-end">
+                            <div class="card m-3 text-start">
                                 <div class="row g-0">
-                                    <div class="col-12 col-md-4 text-center text-md-end">
+                                    <div class="col-12 col-md-4 text-center text-md-start">
                                         {% if book.image %}
                                             <a href="{% url 'detail' book.slug %}"><img src="{{ book.image.url }}"
                                                                                         class="img-fluid rounded-start"
@@ -36,7 +36,7 @@
                                                             <br>{{ book.authors }}</p>
                                                         <br>
                                                         <h5>قیمت:</h5>
-                                                        {% if object.max_cash_off or book.percent_off %}
+                                                        {% if book.max_cash_off or book.percent_off %}
                                                             <del class="text-danger">{{ book.price }}</del>
                                                             <span class="text-primary"><b>{{ book.get_final_price }}</b></span>
                                                         {% else %}
