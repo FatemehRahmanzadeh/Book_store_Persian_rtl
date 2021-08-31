@@ -49,7 +49,10 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework.authtoken',
     'dj_rest_auth',
-    'widget_tweaks',
+    'bootstrap_datepicker_plus',  # datetimepicker
+    'widget_tweaks',  # modal django forms
+    "bootstrap4",
+    'bootstrap5',
     # my apps
     'books',
     'accounts',
@@ -60,6 +63,9 @@ INSTALLED_APPS = [
 
 ]
 AUTH_USER_MODEL = 'accounts.CustomUser'
+BOOTSTRAP5 = {
+    'include_jquery': True,
+}
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 # DJANGO ALLAUTH SETTINGS

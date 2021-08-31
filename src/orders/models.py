@@ -6,11 +6,16 @@ from django.utils import timezone
 class DiscountCode(models.Model):
     STATUS = [('E', 'منقضی شده'), ('V', 'معتبر')]
     TYPE = [('Ch', 'نقدی'), ('P', 'درصدی')]
-    title = models.CharField(verbose_name='عنوان', max_length=100)
+    title = models.CharField(verbose_name='عنوان', max_length=100, unique=True)
     type = models.CharField(verbose_name='نوع', max_length=2, choices=TYPE)
-    creator = models.ForeignKey(get_user_model(), verbose_name='ایجادکننده', on_delete=models.DO_NOTHING,
+    creator = models.ForeignKey(get_user_model(),
+                                verbose_name='ایجادکننده',
+                                on_delete=models.DO_NOTHING,
                                 related_name='disObj_registrar')
-    editors = models.ManyToManyField(get_user_model(), verbose_name='ویرایشگر', related_name='disObj_editor')
+    last_edited_by = models.ForeignKey(get_user_model(),
+                                       verbose_name='آخرین ویرایش توسط',
+                                       related_name='disObj_editor',
+                                       on_delete=models.DO_NOTHING, null=True, blank=True)
     percent_off = models.IntegerField(verbose_name='مقدار درصدی', blank=True, null=True)
     cash_off = models.IntegerField(verbose_name='مقدار نقدی', blank=True, null=True)
     min_price_off = models.BigIntegerField('حداقل قیمت')
@@ -36,6 +41,9 @@ class DiscountCode(models.Model):
 
         else:
             return True
+
+    def get_absolute_url(self):
+        return "/orders/discounts/%i/" % self.pk
 
     def add_order(self, order, user):
         """
@@ -64,7 +72,10 @@ class PercentOff(models.Model):
     title = models.CharField(verbose_name='عنوان', max_length=100)
     creator = models.ForeignKey(get_user_model(), verbose_name='ایجادکننده', on_delete=models.DO_NOTHING,
                                 related_name='percent_registrar')
-    editors = models.ManyToManyField(get_user_model(), verbose_name='ویرایشگر', related_name='percent_editor')
+    last_edited_by = models.ForeignKey(get_user_model(),
+                                       verbose_name='آخرین ویرایش توسط',
+                                       related_name='percent_editor',
+                                       on_delete=models.DO_NOTHING, null=True, blank=True)
     percent_off = models.IntegerField(verbose_name='مقدار درصدی', blank=True, null=True)
     start = models.DateTimeField(verbose_name='زمان شروع', blank=True, null=True)
     end = models.DateTimeField(verbose_name='زمان پایان', blank=True, null=True)
@@ -74,13 +85,22 @@ class PercentOff(models.Model):
         verbose_name = 'تخفیف درصدی'
         verbose_name_plural = 'تخفیف های درصدی'
 
+    def __str__(self):
+        return f'{self.title} ({self.percent_off}%)'
+
+    def get_absolute_url(self):
+        return "/orders/discounts/%i/" % self.pk
+
 
 class CashOff(models.Model):
     STATUS = [('E', 'منقضی شده'), ('V', 'معتبر')]
     title = models.CharField(verbose_name='عنوان', max_length=100)
     creator = models.ForeignKey(get_user_model(), verbose_name='ایجادکننده', on_delete=models.DO_NOTHING,
                                 related_name='cash_registrar')
-    editors = models.ManyToManyField(get_user_model(), verbose_name='ویرایشگر', related_name='cash_editor')
+    last_edited_by = models.ForeignKey(get_user_model(),
+                                       verbose_name='آخرین ویرایش توسط',
+                                       related_name='cash_editor',
+                                       on_delete=models.DO_NOTHING, null=True, blank=True)
     cash_off = models.IntegerField(verbose_name='مقدار نقدی', blank=True, null=True)
     min_price_off = models.BigIntegerField('حداقل قیمت')
     start = models.DateTimeField(verbose_name='زمان شروع', blank=True, null=True)
@@ -90,6 +110,12 @@ class CashOff(models.Model):
     class Meta:
         verbose_name = 'تخفیف نقدی'
         verbose_name_plural = 'تخفیف های نقدی'
+
+    def __str__(self):
+        return f'{self.title} ({self.cash_off}تومان)'
+
+    def get_absolute_url(self):
+        return "/orders/discounts/%i/" % self.pk
 
 
 class DefaultBasket(models.Model):

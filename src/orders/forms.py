@@ -1,7 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Address
-from orders.models import Order
+from orders.models import Order, DiscountCode, PercentOff, CashOff
+from bootstrap_datepicker_plus import DateTimePickerInput
 
 
 class AddressChoice(forms.ModelChoiceField):
@@ -18,6 +19,7 @@ class OrderUpdateForm(forms.ModelForm):
     """
     default_address = Address.objects.filter(is_default=True)
     delivery_address = AddressChoice(queryset=Address.objects.all(), required=True, initial=default_address)
+
     class Meta:
         model = Order
         fields = ['delivery_address']
@@ -41,4 +43,34 @@ class OrderUpdateForm(forms.ModelForm):
         return cleaned_data
 
 
+class DiscountCodeForm(forms.ModelForm):
+    class Meta:
+        model = DiscountCode
+        fields = '__all__'
+        exclude = ['last_edited_by', 'creator']
+        widgets = {
+            'start': DateTimePickerInput(),
+            'end': DateTimePickerInput(),
+        }
 
+
+class PercentOffForm(forms.ModelForm):
+    class Meta:
+        model = PercentOff
+        fields = '__all__'
+        exclude = ['last_edited_by', 'creator']
+        widgets = {
+            'start': DateTimePickerInput(),
+            'end': DateTimePickerInput(),
+        }
+
+
+class CashOffForm(forms.ModelForm):
+    class Meta:
+        model = CashOff
+        fields = '__all__'
+        exclude = ['last_edited_by', 'creator']
+        widgets = {
+            'start': DateTimePickerInput(),
+            'end': DateTimePickerInput(),
+        }
