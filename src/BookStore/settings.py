@@ -91,6 +91,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -119,6 +120,7 @@ TEMPLATES = [
                 'books.context_processors.books',
                 'session_basket.context_processors.basket',
                 'orders.context_processor.default_basket',
+                'orders.context_processor.all_orders',
             ],
         },
     },

@@ -23,4 +23,4 @@ def all_orders(request):
     registered = Order.objects.filter(status='R')
     ordered = Order.objects.filter(status='O')
     new_orders = Order.objects.filter(created_at__day=timezone.now().day)
-    return {'registered': registered, 'ordered':ordered, 'new_orders':new_orders}
+    return {'all_registered': registered, 'all_ordered':ordered, 'all_new_orders':new_orders}

@@ -3,7 +3,8 @@
 {% load account %}
 {% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
 {% block content %}
-    <h1>{% trans "Confirm E-mail Address" %}</h1>
+    <div class="container bg-light mx-auto my-5">
+            <h1>{% trans "Confirm E-mail Address" %}</h1>
     {% if confirmation %}
         {% user_display confirmation.email_address.user as user_display %}
         <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm
@@ -19,4 +20,5 @@
         <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.\
         {% endblocktrans %}</p>
     {% endif %}
+    </div>
 {% endblock %}

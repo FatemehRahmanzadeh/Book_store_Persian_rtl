@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import UpdateView, DetailView, DeleteView
 
 from orders.forms import OrderUpdateForm
 from orders.models import DefaultBasket, Order, OrderItem, DiscountCode
@@ -22,6 +22,29 @@ class OrderDetail(DetailView):
         context = super(OrderDetail, self).get_context_data()
         context['items'] = self.object.order_items.all()
         return context
+
+
+class OrderDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+        حذف سفارش مشتری
+    """
+    model = Order
+    template_name = 'payments/orders/order_delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(OrderDelete, self).get_context_data()
+        context['items'] = self.object.order_items.all()
+        return context
+
+    def test_func(self):
+        """
+        برای اینکه هر مشتری فقط سفارشات مربوط به خودش را حذف کند نه دیگری را
+        """
+        obj = self.get_object()
+        return obj.basket.customer == self.request.user
+
+    def get_success_url(self):
+        return reverse_lazy('all-basket-orders', args=[str(self.object.basket.pk)])
 
 
 class CustomerOrderHistory(LoginRequiredMixin, UserPassesTestMixin, DetailView):

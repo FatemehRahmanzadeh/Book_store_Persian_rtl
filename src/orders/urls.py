@@ -6,16 +6,20 @@
 # router.register('create_order', OrderViewSet, basename='create_order')
 # urlpatterns = router.urls
 from django.urls import path
+from django.views.generic import TemplateView
 
 from orders import discount_views
-from orders.views import OrderRegister, create, last_uncheck_orders, CustomerOrderHistory, OrderDetail
+from orders.views import OrderRegister, create, last_uncheck_orders, CustomerOrderHistory, OrderDetail, OrderDelete
 
 urlpatterns = [
     path('create-order/', create, name='create-order'),
     path('<int:pk>/send-order/', OrderRegister.as_view(), name='order-send'),
     path('last-order/', last_uncheck_orders, name='last-order'),
-    path('<int:pk>/', OrderDetail.as_view(), name='order-detail'),
+    path('<int:pk>/detail/', OrderDetail.as_view(), name='order-detail'),
+    path('<int:pk>/delete/', OrderDelete.as_view(), name='order-delete'),
     path('basket/<int:pk>/', CustomerOrderHistory.as_view(), name='all-basket-orders'),
+    path('all-orders/registered/', TemplateView.as_view( template_name='payments/orders/all_orders.html'), name='all-reg-orders'),
+    path('all-orders/unregistered/', TemplateView.as_view(template_name='payments/orders/all_not_reg_orders.html'), name='all-not-reg-orders'),
     # تخفیف ها
     path('discounts/cods/', discount_views.DiscountCodeList.as_view(), name='all-discount-cods'),
     path('discounts/create/code/', discount_views.CreateDiscountCode.as_view(), name='create-code'),

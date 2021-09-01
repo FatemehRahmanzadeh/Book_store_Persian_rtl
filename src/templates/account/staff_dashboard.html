@@ -54,8 +54,8 @@
                     <div class="collapse" id="orders-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                             <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات جدید</a></li>
-                            <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات ثبت شده</a></li>
-                            <li><a href="#" class="link-dark rounded text-decoration-none">سفارشات نهایی نشده</a></li>
+                            <li><a href="{% url 'all-reg-orders' %}" class="link-dark rounded text-decoration-none">سفارشات ثبت شده</a></li>
+                            <li><a href="{% url 'all-not-reg-orders' %}" class="link-dark rounded text-decoration-none">سفارشات نهایی نشده</a></li>
                         </ul>
                     </div>
                 </li>

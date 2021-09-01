@@ -11,7 +11,7 @@ class BookAdmin(admin.ModelAdmin):
 
     readonly_fields = ('created_at', 'updated_at',)
 
-    list_display = ['title', 'quantity', 'price', 'creator', 'last_edit_by']
+    list_display = ['title', 'quantity', 'price', 'creator', 'last_edit_by', 'get_final_price']
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name in ['creator', 'last_edit_by']:

@@ -42,7 +42,13 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
         instance.save()
         if self.request.is_ajax():
             return JsonResponse({'success': True, 'address': instance}, status=201)
-        return redirect(reverse_lazy('accounts:customer-panel', args=[str(self.request.user.slug)]))
+            # پاسخی که در ان پاپ آپ آدرس بسته شود و آپشن به لیست آدرس های سفارش اضافه شود
+
+        # if self.request.path_info == '/%i/send-order/':
+        return HttpResponse(
+            '<script>opener.closePopup(window, "%s", "%s", "#addr_id");</script>' % (instance.pk, instance))
+        # else:
+        #     return redirect(reverse_lazy('accounts:customer-panel', args=[str(self.request.user.slug)]))
 
     def form_invalid(self, form):
         if self.request.is_ajax():

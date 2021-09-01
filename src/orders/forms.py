@@ -19,7 +19,10 @@ class OrderUpdateForm(forms.ModelForm):
     فرم ثبت سفارش مشتری.
     """
     default_address = Address.objects.filter(is_default=True)
-    delivery_address = AddressChoice(queryset=Address.objects.all(), required=True, initial=default_address)
+    delivery_address = AddressChoice(queryset=Address.objects.all(),
+                                     required=True, initial=default_address,
+                                     widget=forms.Select
+                                     (attrs={'id': "addr_id"}))
 
     class Meta:
         model = Order

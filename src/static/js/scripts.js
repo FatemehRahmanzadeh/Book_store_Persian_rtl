@@ -144,8 +144,8 @@ function showAddPopup(triggeringLink) {
     return false;
 }
 
-function closePopup(data) {
-    $(id).append('<option value=' + data.address.id + ' selected >' + data.address + '</option>')
+function closePopup(win, new_id, new_addr, id) {
+    $(id).append('<option id=id value=' + new_id + ' selected >' + new_addr + '</option>')
     win.close();
 }
 

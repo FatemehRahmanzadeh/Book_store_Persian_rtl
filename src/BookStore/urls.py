@@ -27,8 +27,8 @@ urlpatterns = [
     path('session/', include('session_basket.urls')),
     path('api-auth/', include('rest_framework.urls')),
     path('', include('pages.urls')),
-    path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),
-    path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    # path('api/v1/dj-rest-auth/', include('dj_rest_auth.urls')),
+    # path('api/v1/dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.MEDIA_ROOT)
