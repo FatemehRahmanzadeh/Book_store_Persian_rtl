@@ -172,9 +172,19 @@ def create(request, *args, **kwargs):
     basket_session = Basket(request)
     if len(basket_session) > 0:
         default_basket = DefaultBasket.objects.get(customer=request.user)
-        order = Order.objects.create(basket=default_basket)
+        try:
+            current_order = default_basket.basket_orders.filter(status='O').last()
+            current_items = current_order.order_items.all()
+        except Order.DoesNotExist:
+            current_order = Order.objects.create(basket=default_basket)
+            current_items = []
         for item in basket_session:
-            OrderItem.objects.create(order=order, book=item['book'], quantity=item['quantity'])
+            if current_items and item['book'] in [_.book for _ in current_items.all()]:
+                item_save = current_items.get(book=item['book'])
+                item_save.quantity += item['quantity']
+                item_save.save()
+            else:
+                OrderItem.objects.create(order=current_order, book=item['book'], quantity=item['quantity'])
     return HttpResponseRedirect("/")
 
 

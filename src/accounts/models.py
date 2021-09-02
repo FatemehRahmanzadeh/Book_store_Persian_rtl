@@ -3,10 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.db import models
-from django.template.defaultfilters import slugify
 from django.utils import timezone
-
-from accounts.utils import get_random_code
 
 
 class UserManager(BaseUserManager):
@@ -56,20 +53,20 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     #     super().__init__(*args, **kwargs)
     #     self.__initial_first_name = self.first_name
     #     self.__initial_last_name = self.last_name
-# pip install django-autoslug
-#     def save(self, *args, **kwargs):
-#         to_slug = self.slug
-#         if self.first_name != self.__initial_first_name or self.last_name != self.__initial_last_name or self.slug == "":
-#             if self.first_name and self.last_name:
-#                 to_slug = slugify(str(self.first_name) + " " + str(self.last_name))
-#                 ex = CustomUser.objects.filter(slug=to_slug).exists()
-#                 while ex:
-#                     to_slug = slugify(to_slug + " " + str(get_random_code()))
-#                     ex = CustomUser.objects.filter(slug=to_slug).exists()
-#             else:
-#                 to_slug = str(self.email)
-#         self.slug = to_slug
-#         super().save(*args, **kwargs)
+    # pip install django-autoslug
+    #     def save(self, *args, **kwargs):
+    #         to_slug = self.slug
+    #         if self.first_name != self.__initial_first_name or self.last_name != self.__initial_last_name or self.slug == "":
+    #             if self.first_name and self.last_name:
+    #                 to_slug = slugify(str(self.first_name) + " " + str(self.last_name))
+    #                 ex = CustomUser.objects.filter(slug=to_slug).exists()
+    #                 while ex:
+    #                     to_slug = slugify(to_slug + " " + str(get_random_code()))
+    #                     ex = CustomUser.objects.filter(slug=to_slug).exists()
+    #             else:
+    #                 to_slug = str(self.email)
+    #         self.slug = to_slug
+    #         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return "/accounts/%s/" % self.slug
@@ -153,4 +150,3 @@ class Address(models.Model):
         else:
             self.is_default = True
         return self.is_default
-

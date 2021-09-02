@@ -53,6 +53,7 @@ class AdminAdmin(UserAdmin):
             'fields': ('is_staff', 'is_superuser', 'is_active', 'groups', 'user_permissions',)
         })
     )
+    list_display = ['username', 'id']
 
     def get_queryset(self, request):
         return get_user_model().objects.filter(is_staff=True, is_superuser=True)

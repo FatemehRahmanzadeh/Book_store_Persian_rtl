@@ -151,7 +151,6 @@ class DefaultBasket(models.Model):
         current_order = self.basket_orders.filter(status='O').last()
         if current_order:
             items = current_order.order_items.all()
-            print(items)
 
             if book_id in [b.book.id for b in items]:
                 item = items.get(book__id=book_id)
@@ -159,12 +158,10 @@ class DefaultBasket(models.Model):
                 item.save()
             else:
                 OrderItem.objects.create(order=current_order, book=book, quantity=qty)
-            print('current', current_order)
             return current_order
         else:
             new_order = Order.objects.create(basket=self)
             OrderItem.objects.create(order=new_order, book=book, quantity=qty)
-            print('new', new_order)
             return new_order
 
     def update(self, item, qty):

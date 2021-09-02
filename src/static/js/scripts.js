@@ -149,20 +149,29 @@ function closePopup(win, new_id, new_addr, id) {
     win.close();
 }
 
-// edit order address
-// $("#edit_author").click(function () {
-//     author_name = $("#id_author option:selected").text();
-//     var data = {"author_name": author_name};
+// edit address
+// $("#edit_addr").click(function () {
+//     addr_id = $("#addr_id option:selected").text();
+//     var data = {"addr_id": addr_id};
 //     $.ajax({
 //         type: 'GET',
-//         url: '/author/ajax/get_author_id',
+//         url: '',
 //         data: data,
 //         success: function (data) {
-//             var url = "/author/" + data['author_id'] + "/edit/";
+//             var url = "/author/" + data['addr_id'] + "/edit/";
 //             showEditPopup(url);
 //         },
-//         error: function (data) {
-//             alert("Something Went Wrong");
+//         error: function (xhr, errmsg, err) {
+//             iziToast.show({
+//                 color: 'yellow',
+//                 icon: 'fa fa-exclamation-triangle',
+//                 iconColor: 'red',
+//                 message: errmsg + ':' + err,
+//                 messageColor: 'red',
+//                 timeout: 2000,
+//                 closeOnClick: true,
+//                 drag: true,
+//             });
 //         }
 //     });
 // })
