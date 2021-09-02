@@ -3,14 +3,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView, DetailView, DeleteView
+from django.views.generic import UpdateView, DetailView, DeleteView, TemplateView
 
 from orders.forms import OrderUpdateForm
 from orders.models import DefaultBasket, Order, OrderItem, DiscountCode
 from session_basket.shopping_basket import Basket
 
 
-class OrderDetail(DetailView):
+class OrderDetail(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """
         برای نمایش جزییات هر سفارش مشتری
     """
@@ -22,6 +22,13 @@ class OrderDetail(DetailView):
         context = super(OrderDetail, self).get_context_data()
         context['items'] = self.object.order_items.all()
         return context
+
+    def test_func(self):
+        """
+        برای اینکه هر مشتری فقط سفارشات مربوط به خودش را ببیند
+        """
+        obj = self.get_object()
+        return obj.basket.customer == self.request.user
 
 
 class OrderDelete(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -68,7 +75,7 @@ class CustomerOrderHistory(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         return context
 
 
-class OrderRegister(LoginRequiredMixin, UpdateView):
+class OrderRegister(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     برای نهایی کردن سفارش، اعمال تخفیف و وارد کردن آدرس تحویل سفارش
     """
@@ -76,6 +83,13 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
     template_name = 'payments/orders/order-finalize.html'
     form_class = OrderUpdateForm
     success_url = reverse_lazy('home')
+
+    def test_func(self):
+        """
+        برای اینکه هر مشتری فقط سفارشات مربوط به خودش را ثبت کند
+        """
+        obj = self.get_object()
+        return obj.basket.customer == self.request.user
 
     def get_form_kwargs(self):
         """
@@ -128,6 +142,26 @@ class OrderRegister(LoginRequiredMixin, UpdateView):
         items = self.object.order_items.all()
         for item in items:
             item.book.update_quantity(item.quantity)
+
+
+class RegisteredList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """
+    نمایش همه سفارشهای ثبت شده مشتریان برای کارمند
+    """
+    template_name = 'payments/orders/all_orders.html'
+
+    def test_func(self):
+        return self.request.user.is_staff
+
+
+class UnRegisteredList(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
+    """
+    نمایش همه سفارشهای ثبت نشده مشتریان برای کارمند
+    """
+    template_name = 'payments/orders/all_not_reg_orders.html'
+
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 @login_required

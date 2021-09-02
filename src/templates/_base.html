@@ -3,11 +3,14 @@
 <html lang="fa" dir="rtl">
 <head>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css" integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.rtl.min.css"
+          integrity="sha384-gXt9imSW0VcJVHezoNQsP+TNrjYXoGcrqBZJpry9zJt8PCQjobwmhMGaDHTASo9N" crossorigin="anonymous">
     {% block csses %}{% endblock %}
     <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'css/iziToast.min.css' %}">
@@ -62,15 +65,15 @@
                 </li>
                 {% if user.is_staff %}
                     <li class="nav-item">
-                    <a class="nav-link" href="{% url 'create-book' %}">کتاب جدید</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'new-category' %}">دسته جدید</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'all-discount-cods' %}">کدهای تخفیف</a>
-                </li>
-            {% endif %}
+                        <a class="nav-link" href="{% url 'create-book' %}">کتاب جدید</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'new-category' %}">دسته جدید</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all-discount-cods' %}">کدهای تخفیف</a>
+                    </li>
+                {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">

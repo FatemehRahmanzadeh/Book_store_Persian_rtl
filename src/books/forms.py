@@ -1,5 +1,4 @@
 from django import forms
-
 from books.models import Book, Category
 
 
@@ -14,7 +13,7 @@ class CreateCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = "__all__"
-        exclude = ['creator', 'last_edit_by', 'slug']
+        exclude = ['creator', 'last_edit_by', 'slug', 'created_at']
 
     def __init__(self, *args, **kwargs):
         super(CreateCategoryForm, self).__init__(*args, **kwargs)

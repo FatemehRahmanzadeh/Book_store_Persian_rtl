@@ -24,37 +24,42 @@
                             <div class="border">
                                 <div class="col border-bottom">
                                     <div class="row p-3">
-                                        <div class="col-6 h5">قیمت:</div>
-                                        <div class="col-6 text-start">
-                  <span class="h6 fw-bold">
-                      {% if object.max_cash_off or book.percent_off %}
-                          <del class="text-danger">{{ book.price }}</del>  {{ book.get_final_price }}
-                      {% else %}
-                          {{ book.get_final_price }}
-                      {% endif %}
-                  </span>
+                                        <div class="col-3 h5">قیمت:</div>
+                                        <div class="col-3 text-start">
+                                              <span class="h6 fw-bold">
+                                                  {% if object.max_cash_off or book.percent_off %}
+                                                      <del class="text-danger">{{ book.price }}</del>
+                                                      {{ book.get_final_price }}
+                                                  {% else %}
+                                                      {{ book.get_final_price }}
+                                                  {% endif %}
+                                              </span>
                                         </div>
+                                        <div class="col-3 h6 fw-bold">تعداد: {{ item.quantity }}</div>
+                                        <div class="col-3 h6 fw-bold">قیمت تمام شده: {{ item.get_item_price }}</div>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="row p-3">
-                                        <form class="col-12" method="post">
-                                            {% csrf_token %}
-                                            <label for="num">تعداد</label>
-                                            <input id="num{{ item.id }}" type="number" value="{{ item.quantity }}"
-                                                   min="1" step="1" max="{{ book.quantity }}">
-                                            {% csrf_token %}
-                                            <button type="button" id="update-button" data-index="{{ item.id }}"
-                                                    class="btn btn-primary btn-outline-secondary btn-sm update-button text-light px-3">
-                                                بروزرسانی
-                                            </button>
-                                            <input type="hidden" id="Url-up" data-url="{% url 'update' %}"/>
-                                            <button type="button" id="delete-button" data-index="{{ item.id }}"
-                                                    class="btn btn-danger btn-outline-secondary btn-sm delete-button text-light">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </button>
-                                            <input type="hidden" id="Url-del" data-url="{% url 'delete' %}"/>
-                                        </form>
+                                        {% if last_unchecked.status == 'O' %}
+                                            <form class="col-12" method="post">
+                                                {% csrf_token %}
+                                                <label for="num">تعداد</label>
+                                                <input id="num{{ item.id }}" type="number" value="{{ item.quantity }}"
+                                                       min="1" step="1" max="{{ book.quantity }}">
+                                                {% csrf_token %}
+                                                <button type="button" id="update-button" data-index="{{ item.id }}"
+                                                        class="btn btn-primary btn-outline-secondary btn-sm update-button text-light px-3">
+                                                    بروزرسانی
+                                                </button>
+                                                <input type="hidden" id="Url-up" data-url="{% url 'update' %}"/>
+                                                <button type="button" id="delete-button" data-index="{{ item.id }}"
+                                                        class="btn btn-danger btn-outline-secondary btn-sm delete-button text-light">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                                <input type="hidden" id="Url-del" data-url="{% url 'delete' %}"/>
+                                            </form>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -67,17 +72,21 @@
                     <form class="col-12 text-start">
                     <div class="h4 fw-bold text-primary border rounded p-2 bg-light">
                         <div class="row">
-                            <div class="col d-inline-flex mx-3">جمع خرید:<span class="me-3"
-                                                                               id="total">{{ last_unchecked.get_order_price }}</span>
+                            <div class="col d-inline-flex mx-3">
+                                جمع خرید:
+                                <span class="me-3" id="total">
+                                    {{ last_unchecked.get_order_price }}
+                                </span>
                             </div>
                             {% if last_unchecked.status == 'O' %}
-                            <a id="final-submit" href="{% url 'order-send' last_unchecked.pk %}" type="button"
-                               class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
-                                ثبت نهایی سفارش
-                            </a>
-                                {% else %}
-                                <button class="col-3 btn btn-outline-secondary mx-3 text-success" type="button" disabled><b>سفارش ثبت شده است</b></button>
-                                {% endif %}
+                                <a id="final-submit" href="{% url 'order-send' last_unchecked.pk %}" type="button"
+                                   class="col-3 btn btn-outline-secondary btn-sm btn btn-success text-white mx-3">
+                                    ثبت نهایی سفارش
+                                </a>
+                            {% else %}
+                                <button class="col-3 btn btn-outline-secondary mx-3 text-success" type="button"
+                                        disabled><b>سفارش ثبت شده است</b></button>
+                            {% endif %}
                             <input type="hidden" id="data-url" data-url="{% url 'order-send' last_unchecked.pk %}"/>
                         </div>
                     </div>
@@ -85,7 +94,15 @@
                     <h3 class="text-primary text-center">سبد خرید شما خالی است</h3>
                 {% endif %}
             {% endwith %}
-
+            {% if last_unchecked.discount %}
+                {% if last_unchecked.discount.percent_off %}
+                    <h5 class="col-3">
+                        درصد تخفیف: {{ last_unchecked.discount.percent_off }}%
+                        {% elif last_unchecked.discount.cash_off %}
+                        مبلغ تخفیف: {{ last_unchecked.discount.cash_off }} تومان
+                    </h5>
+                {% endif %}
+            {% endif %}
             </form>
         </div>
     </main>

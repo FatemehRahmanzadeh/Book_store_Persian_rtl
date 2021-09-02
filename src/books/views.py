@@ -206,3 +206,14 @@ class EditBook(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('detail', args=[str(self.object.slug)])
+
+
+class BookList(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Book
+    template_name = 'books/book_list.html'
+
+    def test_func(self):
+        """
+            این تابع چک می کند که کاربر درخواست دهنده حتما دسترسی کارمند داشته باشد.
+        """
+        return self.request.user.is_staff

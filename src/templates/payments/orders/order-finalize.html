@@ -2,7 +2,7 @@
 {% load static %}
 {% block title %}تکمیل سفارش{% endblock %}
 {% block content %}
-    <section class="container m-5" style="background-color: blanchedalmond">
+    <section class="container mx-auto my-5 w-50" style="background-color:lightblue;border-radius:10px;">
         <div>
             <h3 class="text-center">تکمیل سفارش</h3>
             <div class="row justify-content-center align-items-center">
@@ -25,11 +25,11 @@
                         <input id="disc-input" title="کدتخفیف" type="text" class="form-control" name="discount" placeholder="اگر کد تخفیف دارید وارد کنید">
                         <button id="disc_btn" data-url = {% url 'order-send' form.instance.id %} type="button"
                                 data-order ='{{ form.instance.id }}'
-                                class="btn btn-primary">بررسی تخفیف</button>
+                                class="btn btn-primary my-2">بررسی تخفیف</button>
                     </div>
                     <h5> مبلغ قابل پرداخت: <span id="total-price">{{ order.get_order_price }}</span></h5>
                     <br><br>
-                    <button id="submit-order" type="submit" class="btn btn-primary">تایید</button>
+                    <button id="submit-order" type="submit" class="btn btn-success">تایید</button>
                 </form>
             </div>
         </div>

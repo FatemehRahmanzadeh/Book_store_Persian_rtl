@@ -1,6 +1,6 @@
-{% extends 'account/staff_dashboard.html' %}
+{% extends '_base.html' %}
 {% block title %}همه سفارشات ثبت شده{% endblock %}
-{% block content-disc %}
+{% block content %}
     <section class="container">
         <h3><span class="bg-light text-success m-2 px-3 py-2">سفارشات ثبت شده</span></h3>
         <div class="row  border rounded align-items-center my-3">
@@ -8,23 +8,58 @@
                 <div class="col-12 bg-light m-2">
                     <h5>
                         وضعیت سفارش: {{ order.get_status_display }} |
-                        <span style="font-size: smaller" class="text-muted">تاریخ: {{ order.created_at }}</span>
+                        <span style="font-size: smaller" class="text-muted">تاریخ: {{ order.created_at }}</span> |
+                        <span style="font-size: smaller" class="text-muted">{{ order.basket.customer.email }}</span>
                     </h5>
                     <div class="container">
-                        <div class="border rounded row justify-content-end">
+                        <div class="border rounded row justify-content-start">
                             {% for item in order.order_items.all %}
-                                <a class="col text-decoration-none" href="{% url 'detail' item.book.slug %}">
-                                    <img class="img-all-orders" style="width:100px"
-                                         src="{{ item.book.image.url }}"
-                                         alt="{{ item.book.title }}"><p>تعداد:{{ item.quantity }}</p>
-                                </a>
+
+                                <div class="col-6 col-md-2 card">
+                                    <a class="col text-decoration-none" href="{% url 'detail' item.book.slug %}">
+                                        <img class="card-img-top" style="width:100px"
+                                             src="{{ item.book.image.url }}"
+                                             alt="{{ item.book.title }}">
+                                    </a>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ item.book.title }}</h5>
+                                    </div>
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">تعداد: {{ item.quantity }} </li>
+                                        <li class="list-group-item">قیمت تمام شده: {{ item.get_item_price }}تومان</li>
+                                        <li class="list-group-item">
+                                            تخفیف کل مورد:
+                                            {% if item.book.percent_off %}
+                                                {{ item.book.percent_off.percent_off }} درصد
+                                            {% elif item.book.max_cash_off %}
+                                                {% widthratio item.book.max_cash_off.cash_off 1 item.quantity %}تومان
+                                            {% else %}
+                                                تخفیف ندارد
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
                             {% endfor %}
 
                         </div>
                     </div>
-                    {#                    <a role="button" class="btn btn-primary my-3" href="{% url 'order-detail' order.pk %}">جزئیات#}
-                    {#                        سفارش</a>#}
+                    <div class="row my-3">
+                        <h5 class="col-md-3">قیمت کل سفارش: {{ order.get_order_price }}</h5>
+                        {% if order.discount %}
+
+                            <h5 class="col-md-3">
+                                {% if order.discount.percent_off %}
+                                    درصد تخفیف سفارش: {{ order.discount.percent_off }}%
+                                {% elif order.discount.cash_off %}
+                                     مبلغ تخفیف سفارش: {{ order.discount.cash_off }} تومان
+                                    </h5>
+                                {% endif %}
+
+                        {% endif %}
+                    </div>
+
                 </div>
+
             {% endfor %}
 
         </div>

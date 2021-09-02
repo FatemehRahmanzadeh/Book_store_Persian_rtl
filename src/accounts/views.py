@@ -105,19 +105,26 @@ class DeleteAddress(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return super(DeleteAddress, self).delete(request, *args, **kwargs)
 
 
-class StaffDashboard(TemplateView):
+class StaffDashboard(LoginRequiredMixin, UserPassesTestMixin, TemplateView):
     template_name = 'account/staff_dashboard.html'
 
+    def test_func(self):
+        return self.request.user.is_staff
 
-class CustomerPanel(DetailView):
+
+class CustomerPanel(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     """
     صفحه کاربری مشتری
     """
     model = CustomUser
     template_name = 'account/customer_dashboard.html'
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.slug == self.request.user.slug
 
-class CustomerUpdateView(UpdateView):
+
+class CustomerUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     ویرایش اطلاعات کاربر
     """
@@ -133,6 +140,10 @@ class CustomerUpdateView(UpdateView):
         kwargs = super(CustomerUpdateView, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.slug == self.request.user.slug
 
     def form_valid(self, form):
         """
@@ -159,9 +170,10 @@ def login_redirects(request):
     if request.user.is_staff:
         return redirect("accounts:staff-panel", str(request.user.slug))
     else:
-        return redirect("accounts:customer-panel", str(request.user.slug))
+        return redirect("create-order")
 
 
+@login_required()
 def get_user_addresses(request):
     """
     نمایش همه آدرس های کاربر
