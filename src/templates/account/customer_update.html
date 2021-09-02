@@ -7,6 +7,11 @@
             <form class="my-4" action="" method="post">
                 {% csrf_token %}
                 {{ form |crispy }}
+                <a href="{% url 'accounts:address-create' %}" role="button" class="btn btn-primary mt-2"
+                   data-url="{% url 'accounts:address-create' %}"
+                   id="add" onclick="return showAddPopup(this);">
+                    افزودن آدرس
+                </a>
                 <button type="submit" class="btn btn-success">تایید</button>
             </form>
 

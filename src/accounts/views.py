@@ -159,7 +159,7 @@ def login_redirects(request):
     if request.user.is_staff:
         return redirect("accounts:staff-panel", str(request.user.slug))
     else:
-        return redirect("create-order")
+        return redirect("accounts:customer-panel", str(request.user.slug))
 
 
 def get_user_addresses(request):

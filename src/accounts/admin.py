@@ -34,10 +34,10 @@ class StaffAdmin(UserAdmin):
         })
     )
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('email', 'is_staff', 'slug')}),
+        (None, {'fields': ('email', 'is_staff',)}),
     )
-    list_display = ['id', 'email', 'username', 'is_staff']
-    prepopulated_fields = {'slug': ('email',)}
+    list_display = ['id', 'email', 'username', 'is_staff',]
+    # prepopulated_fields = {'slug': ('email',)}
 
     def get_queryset(self, request):
         return get_user_model().objects.filter(is_staff=True, is_superuser=False)

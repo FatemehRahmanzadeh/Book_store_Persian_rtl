@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, ReadOnlyPasswordHashField, UserCreationForm
 
-from accounts.models import Address, CustomerProxy, CustomUser
+from accounts.models import Address, CustomUser
 from django.utils.translation import gettext_lazy as _
 from bootstrap_modal_forms.mixins import PopRequestMixin, CreateUpdateAjaxMixin
 
@@ -29,10 +29,18 @@ class CustomerProfileForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(CustomerProfileForm, self).__init__(*args, **kwargs)
+
         queryset = Address.objects.filter(customer=self.user)
+        try:
+            default = queryset.get(is_default=True)
+        except Address.DoesNotExist:
+            default = None
+
         self.fields['default_address'] = forms.ModelChoiceField(queryset=queryset,
-                                                                initial=queryset.get(is_default=True),
-                                                                label='آدرس اصلی')
+                                                                label='آدرس اصلی',
+                                                                initial=default,
+                                                                widget=forms.Select
+                                                                (attrs={'id': "addr_id"}))
 
     password = ReadOnlyPasswordHashField(
         label=_("Password"),
