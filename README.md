@@ -19,5 +19,6 @@ every user has a dashboard to manage addresses and personal informations. They c
 ### if you like to run the project install requirements
 ```
 pip install -r requirements.txt
+```
 
 ### This code is not complete yet....
