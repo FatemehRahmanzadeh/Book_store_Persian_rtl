@@ -36,7 +36,7 @@ class CreateDiscountCode(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return self.request.user.is_staff
 
     def get_success_url(self):
-        return reverse_lazy('accounts:staff-panel', args=[str(self.self.request.user.slug)])
+        return reverse_lazy('accounts:staff-panel', args=[str(self.request.user.slug)])
 
     def form_valid(self, form):
         try:

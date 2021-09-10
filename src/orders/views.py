@@ -175,8 +175,11 @@ def create(request, *args, **kwargs):
         try:
             current_order = default_basket.basket_orders.filter(status='O').last()
             current_items = current_order.order_items.all()
-        except Order.DoesNotExist:
+        except AttributeError:
             current_order = Order.objects.create(basket=default_basket)
+        except OrderItem.DoesNotExist:
+            current_items = []
+        else:
             current_items = []
         for item in basket_session:
             if current_items and item['book'] in [_.book for _ in current_items.all()]:
@@ -185,6 +188,10 @@ def create(request, *args, **kwargs):
                 item_save.save()
             else:
                 OrderItem.objects.create(order=current_order, book=item['book'], quantity=item['quantity'])
+    # if request.user.is_superuser:
+    #     return reverse_lazy("admin")
+    # if request.user.is_staff:
+    #     return HttpResponseRedirect(reverse_lazy("accounts:staff-panel", args=str(request.user.slug)))
     return HttpResponseRedirect("/")
 
 

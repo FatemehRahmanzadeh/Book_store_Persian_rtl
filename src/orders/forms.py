@@ -1,9 +1,13 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
+from jalali_date.fields import JalaliDateTimeField
+
 from accounts.models import Address
 from books.models import Book
 from orders.models import Order, DiscountCode, PercentOff, CashOff
 from bootstrap_datepicker_plus import DateTimePickerInput
+from jalali_date.widgets import AdminSplitJalaliDateTime
+from jalali_date.fields import SplitJalaliDateTimeField
 
 
 class AddressChoice(forms.ModelChoiceField):
@@ -52,10 +56,14 @@ class DiscountCodeForm(forms.ModelForm):
         model = DiscountCode
         fields = '__all__'
         exclude = ['last_edited_by', 'creator']
-        widgets = {
-            'start': DateTimePickerInput(),
-            'end': DateTimePickerInput(),
-        }
+
+    def __init__(self, *args, **kwargs):
+        """
+        override datetime fields to use jalali datetime and jalali datetime picker
+        """
+        super(DiscountCodeForm, self).__init__(*args, **kwargs)
+        self.fields['start'] = SplitJalaliDateTimeField(label='زمان شروع', widget=AdminSplitJalaliDateTime)
+        self.fields['end'] = SplitJalaliDateTimeField(label='زمان پایان', widget=AdminSplitJalaliDateTime)
 
 
 class PercentOffForm(forms.ModelForm):
@@ -63,15 +71,13 @@ class PercentOffForm(forms.ModelForm):
         model = PercentOff
         fields = '__all__'
         exclude = ['last_edited_by', 'creator']
-        widgets = {
-            'start': DateTimePickerInput(),
-            'end': DateTimePickerInput(),
-        }
 
     def __init__(self, *args, **kwargs):
         super(PercentOffForm, self).__init__(*args, **kwargs)
         queryset = Book.objects.all()
         self.fields['discount_books'] = forms.ModelMultipleChoiceField(queryset=queryset, label='کتاب های شامل تخفیف')
+        self.fields['start'] = SplitJalaliDateTimeField(label='زمان شروع', widget=AdminSplitJalaliDateTime)
+        self.fields['end'] = SplitJalaliDateTimeField(label='زمان پایان', widget=AdminSplitJalaliDateTime)
 
     def save(self, *args, **kwargs):
         """
@@ -99,6 +105,8 @@ class CashOffForm(forms.ModelForm):
         super(CashOffForm, self).__init__(*args, **kwargs)
         queryset = Book.objects.all()
         self.fields['discount_books'] = forms.ModelMultipleChoiceField(queryset=queryset, label='کتاب های شامل تخفیف')
+        self.fields['start'] = SplitJalaliDateTimeField(label='زمان شروع', widget=AdminSplitJalaliDateTime)
+        self.fields['end'] = SplitJalaliDateTimeField(label='زمان پایان', widget=AdminSplitJalaliDateTime)
 
     def save(self, *args, **kwargs):
         self.instance.save()

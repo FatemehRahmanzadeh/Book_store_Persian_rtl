@@ -70,14 +70,15 @@ BOOTSTRAP5 = {
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID = 1
 # DJANGO ALLAUTH SETTINGS
-LOGIN_REDIRECT_URL = 'accounts:redirects'
+# LOGIN_REDIRECT_URL = 'accounts:redirects'
+LOGIN_REDIRECT_URL = 'create-order'
 ACCOUNT_LOGOUT_REDIRECT = 'home'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-# تنظیمات ارسال ایمیل از طریق اس ام تی پی گوگل برای تایید ایمیل و بازنشانی رمز ها
+# setting google SMTP as email service for signup confirmation and change password
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -162,20 +163,20 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 REST_FRAMEWORK = {
-    # فیلتر دیفالت برای استفاده از Api
+    # using default filter as API filter
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    # permissionهای پیشفرض استفاده از رست
+    # default permissions for using REST
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    # استفاده از روش اعتبار سنجی براساس سشن برای API
+    # session authentication for API
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # سشن برای قابلیت آدرس دهی و لاگین ولاگ اوت از سایت
+        # for login, logout and referring to this website using session
         'rest_framework.authentication.SessionAuthentication',
-        #  و روش بیسیک برای ارسال سشن به منظور استفاده از  خود ای پی آی
-        # 'rest_framework.authentication.BasicAuthentication',
-        # برای استفاده از لاگین به وسیله توکن و ارسال آن از سرور به کلاینت و اجبار وجود آن در هدر درخواست.
-        # 'rest_framework.authentication.TokenAuthentication',
+        #  Basic authentication settings for API
+        'rest_framework.authentication.BasicAuthentication',
+        # Token authentication setting and force existing this token in every request header
+        'rest_framework.authentication.TokenAuthentication',
     ],
 }
 
@@ -223,7 +224,7 @@ SOCIALACCOUNT_PROVIDERS = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#   تنظیمات مربوط به تقویم جلالی
+#   settings for jalali date
 
 # from __future__ import print_function
 

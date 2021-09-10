@@ -1,6 +1,6 @@
 from django.urls import path
 
-from accounts import views
+from accounts import views, API_views
 
 app_name = 'accounts'
 urlpatterns = [
@@ -13,4 +13,7 @@ urlpatterns = [
     path('redirects/', views.login_redirects, name='redirects'),
     path('<str:slug>/panel/', views.CustomerPanel.as_view(), name='customer-panel'),
     path('<str:slug>/edit/', views.CustomerUpdateView.as_view(), name='customer-edit'),
+
+    # API urls:
+    path('api/login/', API_views.LoginAPIView, name='login_api')
 ]
