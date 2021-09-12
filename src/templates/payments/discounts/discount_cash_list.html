@@ -1,4 +1,5 @@
 {% extends 'account/staff_dashboard.html' %}
+{% load jalali_tags %}
 {% block title %}تخفیف های نقدی{% endblock %}
 {% block content-disc %}
     <section class="container-fluid bg-light">
@@ -35,8 +36,8 @@
                     {#                    </td>#}
                     <td>{{ off.cash_off }}</td>
                     <td>{{ off.min_price_off }}</td>
-                    <td>{{ off.start }}</td>
-                    <td>{{ off.end }}</td>
+                    <td>{{ off.start|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</td>
+                    <td>{{ off.end|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</td>
                     <td>{{ off.get_status_display }}</td>
                     <td>
                         <div class="dropdown">

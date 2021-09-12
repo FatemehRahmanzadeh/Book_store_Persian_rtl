@@ -1,4 +1,5 @@
 {% extends 'account/staff_dashboard.html' %}
+{% load jalali_tags %}
 {% block title %}تخفیف های درصدی{% endblock %}
 {% block content-disc %}
     <section class="container-fluid bg-light">
@@ -33,8 +34,8 @@
                     {#                        </div>#}
                     {#                    </td>#}
                     <td>{{ off.percent_off }}</td>
-                    <td>{{ off.start }}</td>
-                    <td>{{ off.end }}</td>
+                    <td>{{ off.start|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</td>
+                    <td>{{ off.end|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</td>
                     <td>{{ off.get_status_display }}</td>
                     <td>
                         <div class="dropdown">

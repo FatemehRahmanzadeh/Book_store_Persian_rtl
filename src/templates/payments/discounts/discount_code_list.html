@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load jalali_tags %}
 {% block title %}همه کدهای تخفیف{% endblock %}
 {% block content %}
     <section class="container-fluid bg-light">
@@ -42,8 +43,8 @@
                     <td>{{ off.cash_off }}</td>
                     <td>{{ off.min_price_off }}</td>
                     <td>{{ off.code }}</td>
-                    <td>{{ off.start }}</td>
-                    <td>{{ off.end }}</td>
+                    <td>{{ off.start|to_jalali:'%y/%m/%d _ %H:%M:%S'}}</td>
+                    <td>{{ off.end|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</td>
                     <td>{{ off.get_status_display }}</td>
                     <td>
                         <div class="dropdown">

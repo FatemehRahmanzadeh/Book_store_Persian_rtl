@@ -49,25 +49,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.__initial_first_name = self.first_name
-    #     self.__initial_last_name = self.last_name
-    # pip install django-autoslug
-    #     def save(self, *args, **kwargs):
-    #         to_slug = self.slug
-    #         if self.first_name != self.__initial_first_name or self.last_name != self.__initial_last_name or self.slug == "":
-    #             if self.first_name and self.last_name:
-    #                 to_slug = slugify(str(self.first_name) + " " + str(self.last_name))
-    #                 ex = CustomUser.objects.filter(slug=to_slug).exists()
-    #                 while ex:
-    #                     to_slug = slugify(to_slug + " " + str(get_random_code()))
-    #                     ex = CustomUser.objects.filter(slug=to_slug).exists()
-    #             else:
-    #                 to_slug = str(self.email)
-    #         self.slug = to_slug
-    #         super().save(*args, **kwargs)
-
     def get_absolute_url(self):
         return "/accounts/%s/" % self.slug
 

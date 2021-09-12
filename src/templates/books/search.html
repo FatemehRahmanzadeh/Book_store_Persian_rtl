@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load jalali_tags %}
 {% block styles %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/search.css' %}">
@@ -43,7 +44,7 @@
                                                             <p>{{ book.price }}</p>
                                                         {% endif %}
                                                         <p class="card-text"><small class="text-muted">آخرین بروز
-                                                            رسانی: {{ book.updated_at }}</small></p>
+                                                            رسانی: {{ book.updated_at|to_jalali:'%y/%m/%d _ %H:%M:%S' }}</small></p>
                                                     </div>
                                                     <div class="col col-md-4">
                                                         <form class="form-group col" method="post">
