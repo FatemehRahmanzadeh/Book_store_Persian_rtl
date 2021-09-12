@@ -18,5 +18,12 @@ every user has a dashboard to manage addresses and personal informations. They c
 
 ### if you like to run the project install requirements
 ```
+open CMD
+python -m venv env
+env\Scripts\activate
 pip install -r requirements.txt
+cd to root directory of project (src) and:
+python manage.py runserver
+```
 
+### This code is not complete yet....
