@@ -15,5 +15,5 @@ urlpatterns = [
     path('<str:slug>/edit/', views.CustomerUpdateView.as_view(), name='customer-edit'),
 
     # API urls:
-    path('api/login/', API_views.LoginAPIView, name='login_api')
+    # path('api/login/', API_views.LoginAPIView, name='login_api')
 ]
